@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--nav-sidebar-narrow-width: 118px;
+	--nav-sidebar-wide-width: 290px;
+
+	--nav-sidebar-current-width: var(--nav-sidebar-wide-width);
+
+	--color-bg-95: #f9faff;
+	--color-bg-100: #ffffff;
+	--color-brand-primary-50: #3f69ff;
+	--color-text-and-icon-80: #081944;
+
+	--font-size-h1: vaar(--todo, 33px);
+	--font-size-h2: 33px;
+	--font-size-h3: var(--todo, 33px)
+	--font-size-h4: 23px;
+	--font-size-h5: var(--todo, 23px);
+	--font-size-default: 16px;
+
+	--font-weight-h2: 700;
+	--font-weight-default: 400;
+}
