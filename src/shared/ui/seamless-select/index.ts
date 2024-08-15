@@ -1,0 +1,1 @@
+export { SeamlessSelect } from './component';

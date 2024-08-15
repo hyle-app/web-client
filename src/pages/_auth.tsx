@@ -1,5 +1,6 @@
 import { Icon } from '&shared/ui/icon';
 import { Logo } from '&shared/ui/logo';
+import { InlineCalendar } from '&shared/ui/inline-calendar';
 import { MenuNavItem } from '&shared/ui/menu-nav-item/component';
 import { cn } from '&shared/utils';
 import { Outlet, createFileRoute, useRouter } from '@tanstack/react-router';
@@ -39,8 +40,8 @@ function AuthLayout() {
 				'grid-cols-main-layout-narrow': !isExpanded
 			})}
 		>
-			<header className="col-start-2 col-end-3 row-start-1 row-end-1 flex justify-between px-8 py-6 items-center bg-color-bg-95">
-				<h1 className="text-color-text-andicon-80 text-heading-2 font-heading-2">{title}</h1>
+			<header className="col-start-2 col-end-3 row-start-1 row-end-1 flex justify-between px-6 py-6 items-center bg-color-bg-95">
+				<h1 className="text-color-text-and-icon-80 text-heading-2 font-heading-2">{title}</h1>
 				<span className="flex items-center ">
 					{/* TODO: Use notifications button widget here */}
 					<span className="w-14 h-14 flex items-center justify-center">
@@ -61,32 +62,38 @@ function AuthLayout() {
 					</span>
 				</span>
 			</header>
-			<aside className="col-start-1 col-end-2 row-start-1 row-end-3 p-6 h-screen bg-color-bg-100 @container">
+			<aside className="col-start-1 col-end-2 row-start-1 row-end-3 py-6 h-screen bg-color-bg-100 @container">
 				<nav className="flex flex-col justify-start h-full">
-					<div className="flex @[185px]:justify-between items-center flex-wrap justify-center">
+					<div className="flex items-center flex-wrap justify-start relative px-6">
 						<div className="w-[var(--nav-sidebar-narrow-width)] h-[70px]">
 							<Logo height="70px" width="70px" />
 						</div>
-						<Icon name="double-chevron-left" onClick={() => setIsExpanded((isExpanded) => !isExpanded)} />
+						<button
+							onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
+							className="absolute right-0 translate-x-1/2 bg-color-white rounded-full w-8 h-8 flex items-center justify-center"
+						>
+							<Icon name="double-chevron-left" className={cn('transition-transform', { 'rotate-180': !isExpanded })} />
+						</button>
 					</div>
-					{/* TODO: Use inline-calendar widget here */}
-					<div className="mt-3 h-[276px] flex justify-center items-center">Calendar</div>
+					<div className="mt-3 h-[276px] flex justify-center items-center mb-4 min-h-[312px]">
+						<InlineCalendar className={cn({ hidden: !isExpanded })} />
+					</div>
 					<hr />
-					<ul className="grid grid-cols-1 gap-6 max-w-[185px] mt-14">
+					<ul className="grid grid-cols-1 gap-6 max-w-[185px] md:max-w-none mt-14 px-6 w-full">
 						{LINKS.map((link) => (
-							<li className="col-span-1 flex @[185px]:justify-start justify-center">
+							<li className="col-span-1 flex justify-start">
 								<MenuNavItem
 									title={link.label}
 									iconSlot={link.icon}
 									onClick={() => router.navigate({ to: link.to })}
-									isActive={router.matchRoute({ to: link.to })}
+									isActive={Boolean(router.matchRoute({ to: link.to }))}
 								/>
 							</li>
 						))}
 					</ul>
 				</nav>
 			</aside>
-			<main className="col-start-2 col-end-3 row-start-2 row-end-3 px-8 bg-color-bg-95">
+			<main className="col-start-2 col-end-3 row-start-2 row-end-3 bg-color-bg-95 flex">
 				<Outlet />
 			</main>
 		</div>

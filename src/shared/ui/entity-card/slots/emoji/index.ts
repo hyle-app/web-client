@@ -1,0 +1,1 @@
+export { EntityCardEmoji } from './component';

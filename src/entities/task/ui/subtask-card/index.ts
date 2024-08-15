@@ -1,0 +1,1 @@
+export { SubtaskCard } from './component';

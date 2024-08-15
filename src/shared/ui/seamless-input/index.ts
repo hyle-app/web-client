@@ -1,0 +1,1 @@
+export { SeamlessInput } from './component';

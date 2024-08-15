@@ -1,0 +1,1 @@
+export { EntityCardCircularProgressBar } from './component';

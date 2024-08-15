@@ -1,0 +1,1 @@
+export { InlineCalendar } from './component';

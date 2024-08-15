@@ -1,0 +1,1 @@
+export { outputs } from './model';
