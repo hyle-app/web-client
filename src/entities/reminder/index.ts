@@ -1,6 +1,6 @@
 import { inputs, lib, outputs } from './model';
 
-export { ReminderCard } from './ui';
+export { ReminderCard, ReminderForm } from './ui';
 
 export const reminderEntity = {
 	inputs,

@@ -80,6 +80,9 @@ export default {
 				'color-bg-100': 'var(--color-bg-100)',
 				'color-brand-primary-50': 'var(--color-brand-primary-50)',
 				'color-text-and-icon-80': 'var(--color-text-and-icon-80)'
+			},
+			transitionProperty: {
+				'colors-and-opacity': 'color, background-color, border-color, text-decoration-color, fill, stroke, opacity'
 			}
 		}
 	},

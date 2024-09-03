@@ -10,7 +10,6 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 	const [isComponentMounted, setIsComponentMounted] = React.useState(false);
 	const [isSidebarVisible, setIsSidebarVisible] = React.useState(false);
 	const [isBackdropVisible, setIsBackdropVisible] = React.useState(false);
-
 	React.useLayoutEffect(() => {
 		if (isOpen) {
 			setIsComponentMounted(true);
@@ -60,7 +59,7 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 					}
 				)}
 			>
-				<CloseButton className={'absolute right-0 top-0'} onClick={onClose} />
+				<CloseButton className={'absolute right-0 top-4'} onClick={onClose} />
 				{children}
 			</div>
 		</div>

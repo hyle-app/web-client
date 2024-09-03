@@ -23,7 +23,7 @@
 	/* Typography section start */
 	--font-size-h1: vaar(--todo, 33px);
 	--font-size-h2: 33px;
-	--font-size-h3: var(--todo, 33px);
+	--font-size-h3: 28px;
 	--font-size-h4: 23px;
 	--font-size-h5: var(--todo, 23px);
 	--font-size-default: 16px;

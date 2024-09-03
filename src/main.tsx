@@ -3,6 +3,10 @@ import './index.css';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import 'dayjs/locale/ru';
+import dayjs from 'dayjs';
+
+dayjs.locale('ru');
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';

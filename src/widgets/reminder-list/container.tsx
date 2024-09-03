@@ -7,8 +7,11 @@ import { cn } from '&shared/utils';
 import { ReminderCard, reminderEntity } from '&entities/reminder';
 
 import { Props } from './types';
+import React from 'react';
+import { CreateReminderFormSidebar } from '&features/create-reminder';
 
 export function ReminderListWidget({ className, ...attributes }: Props) {
+	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
 	const { reminders, selectedAppDateStart, realTimestamp } = useUnit({
 		reminders: reminderEntity.outputs.$currentAppDateReminders,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
@@ -25,7 +28,7 @@ export function ReminderListWidget({ className, ...attributes }: Props) {
 							Напоминания
 						</Typography>
 					</div>
-					<Button variant="icon" appearance="primary" className="w-8 h-8">
+					<Button variant="icon" appearance="primary" className="w-8 h-8" onClick={() => setIsCreateFormVisible(true)}>
 						<Icon name="plus" className="w-4 h-4 text-color-white" />
 					</Button>
 				</div>
@@ -47,6 +50,8 @@ export function ReminderListWidget({ className, ...attributes }: Props) {
 					})}
 				</div>
 			</div>
+
+			<CreateReminderFormSidebar isOpen={isCreateFormVisible} onClose={() => setIsCreateFormVisible(false)} />
 		</section>
 	);
 }

@@ -1,4 +1,4 @@
-import { cn } from '&shared/utils';
+import { cn, devLogger } from '&shared/utils';
 import React from 'react';
 import { Props } from './types';
 
@@ -8,11 +8,7 @@ export function EntityCardCircularProgressBar({ className, progressValue, ...att
 
 	React.useEffect(() => {
 		if (progressValue < 0 || progressValue > 1) {
-			if (import.meta.env.DEV) {
-				throw new Error('Progress value of EntityCardCircularProgressBar should be between 0 and 1');
-			} else {
-				console.warn('Progress value of EntityCardCircularProgressBar should be between 0 and 1');
-			}
+			devLogger.warn('Progress value of EntityCardCircularProgressBar should be between 0 and 1');
 		}
 	}, [progressValue]);
 

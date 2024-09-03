@@ -1,0 +1,1 @@
+export { CreateTaskFormSidebar } from './component';

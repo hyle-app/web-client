@@ -6,6 +6,7 @@ import { cn } from '&shared/utils';
 
 export function InlineCalendar({ className }: { className?: string }) {
 	const [selected, setSelected] = React.useState<Date>();
+
 	return (
 		<DayPicker
 			mode="single"

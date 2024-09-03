@@ -18,6 +18,7 @@ import watch from './assets/watch.svg';
 import medal from './assets/medal.svg';
 import triangleDanger from './assets/triangle-danger.svg';
 import help from './assets/help.svg';
+import pin from './assets/pin.svg';
 
 export const ICONS = {
 	balance,
@@ -39,5 +40,6 @@ export const ICONS = {
 	watch,
 	medal,
 	'triangle-danger': triangleDanger,
-	help
+	help,
+	pin
 };

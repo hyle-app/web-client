@@ -45,15 +45,15 @@ function AuthLayout() {
 				<span className="flex items-center ">
 					{/* TODO: Use notifications button widget here */}
 					<span className="w-14 h-14 flex items-center justify-center">
-						<Icon name="bell" />
+						<Icon name="bell" className="w-6 h-6" />
 					</span>
 					{/* TODO: Use theme switcher button widget here */}
 					<span className="w-14 h-14 flex items-center justify-center">
-						<Icon name="moon" />
+						<Icon name="moon" className="w-6 h-6" />
 					</span>
 					{/* TODO: Use search button widget here */}
 					<span className="w-14 h-14 flex items-center justify-center">
-						<Icon name="search" />
+						<Icon name="search" className="w-6 h-6" />
 					</span>
 					{/* TODO: Use auth display widget here */}
 					<span className="flex">

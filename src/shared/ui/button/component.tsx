@@ -1,5 +1,5 @@
 import { cn } from '&shared/utils';
-import { APPEARANCE_CLASSNAMES, VARIANT_CLASSNAMES } from './constants';
+import { APPEARANCE_CLASSNAMES, VARIANT_CLASSNAMES, getAppearanceClassNames } from './constants';
 import { Props } from './types';
 
 export function Button({ variant = 'button', appearance, iconSlot, className, children, ...attributes }: Props) {
@@ -7,7 +7,7 @@ export function Button({ variant = 'button', appearance, iconSlot, className, ch
 		<button
 			className={cn(
 				VARIANT_CLASSNAMES[variant],
-				APPEARANCE_CLASSNAMES[appearance],
+				getAppearanceClassNames(variant, appearance),
 				APPEARANCE_CLASSNAMES.common,
 				{ 'flex items-center gap-2': iconSlot },
 				className

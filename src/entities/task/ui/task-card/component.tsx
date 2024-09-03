@@ -5,7 +5,7 @@ import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
 
-import { SubtaskCard } from '../subtask-card';
+import { CompletableSubtaskCard } from '../completable-subtask-card';
 import { Props } from './types';
 
 export function TaskCard({
@@ -66,9 +66,9 @@ export function TaskCard({
 				subtasks.length > 0 && (
 					<EntityCard.ChildrenIndent>
 						{subtasks.map((subtask) => (
-							<SubtaskCard key={subtask.id} isCompleted={subtask.isCompleted}>
+							<CompletableSubtaskCard key={subtask.id} isCompleted={subtask.isCompleted}>
 								{subtask.title}
-							</SubtaskCard>
+							</CompletableSubtaskCard>
 						))}
 					</EntityCard.ChildrenIndent>
 				)
