@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           file: ./Dockerfile
-          push: false
+          push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
       # - name: executing remote ssh commands using ssh key
