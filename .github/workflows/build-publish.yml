@@ -42,17 +42,17 @@ jobs:
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
-      # - name: executing remote ssh commands using ssh key
-      #   uses: appleboy/ssh-action@v1.0.3
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USERNAME }}
-      #     key: ${{ secrets.SSH_KEY }}
-      #     script: |
-      #       docker pull ${{ secrets.DOCKER_REGISTRY }}/${{ github.repository }}:latest
-      #       docker stop landing || true
-      #       docker rm landing || true
-      #       docker run -d -p:3000:3000 --name=landing ${{ secrets.DOCKER_REGISTRY }}/${{ github.repository }}:latest
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_REGISTRY }}/${{ github.repository }}:latest
+            docker stop web-client || true
+            docker rm web-client || true
+            docker run -d -p:5000:80 --name=web-client ${{ secrets.DOCKER_REGISTRY }}/${{ github.repository }}:latest
 
       - name: Add job summary
         uses: jazanne/job-summary-action@v1
