@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite';
-import viteReact from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import svgr from 'vite-plugin-svgr';
 import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
+import viteReact from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import svgr from 'vite-plugin-svgr';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
 	plugins: [
