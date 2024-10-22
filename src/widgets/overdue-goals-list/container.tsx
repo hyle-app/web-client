@@ -10,7 +10,6 @@ import { goalEntity, GoalCard } from '&entities/goal';
 export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 	const { overdueGoals, realTimestamp } = useUnit({
 		overdueGoals: goalEntity.outputs.$overdueGoals,
-		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
 		realTimestamp: timeService.outputs.$realTimestamp
 	});
 
