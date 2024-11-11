@@ -26,6 +26,7 @@ function AuthLayout() {
 	const [isExpanded, setIsExpanded] = React.useState(true);
 	const logout = useUnit(inputs.logout);
 	const loginWithGoogle = useUnit(inputs.loginwithGoogle);
+	const loginWithApple = useUnit(inputs.loginwithApple);
 	const { user, isLoggedIn } = useAuth();
 
 	const title = React.useMemo(() => {
@@ -62,17 +63,20 @@ function AuthLayout() {
 						<Icon name="search" className="w-6 h-6" />
 					</span>
 					{/* TODO: Use auth display widget here */}
-					<span className="flex items-center mx-2">
-						{/* <button onClick={() => signInWithRedirect(auth, new GoogleAuthProvider())}>Войти</button> */}
-						<button onClick={loginWithGoogle}>Войти</button>
-					</span>
-					<span className="flex">
-						<p>{user && user.email}</p>
-						<Icon name="chevron-down" />
-					</span>
-					<span className="flex items-center">
-						<button onClick={logout}>Выйти</button>
-					</span>
+					{!isLoggedIn && (
+						<span className="flex gap-2 items-center mx-2">
+							<button onClick={loginWithGoogle}>Войти через Google</button>
+							<button onClick={loginWithApple}>Войти через Apple</button>
+						</span>
+					)}
+
+					{isLoggedIn && (
+						<span className="flex gap-2 items-center mx-2">
+							<p>{user && user.email}</p>
+							<Icon name="chevron-down" />
+							<button onClick={logout}>Выйти</button>
+						</span>
+					)}
 				</span>
 			</header>
 			<aside className="col-start-1 col-end-2 row-start-1 row-end-3 py-6 h-screen bg-color-bg-100 @container">

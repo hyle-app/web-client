@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore } from 'effector';
-import { GoogleAuthProvider, signInWithPopup, type User } from 'firebase/auth';
+import { GoogleAuthProvider, OAuthProvider, signInWithPopup, type User } from 'firebase/auth';
 import { auth } from './lib';
 
 const logout = createEvent();
@@ -14,8 +14,11 @@ const loginWithGoogleFx = createEffect(async () => {
 });
 
 const loginWithAppleFx = createEffect(async () => {
-	// TODO:
-	return null;
+	const provider = new OAuthProvider('apple.com');
+	provider.addScope('email');
+	provider.addScope('name');
+	const userCreds = await signInWithPopup(auth, provider);
+	return userCreds.user;
 });
 
 const setUserFx = createEffect(async (user: User | null) => {
