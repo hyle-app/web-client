@@ -1,9 +1,12 @@
+import { inputs } from '&shared/services/auth';
+import { useAuth } from '&shared/services/auth/hooks';
 import { Icon } from '&shared/ui/icon';
-import { Logo } from '&shared/ui/logo';
 import { InlineCalendar } from '&shared/ui/inline-calendar';
+import { Logo } from '&shared/ui/logo';
 import { MenuNavItem } from '&shared/ui/menu-nav-item/component';
 import { cn } from '&shared/utils';
 import { Outlet, createFileRoute, useRouter } from '@tanstack/react-router';
+import { useUnit } from 'effector-react';
 import React from 'react';
 
 export const Route = createFileRoute('/_auth')({
@@ -21,6 +24,9 @@ function AuthLayout() {
 	const router = useRouter();
 
 	const [isExpanded, setIsExpanded] = React.useState(true);
+	const logout = useUnit(inputs.logout);
+	const loginWithGoogle = useUnit(inputs.loginwithGoogle);
+	const { user, isLoggedIn } = useAuth();
 
 	const title = React.useMemo(() => {
 		return (
@@ -56,9 +62,16 @@ function AuthLayout() {
 						<Icon name="search" className="w-6 h-6" />
 					</span>
 					{/* TODO: Use auth display widget here */}
+					<span className="flex items-center mx-2">
+						{/* <button onClick={() => signInWithRedirect(auth, new GoogleAuthProvider())}>Войти</button> */}
+						<button onClick={loginWithGoogle}>Войти</button>
+					</span>
 					<span className="flex">
-						<p>usermail@gmail.com</p>
+						<p>{user && user.email}</p>
 						<Icon name="chevron-down" />
+					</span>
+					<span className="flex items-center">
+						<button onClick={logout}>Выйти</button>
 					</span>
 				</span>
 			</header>
