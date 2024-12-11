@@ -1,14 +1,14 @@
+import { ReminderCard, reminderEntity } from '&entities/reminder';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
-import { useUnit } from 'effector-react';
 import { cn } from '&shared/utils';
-import { ReminderCard, reminderEntity } from '&entities/reminder';
+import { useUnit } from 'effector-react';
 
-import { Props } from './types';
+import { CreateReminderFormSidebar } from '&features/create-reminder/ui';
 import React from 'react';
-import { CreateReminderFormSidebar } from '&features/create-reminder';
+import { Props } from './types';
 
 export function ReminderListWidget({ className, ...attributes }: Props) {
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
