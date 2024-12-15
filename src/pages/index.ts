@@ -4,7 +4,7 @@ import './application.relations';
 export const Route = createFileRoute('/')({
 	loader: () => {
 		throw redirect({
-			to: '/home'
+			to: '/auth'
 		});
 	}
 });

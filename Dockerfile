@@ -12,8 +12,10 @@ RUN npm install -g pnpm
 # Install dependencies
 RUN pnpm install
 
+COPY .env ./
 # Copy the rest of your application code
 COPY . .
+RUN ls -la
 
 # Build the application
 RUN pnpm run build

@@ -50,11 +50,14 @@ export default {
 
 				'color-error': 'var(--color-error)',
 				'color-warning': 'var(--color-warning)',
+				'color-success': 'var(--color-success)',
+				
 
 				'color-bg-95': 'var(--color-bg-95)',
 				'color-bg-100': 'var(--color-bg-100)',
 
 				'color-brand-primary-50': 'var(--color-brand-primary-50)',
+				'color-brand-primary-70': 'var(--color-brand-primary-70)',
 				'color-brand-secondary-80': 'var(--color-brand-secondary-80)',
 
 				'color-text-and-icon-80': 'var(--color-text-and-icon-80)',

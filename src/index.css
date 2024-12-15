@@ -11,11 +11,13 @@
 	--color-bg-95: #f9faff;
 	--color-bg-100: #ffffff;
 	--color-brand-primary-50: #3f69ff;
+	--color-brand-primary-70: #7098fd;
 	--color-brand-secondary-80: #632bd4;
 	--color-text-and-icon-80: #081944;
 	--color-text-and-icon-70: #0b215b;
 	--color-error: #c4211b;
 	--color-warning: #f4cc14;
+	--color-success: #68bc44;
 	--color-brand-solid-gradient: linear-gradient(3deg, rgba(159, 63, 255, 1) 0%, rgba(63, 105, 255, 1) 100%);
 	--color-overlay-bg: #00000066;
 	/* Colors section end */
@@ -52,7 +54,6 @@
 	--entity-card-min-height: 56px;
 	/* Custom properties section end */
 
-
 	--rdp-accent-color: var(--color-text-and-icon-80);
 }
 
@@ -71,7 +72,6 @@
 }
 
 @layer utilities {
-
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;

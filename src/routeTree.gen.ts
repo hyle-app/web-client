@@ -18,6 +18,7 @@ import { Route as IndexImport } from './pages/index'
 
 // Create Virtual Routes
 
+const AuthIndexLazyImport = createFileRoute('/auth/')()
 const AuthHomeIndexLazyImport = createFileRoute('/_auth/home/')()
 const AuthGoalsIndexLazyImport = createFileRoute('/_auth/goals/')()
 const AuthBalanceIndexLazyImport = createFileRoute('/_auth/balance/')()
@@ -35,6 +36,11 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const AuthIndexLazyRoute = AuthIndexLazyImport.update({
+  path: '/auth/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./pages/auth/index.lazy').then((d) => d.Route))
 
 const AuthHomeIndexLazyRoute = AuthHomeIndexLazyImport.update({
   id: '/home/',
@@ -86,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/about/': {
       id: '/_auth/about/'
       path: '/about'
@@ -119,12 +132,16 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface AuthRouteChildren {
-  AuthAboutIndexLazyRoute: typeof AuthAboutIndexLazyRoute
-  AuthBalanceIndexLazyRoute: typeof AuthBalanceIndexLazyRoute
-  AuthGoalsIndexLazyRoute: typeof AuthGoalsIndexLazyRoute
-  AuthHomeIndexLazyRoute: typeof AuthHomeIndexLazyRoute
-}
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  AuthRoute: AuthRoute.addChildren({
+    AuthAboutIndexLazyRoute,
+    AuthBalanceIndexLazyRoute,
+    AuthGoalsIndexLazyRoute,
+    AuthHomeIndexLazyRoute,
+  }),
+  AuthIndexLazyRoute,
+})
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAboutIndexLazyRoute: AuthAboutIndexLazyRoute,
@@ -200,7 +217,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_auth"
+        "/_auth",
+        "/auth/"
       ]
     },
     "/": {
@@ -214,6 +232,9 @@ export const routeTree = rootRoute
         "/_auth/goals/",
         "/_auth/home/"
       ]
+    },
+    "/auth/": {
+      "filePath": "auth/index.lazy.ts"
     },
     "/_auth/about/": {
       "filePath": "_auth/about/index.lazy.ts",
