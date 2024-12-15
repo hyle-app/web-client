@@ -1,8 +1,9 @@
 import { Icon } from '&shared/ui/icon';
-import { Logo } from '&shared/ui/logo';
 import { InlineCalendar } from '&shared/ui/inline-calendar';
+import { Logo } from '&shared/ui/logo';
 import { MenuNavItem } from '&shared/ui/menu-nav-item/component';
 import { cn } from '&shared/utils';
+import { UserMenuDropdownWidget } from '&widgets/user-menu-dropdown';
 import { Outlet, createFileRoute, useRouter } from '@tanstack/react-router';
 import React from 'react';
 
@@ -56,10 +57,7 @@ function AuthLayout() {
 						<Icon name="search" className="w-6 h-6" />
 					</span>
 					{/* TODO: Use auth display widget here */}
-					<span className="flex">
-						<p>usermail@gmail.com</p>
-						<Icon name="chevron-down" />
-					</span>
+					<UserMenuDropdownWidget />
 				</span>
 			</header>
 			<aside className="col-start-1 col-end-2 row-start-1 row-end-3 py-6 h-screen bg-color-bg-100 @container">
@@ -81,7 +79,7 @@ function AuthLayout() {
 					<hr />
 					<ul className="grid grid-cols-1 gap-6 max-w-[185px] md:max-w-none mt-14 px-6 w-full">
 						{LINKS.map((link) => (
-							<li className="col-span-1 flex justify-start">
+							<li key={link.to} className="col-span-1 flex justify-start">
 								<MenuNavItem
 									title={link.label}
 									iconSlot={link.icon}

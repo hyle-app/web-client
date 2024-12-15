@@ -1,0 +1,1 @@
+export { UserMenuDropdownWidget } from './container';
