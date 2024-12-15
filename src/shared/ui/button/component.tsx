@@ -10,6 +10,7 @@ export function Button({ variant = 'button', appearance, iconSlot, className, ch
 				getAppearanceClassNames(variant, appearance),
 				APPEARANCE_CLASSNAMES.common,
 				{ 'flex items-center gap-2': iconSlot },
+				{ 'boder-color-gray-30 bg-color-gray-30': attributes.disabled },
 				className
 			)}
 			{...attributes}

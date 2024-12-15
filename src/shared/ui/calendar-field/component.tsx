@@ -71,7 +71,7 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 		() =>
 			(mode === 'range' && Array.isArray(localValue)
 				? { from: localValue[0] ?? new Date(), to: localValue[1] ?? undefined }
-				: value ?? new Date()) as Mode extends 'range' ? DateRange : Date,
+				: (value ?? new Date())) as Mode extends 'range' ? DateRange : Date,
 		[localValue, mode, value]
 	);
 
@@ -156,10 +156,23 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 		return null;
 	}, [value, mode]);
 
+	const defaultMonth = React.useMemo(() => {
+		if (mode === 'range' && Array.isArray(value) && value.at(0)) {
+			return value.at(0)! as Date;
+		}
+
+		if (mode === 'single' && value && !Array.isArray(value) && typeof value === 'object') {
+			return value! as Date;
+		}
+
+		return new Date();
+	}, [localValue]);
+
 	const picker = (
 		<DayPicker
 			required={required}
 			mode={mode}
+			defaultMonth={defaultMonth}
 			selected={
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				calendarLibValue as any
@@ -179,8 +192,8 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 				[UI.Nav]: 'h-10 absolute top-0 right-0 left-0 flex justify-between items-center',
 				[UI.Weekday]:
 					'text-color-text-and-icon-70 opacity-50 text-caption-1 font-normal [&:nth-child(n+6)]:text-color-error',
-				[UI.ButtonPrevious]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9',
-				[UI.ButtonNext]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9'
+				[UI.PreviousMonthButton]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9',
+				[UI.NextMonthButton]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9'
 			}}
 			locale={ru}
 		/>

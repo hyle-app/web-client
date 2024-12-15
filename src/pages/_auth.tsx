@@ -3,7 +3,7 @@ import { Logo } from '&shared/ui/logo';
 import { InlineCalendar } from '&shared/ui/inline-calendar';
 import { MenuNavItem } from '&shared/ui/menu-nav-item/component';
 import { cn } from '&shared/utils';
-import { Outlet, createFileRoute, useRouter } from '@tanstack/react-router';
+import { Outlet, createFileRoute, useMatchRoute, useRouter, useRouterState } from '@tanstack/react-router';
 import React from 'react';
 
 export const Route = createFileRoute('/_auth')({
@@ -19,6 +19,8 @@ const LINKS = [
 
 function AuthLayout() {
 	const router = useRouter();
+	const matchRoute = useMatchRoute();
+	const routerState = useRouterState();
 
 	const [isExpanded, setIsExpanded] = React.useState(true);
 
@@ -31,7 +33,7 @@ function AuthLayout() {
 				'/about': 'О нас'
 			}[router.state.resolvedLocation.pathname] ?? ''
 		);
-	}, [router.state.resolvedLocation.pathname]);
+	}, [routerState.resolvedLocation.pathname]);
 
 	return (
 		<div
@@ -86,7 +88,7 @@ function AuthLayout() {
 									title={link.label}
 									iconSlot={link.icon}
 									onClick={() => router.navigate({ to: link.to })}
-									isActive={Boolean(router.matchRoute({ to: link.to }))}
+									isActive={Boolean(matchRoute({ to: link.to }))}
 								/>
 							</li>
 						))}

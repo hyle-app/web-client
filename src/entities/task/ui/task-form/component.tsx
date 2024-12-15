@@ -14,20 +14,40 @@ import { Props } from './types';
 import { EntityCard } from '&shared/ui/entity-card';
 import { Typography } from '&shared/ui/typography';
 import { CalendarField } from '&shared/ui/calendar-field/component';
+import { useController, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { TaskFormFieldName } from '&entities/task/model/constants';
+import { TaskFormValues } from '&entities/task/model/types';
 
 const TIME_OPTIONS = getReminderTimeOptions();
 
 export function TaskForm({ goalsToLinkTo }: Props) {
-	const [title, setTitle] = React.useState<string>('');
-	const [value, setValue] = React.useState<string>('');
-	const [selectValue, setSelectValue] = React.useState<string | undefined>(undefined);
-	const [subtasks, setSubtasks] = React.useState<Subtask[]>([]);
-	const [selectedGoalId, setSelectedGoalId] = React.useState<null | string>(null);
-	const [date, setDate] = React.useState<[Date | null, Date | null]>([null, null]);
+	const { control } = useFormContext<TaskFormValues>();
+	const { field: titleField } = useController({
+		control,
+		name: TaskFormFieldName.Title
+	});
+	const { field: descriptionField } = useController({
+		control,
+		name: TaskFormFieldName.Description
+	});
+	const { field: expirationDateRangeField } = useController({
+		control,
+		name: TaskFormFieldName.ExpirationDateRange
+	});
+	const { field: reminderTimeField } = useController({
+		control,
+		name: TaskFormFieldName.ReminderTime
+	});
+	const { append: appendSubtask, remove: removeSubtask } = useFieldArray({
+		control,
+		name: TaskFormFieldName.Subtasks
+	});
+	const { field: linkedGoalIdField } = useController({
+		control,
+		name: TaskFormFieldName.LinkedGoalId
+	});
 
-	const handleDeleteSubtask = React.useCallback((id: string) => {
-		setSubtasks((prev) => prev.filter((subtask) => subtask.id !== id));
-	}, []);
+	const subtasks = useWatch({ name: TaskFormFieldName.Subtasks, control });
 
 	const hasSubtasks = subtasks.length > 0;
 	const goalsOptions = React.useMemo(
@@ -40,8 +60,8 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 			<FormSection>
 				<SeamlessInput
 					label="Название задачи"
-					value={title}
-					onChange={setTitle}
+					value={titleField.value}
+					onChange={titleField.onChange}
 					persistantLabel={false}
 					inputClassName="text-heading-3 h-full"
 					labelClassName="!text-heading-3 font-normal"
@@ -50,32 +70,31 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 			</FormSection>
 			<FormSection>
 				<CalendarField
-					value={date}
+					value={expirationDateRangeField.value}
 					mode="range"
-					onChange={(val) => {
-						console.log(val);
-						setDate(val);
-					}}
+					onChange={expirationDateRangeField.onChange}
 					label="Срок выполнения"
 					leftSlot={<CalendarField.Icon name="calendar" />}
 				/>
 			</FormSection>
 			<FormSection>
-				<SeamlessSelect
+				<SeamlessSelect<string>
 					options={TIME_OPTIONS}
-					value={selectValue}
+					value={reminderTimeField.value?.toString() ?? undefined}
 					hideLeftSlotWhenHasContnent={false}
-					onChange={setSelectValue}
+					onChange={(value) =>
+						value === undefined ? reminderTimeField.onChange(value) : reminderTimeField.onChange(parseInt(value))
+					}
 					label="Напомнить"
 					leftSlot={<SeamlessSelect.Icon name="bell" />}
 				/>
 			</FormSection>
 			<FormSection>
 				<SeamlessInput
-					label="описание"
+					label="Описание"
 					leftSlot={<SeamlessInput.Icon name="plus" />}
-					value={value}
-					onChange={setValue}
+					value={descriptionField.value || ''}
+					onChange={descriptionField.onChange}
 					multiline
 				/>
 			</FormSection>
@@ -84,19 +103,19 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 					groupLabel="Подзадачи"
 					inputLabel={hasSubtasks ? 'Создать подзадачу' : 'Подзадачи'}
 					value={subtasks}
-					onChange={(subtasks) => setSubtasks(subtasks)}
+					onAppendNewValue={(subtask) => appendSubtask(subtask)}
 					newValueContructor={(title) => ({
 						id: generateTemporaryId(),
 						title,
 						isCompleted: false
 					})}
 					inputLeftSlot={<SeamlessInput.Icon name="plus" />}
-					renderElement={(subtask) => (
-						<div className="group flex gap-3">
+					renderElement={(subtask, index) => (
+						<div className="group flex gap-3" key={subtask.id}>
 							<SubtaskCard isCompleted={subtask.isCompleted}>{subtask.title}</SubtaskCard>
 							<button
 								className="w-8 self-stretch flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity"
-								onClick={() => handleDeleteSubtask(subtask.id)}
+								onClick={() => removeSubtask(index)}
 							>
 								<Icon name="plus" className="text-color-error rotate-45 h-5 w-5" />
 							</button>
@@ -111,9 +130,9 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 					className="w-full"
 					inputClassName="md:max-w-full w-full"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"
-					value={selectedGoalId ?? ''}
+					value={linkedGoalIdField.value ?? ''}
 					options={goalsOptions}
-					onChange={(goalId) => setSelectedGoalId(goalId || null)}
+					onChange={(goalId) => linkedGoalIdField.onChange(goalId || null)}
 					renderOption={({ option }) => (
 						<div>
 							<EntityCard
@@ -145,3 +164,5 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 		</div>
 	);
 }
+
+TaskForm.FieldName = TaskFormFieldName;
