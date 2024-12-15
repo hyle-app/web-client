@@ -14,7 +14,7 @@ RUN pnpm install
 
 # Copy the rest of your application code
 COPY . .
-COPY .env .
+RUN ls -la
 
 # Build the application
 RUN pnpm run build
