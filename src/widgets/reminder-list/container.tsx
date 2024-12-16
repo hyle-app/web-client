@@ -6,7 +6,7 @@ import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
 import { useUnit } from 'effector-react';
 
-import { CreateReminderFormSidebar } from '&features/create-reminder/ui/form-sidebar';
+import { CreateReminderFormSidebar } from '&features/create-reminder';
 import React from 'react';
 import { Props } from './types';
 
