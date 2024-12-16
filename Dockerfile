@@ -12,7 +12,7 @@ RUN npm install -g pnpm
 # Install dependencies
 RUN pnpm install
 
-COPY .env ./
+COPY env.production ./
 # Copy the rest of your application code
 COPY . .
 RUN ls -la
