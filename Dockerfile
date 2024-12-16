@@ -36,7 +36,9 @@ FROM nginx:1.25.4-alpine-slim
 
 # Copy the built files from the builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
+RUN nginx -T
 # Expose the port that Nginx will run on
 EXPOSE 80
 
