@@ -1,15 +1,7 @@
 import { combine, createEffect, createEvent, createStore } from 'effector';
-import type {
-	AddTaskParams,
-	DatedTask,
-	DeleteTaskParams,
-	FetchTasksOfDayParams,
-	Task,
-	TaskId,
-	UpdateTaskParams
-} from './types';
+import type { AddTaskParams, DatedTask, DeleteTaskParams, Task, TaskId, UpdateTaskParams } from './types';
 import { timeService } from '&shared/services/time';
-import { getMockTasks } from './__mocks__';
+import { taskApi } from '../api';
 
 const $datedTasksList = createStore<DatedTask[]>([]);
 
@@ -20,10 +12,8 @@ const addTask = createEvent<AddTaskParams>();
 const updateTask = createEvent<UpdateTaskParams>();
 const deleteTask = createEvent<DeleteTaskParams>();
 
-const fetchTasksOfDayFx = createEffect(async (_timestamp: FetchTasksOfDayParams) => {
-	await new Promise((resolve) => setTimeout(resolve, 300));
-	return getMockTasks();
-});
+const fetchTasksOfDayFx = createEffect(taskApi.fetchTasksOfDay);
+const deleteTaskFx = createEffect(taskApi.deleteTask);
 
 const $tasksByDays = $datedTasksList.map<Record<number, Task[]>>((tasks) => {
 	return tasks.reduce(
@@ -52,4 +42,4 @@ const $currentAppDateTasks = combine(
 
 export const inputs = { fetchTasksOfDay, addTask, updateTask, deleteTask };
 export const outputs = { $tasksByDays, $currentAppDateTasks, $isFetchingTasks, $tasksList, getTaskById };
-export const internals = { fetchTasksOfDayFx, $datedTasksList };
+export const internals = { fetchTasksOfDayFx, $datedTasksList, deleteTaskFx };

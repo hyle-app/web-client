@@ -10,7 +10,7 @@ import React from 'react';
 import { goalEntity } from '&entities/goal';
 import { CreateTaskFormSidebar } from '&features/create-task';
 import { EditTaskFormSidebar } from '&features/edit-task';
-import { inputs } from './model';
+import { toggleTaskCompletionFeature } from '&features/toggle-task-completion';
 
 export function TaskListWidget({ className, ...attributes }: Props) {
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
@@ -21,8 +21,8 @@ export function TaskListWidget({ className, ...attributes }: Props) {
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
 		realTimestamp: timeService.outputs.$realTimestamp,
 		goals: goalEntity.outputs.$goals,
-		toggleSubtask: inputs.toggleSubtask,
-		toggleTask: inputs.toggleTask
+		toggleSubtask: toggleTaskCompletionFeature.inputs.toggleSubtask,
+		toggleTask: toggleTaskCompletionFeature.inputs.toggleTask
 	});
 
 	const closeEditTaskForm = React.useCallback(() => {

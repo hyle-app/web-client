@@ -4,6 +4,7 @@ import { timeService } from '&shared/services/time';
 import { ApplicationState } from './application.constants';
 import { combineEvents } from 'patronum';
 import { taskEntity } from '&entities/task';
+import { authService } from '&shared/services/auth';
 
 sample({
 	clock: inputs.startApplication,
@@ -25,6 +26,11 @@ sample({
 
 sample({
 	clock: internals.verifyAuthentication,
+	target: authService.inputs.verifyAuthentication
+});
+
+sample({
+	clock: authService.outputs.authenticationVerified,
 	// TODO: Add authentication verification logic
 	target: internals.authenticationVerificationFinished
 });

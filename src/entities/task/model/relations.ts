@@ -1,10 +1,16 @@
 import { sample } from 'effector';
 import { inputs, internals } from './model';
+import { authService } from '&shared/services/auth';
+import { mapDtoToTask } from './mappers';
+import { isTaskAttachedToDay } from './lib';
 
 sample({
 	clock: inputs.fetchTasksOfDay,
-	// TODO: Replace customer id with sourced store
-	fn: (timestamp) => ({ dateTimestamp: timestamp, customerId: '1' }),
+	source: {
+		user: authService.outputs.$user
+	},
+	filter: authService.outputs.$isLoggedIn,
+	fn: ({ user }, timestamp) => ({ dateTimestamp: timestamp, customerId: user!.uid }),
 	target: internals.fetchTasksOfDayFx
 });
 
@@ -12,7 +18,13 @@ sample({
 	clock: internals.fetchTasksOfDayFx.done,
 	source: { datedTasksList: internals.$datedTasksList },
 	fn: ({ datedTasksList }, { params, result }) => {
-		return [...datedTasksList, ...result.map((task) => ({ ...task, __DATE_TIMESTAMP__: params.dateTimestamp }))];
+		return [
+			...datedTasksList,
+			...result
+				.map((task) => ({ ...mapDtoToTask(task), __DATE_TIMESTAMP__: params.dateTimestamp }))
+				// NOTE: Only persist tasks that are related to day they were fetched to
+				.filter((task) => isTaskAttachedToDay(task, params.dateTimestamp))
+		];
 	},
 	target: internals.$datedTasksList
 });
@@ -48,10 +60,18 @@ sample({
 });
 
 sample({
-	clock: inputs.deleteTask,
+	clock: internals.deleteTaskFx.done,
 	source: { datedTasksList: internals.$datedTasksList },
-	fn: ({ datedTasksList }, { taskId }) => {
-		return datedTasksList.filter((task) => task.id !== taskId);
+	fn: ({ datedTasksList }, { params }) => {
+		return datedTasksList.filter((task) => task.id !== params.taskId);
 	},
 	target: internals.$datedTasksList
+});
+
+sample({
+	clock: inputs.deleteTask,
+	source: { user: authService.outputs.$user },
+	filter: authService.outputs.$isLoggedIn,
+	fn: ({ user }, { taskId }) => ({ taskId, customerId: user!.uid }),
+	target: internals.deleteTaskFx
 });

@@ -38,6 +38,7 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const AuthIndexLazyRoute = AuthIndexLazyImport.update({
+  id: '/auth/',
   path: '/auth/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./pages/auth/index.lazy').then((d) => d.Route))
@@ -132,16 +133,12 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  AuthRoute: AuthRoute.addChildren({
-    AuthAboutIndexLazyRoute,
-    AuthBalanceIndexLazyRoute,
-    AuthGoalsIndexLazyRoute,
-    AuthHomeIndexLazyRoute,
-  }),
-  AuthIndexLazyRoute,
-})
+interface AuthRouteChildren {
+  AuthAboutIndexLazyRoute: typeof AuthAboutIndexLazyRoute
+  AuthBalanceIndexLazyRoute: typeof AuthBalanceIndexLazyRoute
+  AuthGoalsIndexLazyRoute: typeof AuthGoalsIndexLazyRoute
+  AuthHomeIndexLazyRoute: typeof AuthHomeIndexLazyRoute
+}
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAboutIndexLazyRoute: AuthAboutIndexLazyRoute,
@@ -155,6 +152,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
+  '/auth': typeof AuthIndexLazyRoute
   '/about': typeof AuthAboutIndexLazyRoute
   '/balance': typeof AuthBalanceIndexLazyRoute
   '/goals': typeof AuthGoalsIndexLazyRoute
@@ -164,6 +162,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
+  '/auth': typeof AuthIndexLazyRoute
   '/about': typeof AuthAboutIndexLazyRoute
   '/balance': typeof AuthBalanceIndexLazyRoute
   '/goals': typeof AuthGoalsIndexLazyRoute
@@ -174,6 +173,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
+  '/auth/': typeof AuthIndexLazyRoute
   '/_auth/about/': typeof AuthAboutIndexLazyRoute
   '/_auth/balance/': typeof AuthBalanceIndexLazyRoute
   '/_auth/goals/': typeof AuthGoalsIndexLazyRoute
@@ -182,13 +182,14 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/about' | '/balance' | '/goals' | '/home'
+  fullPaths: '/' | '' | '/auth' | '/about' | '/balance' | '/goals' | '/home'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/about' | '/balance' | '/goals' | '/home'
+  to: '/' | '' | '/auth' | '/about' | '/balance' | '/goals' | '/home'
   id:
     | '__root__'
     | '/'
     | '/_auth'
+    | '/auth/'
     | '/_auth/about/'
     | '/_auth/balance/'
     | '/_auth/goals/'
@@ -199,11 +200,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  AuthIndexLazyRoute: typeof AuthIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  AuthIndexLazyRoute: AuthIndexLazyRoute,
 }
 
 export const routeTree = rootRoute

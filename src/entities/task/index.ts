@@ -8,7 +8,8 @@ import {
 	outputs,
 	uncompleteSubtask,
 	uncompleteTask,
-	isSubtaskCompleted
+	isSubtaskCompleted,
+	updateTaskWithFormValues
 } from './model';
 
 export type { TaskId, SubtaskId, Subtask, Task, TaskFormValues } from './model';
@@ -26,6 +27,7 @@ export const taskEntity = {
 		isTaskCompleted,
 		completeSubtask,
 		uncompleteSubtask,
-		isSubtaskCompleted
+		isSubtaskCompleted,
+		updateTaskWithFormValues
 	}
 };

@@ -6,7 +6,9 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { dispatchEvent } from '&shared/utils';
 import 'dayjs/locale/ru';
 import dayjs from 'dayjs';
+import dayjsIsBetweenPlugin from 'dayjs/plugin/isBetween';
 
+dayjs.extend(dayjsIsBetweenPlugin);
 dayjs.locale('ru');
 
 // Import the generated route tree

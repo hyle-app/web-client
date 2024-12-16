@@ -10,5 +10,6 @@ export {
 	isTaskCompleted,
 	completeSubtask,
 	uncompleteSubtask,
-	isSubtaskCompleted
+	isSubtaskCompleted,
+	updateTaskWithFormValues
 } from './lib';

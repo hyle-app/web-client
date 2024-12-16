@@ -1,27 +1,10 @@
-import type { Task, TaskFormValues } from '&entities/task';
-import { generateTemporaryId } from '&shared/utils';
+import type { TaskFormValues } from '&entities/task';
 import { createEffect, createEvent } from 'effector';
+import { createTaskApi } from '../api';
 
 const createNewTask = createEvent<TaskFormValues>();
 
-const createNewTaskFx = createEffect((formValues: TaskFormValues): Task => {
-	// TODO: Add real api call here
-
-	return {
-		id: generateTemporaryId(),
-		title: formValues.title,
-		createdAt: Date.now(),
-		completedAt: null,
-		targetCompletionDateRange: [
-			formValues.expirationDateRange.at(0)!.getTime(),
-			formValues.expirationDateRange.at(1)?.getTime() ?? null
-		],
-		description: formValues.description,
-		subtasks: formValues.subtasks,
-		remindAt: formValues.reminderTime,
-		linkedGoalId: formValues.linkedGoalId
-	};
-});
+const createNewTaskFx = createEffect(createTaskApi.createTask);
 
 const $isCreatingTask = createNewTaskFx.pending;
 

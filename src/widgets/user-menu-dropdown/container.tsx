@@ -1,18 +1,20 @@
-import { inputs } from '&shared/services/auth';
-import { useAuth } from '&shared/services/auth/hooks';
+import { authService } from '&shared/services/auth';
 import { Icon } from '&shared/ui/icon';
 import { useRouter } from '@tanstack/react-router';
 import { useUnit } from 'effector-react';
+
 export function UserMenuDropdownWidget() {
 	const router = useRouter();
-	const logout = useUnit(inputs.logout);
+	const { logout, user, isLoggedIn } = useUnit({
+		logout: authService.inputs.logout,
+		user: authService.outputs.$user,
+		isLoggedIn: authService.outputs.$isLoggedIn
+	});
 
 	const onlogout = () => {
 		logout();
 		router.navigate({ to: '/' });
 	};
-
-	const { user, isLoggedIn } = useAuth();
 
 	return (
 		<div>
