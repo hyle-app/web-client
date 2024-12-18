@@ -16,6 +16,8 @@ export function TaskCard({
 	relatedGoalName,
 	className,
 	subtasks,
+	onSubtaskCompletionToggle,
+	onCompletionToggle,
 	...attributes
 }: Props) {
 	return (
@@ -41,8 +43,13 @@ export function TaskCard({
 				)
 			}
 			leftSlot={
-				<div className="w-6 h-10 flex items-center justify-center shrink-0">
-					<Checkbox checked={isCompleted} />
+				<div
+					className="w-6 h-10 flex items-center justify-center shrink-0"
+					onClick={(event) => {
+						if (onCompletionToggle) event.stopPropagation();
+					}}
+				>
+					<Checkbox checked={isCompleted} onChange={onCompletionToggle} />
 				</div>
 			}
 			rightSlot={
@@ -66,7 +73,11 @@ export function TaskCard({
 				subtasks.length > 0 && (
 					<EntityCard.ChildrenIndent>
 						{subtasks.map((subtask) => (
-							<CompletableSubtaskCard key={subtask.id} isCompleted={subtask.isCompleted}>
+							<CompletableSubtaskCard
+								key={subtask.id}
+								isCompleted={subtask.isCompleted}
+								onCompletionToggle={() => onSubtaskCompletionToggle?.(subtask.id)}
+							>
 								{subtask.title}
 							</CompletableSubtaskCard>
 						))}

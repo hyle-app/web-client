@@ -1,21 +1,11 @@
-import { timeService } from '&shared/services/time';
-import { getApplicationScope } from '&shared/utils';
-import { Outlet, createRootRoute } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
-import { Provider, useUnit } from 'effector-react';
-import React from 'react';
+import { Outlet, createRootRoute } from '@tanstack/react-router';
+import { Provider } from 'effector-react';
+import { getApplicationScope } from '&shared/utils';
 
 export const Route = createRootRoute({
 	// TODO: Root layout
 	component: () => {
-		const { initTimeService } = useUnit({
-			initTimeService: timeService.inputs.init
-		});
-
-		React.useEffect(() => {
-			initTimeService();
-		}, []);
-
 		return (
 			<Provider value={getApplicationScope()}>
 				<Outlet />

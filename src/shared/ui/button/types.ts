@@ -5,4 +5,5 @@ export type Props = {
 	variant?: Variant;
 	appearance: Appearance;
 	iconSlot?: React.ReactNode;
+	disabled?: boolean;
 } & React.HTMLAttributes<HTMLButtonElement>;

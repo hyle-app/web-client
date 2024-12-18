@@ -15,13 +15,15 @@ export function SeamlessArrayInput<Value>({
 	className,
 	inputLeftSlot,
 	onChange,
+	onAppendNewValue,
 	...attributes
 }: Props<Value>) {
 	const [newElementTitle, setNewElementTitle] = React.useState<string>('');
 
 	const handleCreateInsertValue = React.useCallback(
 		(newValue: Value) => {
-			onChange([...value, newValue]);
+			onChange?.([...value, newValue]);
+			onAppendNewValue?.(newValue);
 		},
 		[onChange]
 	);

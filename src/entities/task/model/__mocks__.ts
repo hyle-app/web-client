@@ -1,9 +1,10 @@
 import { timeService } from '&shared/services/time';
+import { generateTemporaryId } from '&shared/utils';
 import { Task } from './types';
 
 export function getMockTasks(amount: number = 7): Task[] {
 	return Array.from(Array(amount), (_, index: number) => ({
-		id: index.toString(),
+		id: generateTemporaryId(),
 		description: 'This is a description',
 		createdAt: timeService.lib.getCurrentTimestamp(),
 		title: `Task ${index}`,
