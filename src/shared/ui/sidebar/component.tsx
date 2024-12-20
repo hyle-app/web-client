@@ -7,12 +7,19 @@ const SIDEBAR_ANIMATION_DURATION = 300;
 const BACKDROP_ANIMATION_DURATION = 100;
 
 export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true }: React.PropsWithChildren<Props>) {
-	const [isComponentMounted, setIsComponentMounted] = React.useState(false);
 	const [isSidebarVisible, setIsSidebarVisible] = React.useState(false);
 	const [isBackdropVisible, setIsBackdropVisible] = React.useState(false);
+
+	const handleClose = React.useCallback(() => {
+		setIsSidebarVisible(false);
+		setIsBackdropVisible(false);
+		setTimeout(() => {
+			onClose();
+		}, SIDEBAR_ANIMATION_DURATION);
+	}, [onClose]);
+
 	React.useLayoutEffect(() => {
 		if (isOpen) {
-			setIsComponentMounted(true);
 			const backdropAnimationTimeoutId = setTimeout(setIsBackdropVisible, 0, true);
 			const sidebarAnimationTimeoutId = setTimeout(setIsSidebarVisible, BACKDROP_ANIMATION_DURATION, true);
 
@@ -22,25 +29,14 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 			};
 		}
 
-		setIsSidebarVisible(false);
-		const backdropAnimationTimeoutId = setTimeout(setIsBackdropVisible, SIDEBAR_ANIMATION_DURATION, false);
-		const sidebarAnimationTimeoutId = setTimeout(
-			setIsComponentMounted,
-			BACKDROP_ANIMATION_DURATION + SIDEBAR_ANIMATION_DURATION,
-			false
-		);
-
-		return () => {
-			clearTimeout(backdropAnimationTimeoutId);
-			clearTimeout(sidebarAnimationTimeoutId);
-		};
+		return () => {};
 	}, [isOpen]);
 
 	return (
 		<div
 			className={cn('fixed top-0 left-0 right-0 bottom-0 z-50', {
-				'block touch-all': isComponentMounted,
-				'hidden touch-none': !isComponentMounted
+				'block touch-all': isOpen,
+				'hidden touch-none': !isOpen
 			})}
 		>
 			<div
@@ -48,7 +44,7 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 					'opacity-1 touch-all': isBackdropVisible,
 					'touch-none opacity-0': !isBackdropVisible
 				})}
-				onClick={closeOnOverlayClick ? onClose : undefined}
+				onClick={closeOnOverlayClick ? handleClose : undefined}
 			></div>
 			<div
 				className={cn(
@@ -59,7 +55,7 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 					}
 				)}
 			>
-				<CloseButton className={'absolute right-0 top-4'} onClick={onClose} />
+				<CloseButton className={'absolute right-0 top-4'} onClick={handleClose} />
 				{children}
 			</div>
 		</div>
