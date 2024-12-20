@@ -7,7 +7,7 @@ import { Button } from '&shared/ui/button';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { habitEntity, HabitForm, HabitFormValues } from '&entities/habit';
-import { useEventEffect } from '&shared/utils';
+import { cn, useEventEffect } from '&shared/utils';
 import { timeService } from '&shared/services/time';
 import React from 'react';
 import { Input } from '&shared/ui/input';
@@ -28,6 +28,7 @@ export function EditHabitFormSidebar({
 		currentAppDateStart: timeService.outputs.$currentAppDateStart
 	});
 
+	const deltaFieldInputRef = React.useRef<HTMLInputElement>(null);
 	const [isComplexDeltaFieldVisible, setIsComplexDeltaFieldVisible] = React.useState(false);
 	const [complexDeltaFieldValue, setComplexDeltaFieldValue] = React.useState<string | null>(null);
 
@@ -57,6 +58,7 @@ export function EditHabitFormSidebar({
 		}
 
 		setIsComplexDeltaFieldVisible(true);
+		deltaFieldInputRef.current?.focus();
 	};
 
 	const handleDeltaFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,20 +106,21 @@ export function EditHabitFormSidebar({
 						</Button>
 					)}
 					{isFillComplexHabitDayProgressButtonVisible && (
-						<div className="flex gap-4 justify-between items-center mx-8">
-							{isComplexDeltaFieldVisible && (
-								<Input
-									value={complexDeltaFieldValue ?? ''}
-									onChange={handleDeltaFieldChange}
-									className="shrink min-w-2/5"
-									label="Введите количество "
-								/>
-							)}
+						<div className={cn('flex justify-end items-center mx-8 relative gap-4')}>
+							<Input
+								ref={deltaFieldInputRef}
+								value={complexDeltaFieldValue ?? ''}
+								onChange={handleDeltaFieldChange}
+								className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
+								label="Введите количество "
+							/>
 							<Button
 								variant="button"
 								appearance="primary"
 								onClick={handleFillComplexHabitDayProgressButtonClick}
-								className="grow min-w-3/5 "
+								className={cn('will-change-auto transition-all z-[1] w-full', {
+									'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
+								})}
 							>
 								Ввести прогресс
 							</Button>

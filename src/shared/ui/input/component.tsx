@@ -2,7 +2,10 @@ import { cn } from '&shared/utils';
 import React from 'react';
 import { Props } from './types';
 
-export function Input({ leftSlot, className, label, labelClassName, ...props }: Props) {
+function InputWithRef(
+	{ leftSlot, className, label, labelClassName, ...props }: Props,
+	ref: React.Ref<HTMLInputElement>
+) {
 	const [isFocused, setIsFocused] = React.useState(false);
 
 	const handleFocus = React.useCallback(
@@ -39,10 +42,13 @@ export function Input({ leftSlot, className, label, labelClassName, ...props }: 
 			</p>
 			<input
 				{...props}
+				ref={ref}
 				onBlur={handleBlur}
 				onFocus={handleFocus}
-				className="py-2 px-6 bg-color-bg-100 pt-6 border-color-gray-10 rounded-[16px]"
+				className="py-2 px-6 bg-color-bg-100 pt-6 border-color-gray-10 rounded-[16px] w-full"
 			/>
 		</label>
 	);
 }
+
+export const Input = React.forwardRef(InputWithRef);
