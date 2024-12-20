@@ -1,4 +1,3 @@
-import { inputs } from '&shared/services/auth';
 import { useAuth } from '&shared/services/auth/hooks';
 import {
 	DropdownMenu,
@@ -13,22 +12,27 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger
 } from '&shared/ui/dropdown-menu';
+import { authService } from '&shared/services/auth';
 import { Icon } from '&shared/ui/icon';
 import { cn } from '&shared/utils';
 import { Link, useRouter } from '@tanstack/react-router';
 import { useUnit } from 'effector-react';
 import { useState } from 'react';
+
 export function UserMenuDropdownWidget() {
 	const router = useRouter();
-	const logout = useUnit(inputs.logout);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const { logout, user, isLoggedIn } = useUnit({
+		logout: authService.inputs.logout,
+		user: authService.outputs.$user,
+		isLoggedIn: authService.outputs.$isLoggedIn
+	});
+
 
 	const onlogout = () => {
 		logout();
 		router.navigate({ to: '/' });
 	};
-
-	const { user, isLoggedIn } = useAuth();
 
 	return (
 		<div>

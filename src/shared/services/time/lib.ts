@@ -61,6 +61,10 @@ export function getUnitLabel(unit: TimeUnit, value: number): string {
 	return plural(value, unitLabelMap[unit]);
 }
 
+export function isInRange(range: [number, number], date: number) {
+	return dayjs(date).isBetween(range[0], range[1]);
+}
+
 export const SECOND = 1000;
 export const MINUTE = SECOND * 60;
 export const HOUR = MINUTE * 60;

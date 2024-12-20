@@ -1,6 +1,12 @@
-module.exports = {
+// @ts-check
+
+export default {
 	parser: '@typescript-eslint/parser',
-	parserOptions: { project: ['./tsconfig.json'] },
+	parserOptions: {
+		project: './tsconfig.eslint.json',
+		tsconfigRootDir: __dirname,
+		sourceType: 'module'
+	},
 	root: true,
 	plugins: ['effector', '@typescript-eslint'],
 	extends: [

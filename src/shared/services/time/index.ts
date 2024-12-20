@@ -12,7 +12,8 @@ import {
 	getCurrentTimestamp,
 	getDiffInTimeUnits,
 	getStartOfTheDay,
-	getUnitLabel
+	getUnitLabel,
+	isInRange
 } from './lib';
 import { inputs, outputs } from './model';
 export type { TimeUnit } from './types';
@@ -37,6 +38,7 @@ export const timeService = {
 		getUnitLabel,
 		format,
 		getStartOfTheDay,
-		getDiffInTimeUnits
+		getDiffInTimeUnits,
+		isInRange
 	}
 };

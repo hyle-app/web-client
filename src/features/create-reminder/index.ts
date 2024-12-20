@@ -1,1 +1,1 @@
-export { CreateReminderFormSidebar } from './ui/form-sidebar';
+export { CreateReminderFormSidebar } from './ui';

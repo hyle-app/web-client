@@ -1,5 +1,4 @@
-import { inputs } from '&shared/services/auth';
-import { useAuth } from '&shared/services/auth/hooks';
+import { authService } from '&shared/services/auth';
 import { Button } from '&shared/ui/button';
 import { Typography } from '&shared/ui/typography';
 import { useRouter } from '@tanstack/react-router';
@@ -8,10 +7,12 @@ import { useLayoutEffect } from 'react';
 
 export const AuthWidget = () => {
 	const router = useRouter();
+	const { loginWithApple, loginWithGoogle, isLoggedIn } = useUnit({
+		loginWithApple: authService.inputs.loginwithApple,
+		loginWithGoogle: authService.inputs.loginwithGoogle,
+		isLoggedIn: authService.outputs.$isLoggedIn
+	});
 
-	const loginWithGoogle = useUnit(inputs.loginwithGoogle);
-	const loginWithApple = useUnit(inputs.loginwithApple);
-	const { isLoggedIn } = useAuth();
 	useLayoutEffect(() => {
 		if (isLoggedIn) {
 			router.navigate({ to: '/home' });

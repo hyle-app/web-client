@@ -1,3 +1,8 @@
 import './relations';
 
-export { inputs, outputs } from './model';
+import { inputs, outputs } from './model';
+
+export const authService = {
+	inputs,
+	outputs
+};

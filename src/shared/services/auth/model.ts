@@ -33,17 +33,32 @@ const $user = createStore<null | User>(null).reset(logout);
 
 const $isLoggedIn = createStore(false).reset(logout);
 
+const verifyAuthenticationFx = createEffect(async () => {
+	const maybeUser = await auth.authStateReady();
+
+	return Boolean(maybeUser);
+});
+
+const verifyAuthentication = createEvent();
+const authenticationVerified = createEvent<boolean>();
+
 export const inputs = {
 	setUser,
-	setUserFx,
 	logout,
-	logoutFx,
 	loginwithApple,
 	loginwithGoogle,
-	loginWithAppleFx,
-	loginWithGoogleFx
+	verifyAuthentication
 };
 export const outputs = {
 	$user,
-	$isLoggedIn
+	$isLoggedIn,
+	authenticationVerified
+};
+
+export const internals = {
+	loginWithAppleFx,
+	loginWithGoogleFx,
+	setUserFx,
+	logoutFx,
+	verifyAuthenticationFx
 };

@@ -4,12 +4,20 @@ import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
 import { Props } from './types';
 
-export function CompletableSubtaskCard({ isCompleted, className, children, ...attributes }: Props) {
+export function CompletableSubtaskCard({ isCompleted, className, children, onCompletionToggle, ...attributes }: Props) {
 	return (
 		<EntityCard.ChildCard
 			leftSlot={
 				<div className="w-6 h-6 flex items-center justify-center">
-					<Checkbox checked={isCompleted} />
+					<Checkbox
+						checked={isCompleted}
+						onChange={(event) => {
+							if (onCompletionToggle) {
+								onCompletionToggle();
+								event.stopPropagation();
+							}
+						}}
+					/>
 				</div>
 			}
 			className={className}

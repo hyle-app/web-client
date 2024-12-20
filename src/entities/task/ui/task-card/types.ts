@@ -1,5 +1,5 @@
 import { TimeUnit } from '&shared/services/time';
-import type { Subtask } from '../../model';
+import type { Subtask, SubtaskId } from '../../model';
 
 export type Props = {
 	title: string;
@@ -11,4 +11,6 @@ export type Props = {
 	} | null;
 	relatedGoalName?: string;
 	subtasks?: Subtask[];
+	onSubtaskCompletionToggle?(subtaskId: SubtaskId): void;
+	onCompletionToggle?(): void;
 } & React.HTMLAttributes<HTMLButtonElement>;

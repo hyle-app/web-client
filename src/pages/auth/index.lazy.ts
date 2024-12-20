@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { AuthPageContainer } from './-container';
+import { createLazyFileRoute } from '@tanstack/react-router'
+import { AuthPageContainer } from './-container'
 
-export const Route = createFileRoute('/auth/')({
-	component: AuthPageContainer
-});
+export const Route = createLazyFileRoute('/auth/')({
+  component: AuthPageContainer,
+})

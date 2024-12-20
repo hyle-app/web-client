@@ -1,8 +1,8 @@
-import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import viteReact from '@vitejs/plugin-react';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
 	plugins: [
@@ -10,13 +10,18 @@ export default defineConfig({
 			svgrOptions: { exportType: 'default', ref: true, svgo: false, titleProp: true },
 			include: '**/*.svg'
 		}),
+		viteReact(),
 		TanStackRouterVite({
 			routesDirectory: './src/pages',
-			experimental: {
-				enableCodeSplitting: true
-			}
-		}),
-		viteReact(),
-		tsconfigPaths()
-	]
+			routeFileIgnorePattern: '.(model|constants|types|relations).tsx?'
+		})
+	],
+	resolve: {
+		alias: {
+			'&entities': path.resolve(__dirname, 'src/entities'),
+			'&shared': path.resolve(__dirname, '/src/shared'),
+			'&features': path.resolve(__dirname, '/src/features'),
+			'&widgets': path.resolve(__dirname, '/src/widgets')
+		}
+	}
 });

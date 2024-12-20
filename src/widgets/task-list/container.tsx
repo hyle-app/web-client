@@ -9,15 +9,29 @@ import { cn } from '&shared/utils';
 import React from 'react';
 import { goalEntity } from '&entities/goal';
 import { CreateTaskFormSidebar } from '&features/create-task';
+import { EditTaskFormSidebar } from '&features/edit-task';
+import { toggleTaskCompletionFeature } from '&features/toggle-task-completion';
 
 export function TaskListWidget({ className, ...attributes }: Props) {
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
-	const { tasks, selectedAppDateStart, realTimestamp } = useUnit({
+	const [selectedTaskId, setSelectedTaskId] = React.useState<string | null>(null);
+
+	const { tasks, selectedAppDateStart, realTimestamp, toggleTask, toggleSubtask } = useUnit({
 		tasks: taskEntity.outputs.$currentAppDateTasks,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
 		realTimestamp: timeService.outputs.$realTimestamp,
-		goals: goalEntity.outputs.$goals
+		goals: goalEntity.outputs.$goals,
+		toggleSubtask: toggleTaskCompletionFeature.inputs.toggleSubtask,
+		toggleTask: toggleTaskCompletionFeature.inputs.toggleTask
 	});
+
+	const closeEditTaskForm = React.useCallback(() => {
+		setSelectedTaskId(null);
+	}, []);
+
+	const closeCreateTaskForm = React.useCallback(() => {
+		setIsCreateFormVisible(false);
+	}, []);
 
 	return (
 		<section className={cn('overflow-y-scroll no-scrollbar pb-6', className)} {...attributes}>
@@ -43,13 +57,23 @@ export function TaskListWidget({ className, ...attributes }: Props) {
 								subtasks={task.subtasks}
 								targetDate={taskEntity.lib.getTaskTargetDate(task, selectedAppDateStart)}
 								overdueDetails={taskEntity.lib.getOverdueDetails(task, realTimestamp)}
+								onClick={() => setSelectedTaskId(task.id)}
+								onCompletionToggle={() => {
+									toggleTask(task.id);
+								}}
+								onSubtaskCompletionToggle={(subtaskId) => {
+									toggleSubtask({ taskId: task.id, subtaskId });
+								}}
 							/>
 						);
 					})}
 				</div>
 			</div>
 
-			<CreateTaskFormSidebar isOpen={isCreateFormVisible} onClose={() => setIsCreateFormVisible(false)} />
+			<CreateTaskFormSidebar isOpen={isCreateFormVisible} onClose={closeCreateTaskForm} />
+			{selectedTaskId !== null && (
+				<EditTaskFormSidebar isOpen={selectedTaskId !== null} onClose={closeEditTaskForm} taskId={selectedTaskId!} />
+			)}
 		</section>
 	);
 }
