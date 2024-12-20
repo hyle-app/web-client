@@ -109,12 +109,9 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 				)}
 
 				<Select.Portal>
-					<Select.Content
-						position="popper"
-						className={cn('w-screen md:max-w-[194px] bg-color-bg-100', contentWrapperClassName)}
-					>
+					<Select.Content position="popper">
 						<ScrollArea.Root type="auto">
-							<Select.Viewport asChild className="max-h-[256px] w-full">
+							<Select.Viewport asChild className="max-h-[256px] w-full z-[51]">
 								<ScrollArea.Viewport className="w-full">
 									{options.map((option) => finalRenderOption(option, value))}
 								</ScrollArea.Viewport>

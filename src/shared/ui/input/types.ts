@@ -1,3 +1,5 @@
 export type Props = {
 	leftSlot?: React.ReactNode;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+	label: string;
+	labelClassName?: string;
+} & React.TextareaHTMLAttributes<HTMLInputElement>;

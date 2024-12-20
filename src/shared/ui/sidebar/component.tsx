@@ -38,7 +38,7 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 
 	return (
 		<div
-			className={cn('fixed top-0 left-0 right-0 bottom-0', {
+			className={cn('fixed top-0 left-0 right-0 bottom-0 z-50', {
 				'block touch-all': isComponentMounted,
 				'hidden touch-none': !isComponentMounted
 			})}

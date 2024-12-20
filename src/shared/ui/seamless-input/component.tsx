@@ -91,7 +91,7 @@ export function SeamlessInput<Value extends number | string = string>({
 			<div className="flex flex-col relative w-full">
 				<p
 					className={cn(
-						'capitalize  text-color-gray-80 transition-all absolute left-0 top-1/2 -translate-y-1/2',
+						'normal-case  text-color-gray-80 transition-all absolute left-0 top-1/2 -translate-y-1/2',
 						{
 							'-translate-y-full top-0 font-paragraph  text-caption-1': isInputVisible,
 							'text-paragraph font-medium': !isInputVisible,

@@ -13,7 +13,8 @@ import {
 	getDiffInTimeUnits,
 	getStartOfTheDay,
 	getUnitLabel,
-	isInRange
+	isInRange,
+	getDayOfWeek
 } from './lib';
 import { inputs, outputs } from './model';
 export type { TimeUnit } from './types';
@@ -39,6 +40,7 @@ export const timeService = {
 		format,
 		getStartOfTheDay,
 		getDiffInTimeUnits,
-		isInRange
+		isInRange,
+		getDayOfWeek
 	}
 };
