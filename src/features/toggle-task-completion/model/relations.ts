@@ -57,11 +57,17 @@ sample({
 
 		if (taskEntity.lib.isSubtaskCompleted(task, subtaskId)) {
 			const updatedTaskState = taskEntity.lib.uncompleteSubtask(task, subtaskId);
-			return { local: updatedTaskState, remote: { task: mapTaskToDTO(updatedTaskState), customerId: user!.uid } };
+			return {
+				local: { task: updatedTaskState },
+				remote: { task: mapTaskToDTO(updatedTaskState), customerId: user!.uid }
+			};
 		}
 
 		const updatedTaskState = taskEntity.lib.completeSubtask(task, subtaskId);
-		return { local: updatedTaskState, remote: { task: mapTaskToDTO(updatedTaskState), customerId: user!.uid } };
+		return {
+			local: { task: updatedTaskState },
+			remote: { task: mapTaskToDTO(updatedTaskState), customerId: user!.uid }
+		};
 	},
 	target: spread({
 		local: taskEntity.inputs.updateTask,

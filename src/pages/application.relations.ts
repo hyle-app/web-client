@@ -5,6 +5,7 @@ import { ApplicationState } from './application.constants';
 import { combineEvents } from 'patronum';
 import { taskEntity } from '&entities/task';
 import { authService } from '&shared/services/auth';
+import { habitEntity } from '&entities/habit';
 
 sample({
 	clock: inputs.startApplication,
@@ -46,7 +47,7 @@ sample({
 		timestamp: timeService.outputs.$currentAppDateStart
 	},
 	fn: ({ timestamp }) => timestamp,
-	target: [taskEntity.inputs.fetchTasksOfDay]
+	target: [taskEntity.inputs.fetchTasksOfDay, habitEntity.inputs.fetchHabitsOfDay]
 });
 
 // #region Application state

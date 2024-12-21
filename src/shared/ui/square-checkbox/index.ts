@@ -1,0 +1,1 @@
+export { SquareCheckbox } from './component';

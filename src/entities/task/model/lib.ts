@@ -98,7 +98,12 @@ export function isSubtaskCompleted(task: Task, subtaskId: SubtaskId): boolean {
 }
 
 export function isTaskAttachedToDay(task: Task, dayTimestamp: number): boolean {
-	return getTaskTargetDate(task, dayTimestamp) === dayTimestamp;
+	const targetCompletionDate = getTaskTargetDate(task, dayTimestamp);
+	return (
+		targetCompletionDate === dayTimestamp ||
+		(!isTaskCompleted(task) &&
+			timeService.lib.getStartOfTheDay(targetCompletionDate) < timeService.lib.getStartOfTheDay(dayTimestamp))
+	);
 }
 
 export function updateTaskWithFormValues(task: Task, formValues: TaskFormValues): Task {
