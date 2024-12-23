@@ -101,6 +101,8 @@ export function isTaskAttachedToDay(task: Task, dayTimestamp: number): boolean {
 	const targetCompletionDate = getTaskTargetDate(task, dayTimestamp);
 	return (
 		targetCompletionDate === dayTimestamp ||
+		(isTaskCompleted(task) &&
+			timeService.lib.getStartOfTheDay(task.completedAt!) === timeService.lib.getStartOfTheDay(dayTimestamp)) ||
 		(!isTaskCompleted(task) &&
 			timeService.lib.getStartOfTheDay(targetCompletionDate) < timeService.lib.getStartOfTheDay(dayTimestamp))
 	);

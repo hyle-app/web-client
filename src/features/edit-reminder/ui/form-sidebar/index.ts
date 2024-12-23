@@ -1,0 +1,1 @@
+export { EditReminderFormSidebar } from './component';

@@ -11,6 +11,8 @@ const { tick } = interval({
 	leading: true
 });
 
+const changeCurrentAppDate = createEvent<number>();
+
 const $currentAppDateStart = createStore<number>(getStartOfTheDay(getCurrentTimestamp()));
 const $realTimestamp = time(tick);
 const $isViewingToday = combine(
@@ -20,7 +22,7 @@ const $isViewingToday = combine(
 	}
 );
 
-export const inputs = { init };
+export const inputs = { init, changeCurrentAppDate };
 export const outputs = {
 	$currentAppDateStart,
 	$realTimestamp,

@@ -51,7 +51,6 @@ export default {
 				'color-error': 'var(--color-error)',
 				'color-warning': 'var(--color-warning)',
 				'color-success': 'var(--color-success)',
-				
 
 				'color-bg-95': 'var(--color-bg-95)',
 				'color-bg-100': 'var(--color-bg-100)',
@@ -86,6 +85,11 @@ export default {
 			},
 			transitionProperty: {
 				'colors-and-opacity': 'color, background-color, border-color, text-decoration-color, fill, stroke, opacity'
+			},
+			zIndex: {
+				sidebar: 50,
+				'sidebar-overlay': 49,
+				'select-dropdown': 51
 			}
 		}
 	},

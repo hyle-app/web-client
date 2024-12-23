@@ -1,5 +1,5 @@
-export type Variant = 'button' | 'text' | 'icon';
-export type Appearance = 'primary' | 'secondary' | 'ghost';
+export type Variant = 'button' | 'text' | 'icon' | 'narrow-button';
+export type Appearance = 'primary' | 'secondary' | 'ghost' | 'error';
 
 export type Props = {
 	variant?: Variant;

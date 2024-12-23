@@ -1,17 +1,16 @@
-import React from 'react';
 import { ru } from 'date-fns/locale';
 import { DayPicker, UI } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import { cn } from '&shared/utils';
+import { Props } from './types';
 
-export function InlineCalendar({ className }: { className?: string }) {
-	const [selected, setSelected] = React.useState<Date>();
-
+export function InlineCalendar({ className, onChange, value }: Props) {
 	return (
 		<DayPicker
 			mode="single"
-			selected={selected}
-			onSelect={setSelected}
+			required
+			selected={new Date(value)}
+			onSelect={(date: Date) => onChange(date.getTime())}
 			className={cn('h-full', className)}
 			classNames={{
 				today: 'today',
@@ -23,8 +22,8 @@ export function InlineCalendar({ className }: { className?: string }) {
 				[UI.Nav]: 'h-10 absolute top-0 right-0',
 				[UI.Weekday]:
 					'text-color-text-and-icon-70 opacity-50 text-caption-1 font-normal [&:nth-child(n+6)]:text-color-error',
-				[UI.ButtonPrevious]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9',
-				[UI.ButtonNext]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9'
+				[UI.PreviousMonthButton]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9',
+				[UI.NextMonthButton]: '[--rdp-accent-color:var(--color-text-and-icon-80)] h-10 w-9'
 			}}
 			locale={ru}
 		/>

@@ -6,6 +6,7 @@ import { combineEvents } from 'patronum';
 import { taskEntity } from '&entities/task';
 import { authService } from '&shared/services/auth';
 import { habitEntity } from '&entities/habit';
+import { reminderEntity } from '&entities/reminder';
 
 sample({
 	clock: inputs.startApplication,
@@ -47,7 +48,11 @@ sample({
 		timestamp: timeService.outputs.$currentAppDateStart
 	},
 	fn: ({ timestamp }) => timestamp,
-	target: [taskEntity.inputs.fetchTasksOfDay, habitEntity.inputs.fetchHabitsOfDay]
+	target: [
+		taskEntity.inputs.fetchTasksOfDay,
+		habitEntity.inputs.fetchHabitsOfDay,
+		reminderEntity.inputs.fetchRemindersOfDay
+	]
 });
 
 // #region Application state
@@ -67,5 +72,17 @@ sample({
 	clock: internals.authenticationVerificationFinished,
 	fn: () => ApplicationState.Running,
 	target: outputs.$state
+});
+// #endregion
+
+// #region runtime data fetching section
+sample({
+	clock: combineEvents([timeService.outputs.$currentAppDateStart.updates, timeService.inputs.changeCurrentAppDate]),
+	source: timeService.outputs.$currentAppDateStart,
+	target: [
+		taskEntity.inputs.fetchTasksOfDay,
+		habitEntity.inputs.fetchHabitsOfDay,
+		reminderEntity.inputs.fetchRemindersOfDay
+	]
 });
 // #endregion
