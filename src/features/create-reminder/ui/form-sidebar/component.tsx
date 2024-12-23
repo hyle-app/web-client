@@ -32,13 +32,11 @@ export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props)
 		resolver: zodResolver(getFormValidatorScheme())
 	});
 
-	const {
-		formState: { errors }
-	} = form;
-
 	React.useEffect(() => {
-		console.log(errors);
-	}, [errors]);
+		if (isOpen) return;
+
+		form.reset();
+	}, [isOpen]);
 
 	return (
 		<Sidebar isOpen={isOpen} onClose={onClose}>

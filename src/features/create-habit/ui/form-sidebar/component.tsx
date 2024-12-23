@@ -8,6 +8,7 @@ import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../m
 import { useEventEffect } from '&shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HabitForm, HabitFormValues } from '&entities/habit';
+import React from 'react';
 
 export function CreateHabitFormSidebar({ isOpen, onClose }: Props) {
 	const { goals, createNewTaskEvent, isCreatingTask } = useUnit({
@@ -26,6 +27,12 @@ export function CreateHabitFormSidebar({ isOpen, onClose }: Props) {
 		defaultValues: getDefaultFormValues(),
 		resolver: zodResolver(getFormValidator())
 	});
+
+	React.useEffect(() => {
+		if (isOpen) return;
+
+		form.reset();
+	}, [isOpen]);
 
 	return (
 		<Sidebar isOpen={isOpen} onClose={onClose}>

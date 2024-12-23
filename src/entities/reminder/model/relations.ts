@@ -19,7 +19,9 @@ sample({
 		remindersList: outputs.$remindersList
 	},
 	fn: ({ remindersList }, reminders) => {
-		return [...remindersList, ...reminders.map(mapDtoToReminder)];
+		const newReminders = reminders.map(mapDtoToReminder);
+		const ids = newReminders.map((reminder) => reminder.id);
+		return [...remindersList.filter((reminder) => !ids.includes(reminder.id)), ...newReminders];
 	},
 	target: outputs.$remindersList
 });

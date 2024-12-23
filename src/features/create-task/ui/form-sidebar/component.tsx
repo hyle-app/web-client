@@ -9,6 +9,7 @@ import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../m
 import { timeService } from '&shared/services/time';
 import { useEventEffect } from '&shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import React from 'react';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -31,8 +32,18 @@ export function CreateTaskFormSidebar({ isOpen, onClose }: Props) {
 		resolver: zodResolver(getFormValidator(MIN_DATE))
 	});
 
+	const handleClose = () => {
+		onClose();
+	};
+
+	React.useEffect(() => {
+		if (isOpen) return;
+
+		form.reset();
+	}, [isOpen]);
+
 	return (
-		<Sidebar isOpen={isOpen} onClose={onClose}>
+		<Sidebar isOpen={isOpen} onClose={handleClose}>
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full">
 					<TaskForm goalsToLinkTo={goals} withCalendarShortcuts />

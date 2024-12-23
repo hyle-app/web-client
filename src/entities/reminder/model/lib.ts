@@ -213,6 +213,9 @@ function isReminderAttachedToDay(reminder: Reminder, realTimestamp: number, time
 	const startOfTargetDate = timeService.lib.getStartOfTheDay(reminder.targetDateTime);
 	const startOfCheckedTimestamp = timeService.lib.getStartOfTheDay(timestamp);
 	const startOfRealTimestamp = timeService.lib.getStartOfTheDay(realTimestamp);
+	const startOfDayReminderWasCreated = timeService.lib.getStartOfTheDay(reminder.createdAt);
+
+	if (startOfDayReminderWasCreated > startOfCheckedTimestamp) return false;
 
 	// Planned on checked day
 	if (startOfCheckedTimestamp === startOfTargetDate) return true;
@@ -231,10 +234,7 @@ function isReminderAttachedToDay(reminder: Reminder, realTimestamp: number, time
 	}
 
 	if (reminder.rule === ReminderRepeatRule.EveryMonth) {
-		return (
-			new Date(reminder.targetDateTime).getMonth() === new Date(timestamp).getMonth() &&
-			new Date(reminder.targetDateTime).getDate() === new Date(timestamp).getDate()
-		);
+		return new Date(reminder.targetDateTime).getDate() === new Date(timestamp).getDate();
 	}
 
 	if (reminder.rule === ReminderRepeatRule.EveryYear) {

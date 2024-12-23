@@ -18,13 +18,13 @@ sample({
 	clock: internals.fetchTasksOfDayFx.done,
 	source: { datedTasksList: internals.$datedTasksList },
 	fn: ({ datedTasksList }, { params, result }) => {
-		return [
-			...datedTasksList,
-			...result
-				.map((task) => ({ ...mapDtoToTask(task), __DATE_TIMESTAMP__: params.dateTimestamp }))
-				// NOTE: Only persist tasks that are related to day they were fetched to
-				.filter((task) => isTaskAttachedToDay(task, params.dateTimestamp))
-		];
+		const newTasksList = result
+			.map((task) => ({ ...mapDtoToTask(task), __DATE_TIMESTAMP__: params.dateTimestamp }))
+			// NOTE: Only persist tasks that are related to day they were fetched to
+			.filter((task) => isTaskAttachedToDay(task, params.dateTimestamp));
+		const ids = newTasksList.map((task) => task.id);
+
+		return [...datedTasksList.filter((task) => !ids.includes(task.id)), ...newTasksList];
 	},
 	target: internals.$datedTasksList
 });

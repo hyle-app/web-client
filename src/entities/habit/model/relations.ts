@@ -17,7 +17,9 @@ sample({
 	clock: internals.fetchHabitsOfDayFx.done,
 	source: { habitsList: outputs.$habitsList },
 	fn: ({ habitsList }, { result }) => {
-		return [...habitsList, ...result.map((dto) => mapDtoToHabit(dto))];
+		const newHabits = result.map((dto) => mapDtoToHabit(dto));
+		const ids = newHabits.map((habit) => habit.id);
+		return [...habitsList.filter((habit) => !ids.includes(habit.id)), ...newHabits];
 	},
 	target: outputs.$habitsList
 });

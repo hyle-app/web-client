@@ -74,3 +74,15 @@ sample({
 	target: outputs.$state
 });
 // #endregion
+
+// #region runtime data fetching section
+sample({
+	clock: combineEvents([timeService.outputs.$currentAppDateStart.updates, timeService.inputs.changeCurrentAppDate]),
+	source: timeService.outputs.$currentAppDateStart,
+	target: [
+		taskEntity.inputs.fetchTasksOfDay,
+		habitEntity.inputs.fetchHabitsOfDay,
+		reminderEntity.inputs.fetchRemindersOfDay
+	]
+});
+// #endregion

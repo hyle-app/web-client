@@ -1,7 +1,6 @@
 import { combine, createEffect, createEvent, createStore } from 'effector';
 import { Reminder, ReminderId, UpdateReminderPayload } from './types';
 import { timeService } from '&shared/services/time';
-import { getMockReminders } from './__mocks__';
 import { DeleteReminderParams } from '../api/types';
 import { lib } from './lib';
 import { reminderApi } from '../api';
@@ -12,7 +11,7 @@ const addReminder = createEvent<Reminder>();
 const deleteReminder = createEvent<DeleteReminderParams>();
 const updateReminder = createEvent<UpdateReminderPayload>();
 
-const $remindersList = createStore<Reminder[]>(getMockReminders());
+const $remindersList = createStore<Reminder[]>([]);
 
 const $currentAppDateReminders = combine(
 	{ remindersList: $remindersList, currentAppDateStart: timeService.outputs.$currentAppDateStart },
