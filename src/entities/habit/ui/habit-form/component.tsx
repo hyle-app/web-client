@@ -118,7 +118,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					onChange={titleField.onChange}
 					persistantLabel={false}
 					inputClassName="text-heading-3 h-full"
-					labelClassName="!text-heading-3 font-normal"
+					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
 				/>
 			</FormSection>
@@ -142,6 +142,8 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 						<button
 							key={option.value}
 							className={cn('bg-color-bg-100 p-4 rounded-[15px] transition-colors', {
+								'text-color-error':
+									option.value === HabitRepeatRule.Sunday || option.value === HabitRepeatRule.Saturday,
 								'bg-color-brand-primary-50 text-color-white': activeRepeatRules.includes(option.value)
 							})}
 							onClick={() => toggleRepeatRule(option.value)}
@@ -190,7 +192,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 			<FormSection>
 				<SeamlessSelect
 					label="Прикрепить цель"
-					leftSlot={<SeamlessSelect.Icon name="pin" />}
+					leftSlot={<SeamlessSelect.Icon name="goal" />}
 					className="w-full"
 					inputClassName="md:max-w-full w-full"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"

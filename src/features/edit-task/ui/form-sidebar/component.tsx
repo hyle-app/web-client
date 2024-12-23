@@ -10,14 +10,21 @@ import { timeService } from '&shared/services/time';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useEventEffect } from '&shared/utils';
+import { Icon } from '&shared/ui/icon';
+import { Typography } from '&shared/ui/typography';
+import { ConfirmPopover } from '&shared/ui/confirm-popover';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
 export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Props) => {
-	const { goals, applyEditTaskEvent, isEditingTask } = useUnit({
+	const [isConfirmDeletePopoverOpen, setIsConfirmDeletePopoverOpen] = React.useState(false);
+	const sidebarActionMenuRef = React.useRef<HTMLDivElement>(null);
+
+	const { goals, applyEditTaskEvent, isEditingTask, deleteTaskEvent } = useUnit({
 		goals: goalEntity.outputs.$goals,
 		applyEditTaskEvent: inputs.applyEditTask,
-		isEditingTask: outputs.$isEditingTask
+		isEditingTask: outputs.$isEditingTask,
+		deleteTaskEvent: taskEntity.inputs.deleteTask
 	});
 
 	const task = useUnit(taskEntity.outputs.getTaskById(taskId));
@@ -38,10 +45,50 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 		form.reset();
 	});
 
+	const handleClose = () => {
+		setIsConfirmDeletePopoverOpen(false);
+		onClose();
+	};
+
+	const handleActionMenuClose = () => {
+		setIsConfirmDeletePopoverOpen(false);
+	};
+
+	const handleCancelConfirmation = () => {
+		setIsConfirmDeletePopoverOpen(false);
+	};
+
+	const handleConfrimDeletion = () => {
+		deleteTaskEvent({ taskId: taskId });
+		setIsConfirmDeletePopoverOpen(false);
+		onClose();
+	};
+
 	if (!task) return;
 
 	return (
-		<Sidebar isOpen={isOpen} onClose={onClose}>
+		<Sidebar
+			isOpen={isOpen}
+			onClose={handleClose}
+			actionMenuContentRef={sidebarActionMenuRef}
+			onCloseActionMenu={handleActionMenuClose}
+			actions={[
+				<ConfirmPopover
+					isOpen={isConfirmDeletePopoverOpen}
+					onClose={handleCancelConfirmation}
+					confirmButtonAppearance="error"
+					portalContainerRef={sidebarActionMenuRef}
+					onConfirm={handleConfrimDeletion}
+					confirmationText="Подтверди удаление задачи"
+				>
+					<Sidebar.Action
+						iconSlot={<Icon name="trash" />}
+						labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+						onClick={() => setIsConfirmDeletePopoverOpen(true)}
+					/>
+				</ConfirmPopover>
+			]}
+		>
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full">
 					<TaskForm goalsToLinkTo={goals} />

@@ -11,7 +11,9 @@ import { cn, useEventEffect } from '&shared/utils';
 import { timeService } from '&shared/services/time';
 import React from 'react';
 import { Input } from '&shared/ui/input';
-import { HabitListWidget } from '&widgets/habit-list';
+import { ConfirmPopover } from '&shared/ui/confirm-popover';
+import { Icon } from '&shared/ui/icon';
+import { Typography } from '&shared/ui/typography';
 
 export function EditHabitFormSidebar({
 	isOpen,
@@ -20,17 +22,20 @@ export function EditHabitFormSidebar({
 	onCompleteSimpleHabit,
 	onFillComplexHabitDayProgress
 }: Props) {
-	const { goals, editHabitEvent, habit, isViewingToday, currentAppDateStart } = useUnit({
+	const { goals, editHabitEvent, habit, isViewingToday, currentAppDateStart, deleteHabitEvent } = useUnit({
 		goals: goalEntity.outputs.$goals,
 		editHabitEvent: inputs.editHabit,
 		habit: habitEntity.outputs.getHabitById(habitId),
 		isViewingToday: timeService.outputs.$isViewingToday,
-		currentAppDateStart: timeService.outputs.$currentAppDateStart
+		currentAppDateStart: timeService.outputs.$currentAppDateStart,
+		deleteHabitEvent: habitEntity.inputs.deleteHabit
 	});
 
-	const deltaFieldInputRef = React.useRef<HTMLInputElement>(null);
+	const [isConfirmDeletePopoverOpen, setIsConfirmDeletePopoverOpen] = React.useState(false);
 	const [isComplexDeltaFieldVisible, setIsComplexDeltaFieldVisible] = React.useState(false);
 	const [complexDeltaFieldValue, setComplexDeltaFieldValue] = React.useState<string | null>(null);
+	const sidebarActionMenuRef = React.useRef<HTMLDivElement>(null);
+	const deltaFieldInputRef = React.useRef<HTMLInputElement>(null);
 
 	const handleSubmit = (formValues: HabitFormValues) => {
 		editHabitEvent({
@@ -85,8 +90,42 @@ export function EditHabitFormSidebar({
 		habitEntity.lib.isComplexHabit(habit) &&
 		!habitEntity.lib.isHabitCompletedOnDate(habit, currentAppDateStart);
 
+	const closeConfirmationPopover = () => {
+		setIsConfirmDeletePopoverOpen(false);
+	};
+
+	const handleClose = () => {
+		closeConfirmationPopover();
+		onClose();
+	};
+
+	const handleConfrimDeletion = () => {
+		deleteHabitEvent({ habitId });
+		handleClose();
+	};
+
 	return (
-		<Sidebar isOpen={isOpen} onClose={onClose}>
+		<Sidebar
+			isOpen={isOpen}
+			onClose={handleClose}
+			actionMenuContentRef={sidebarActionMenuRef}
+			actions={[
+				<ConfirmPopover
+					isOpen={isConfirmDeletePopoverOpen}
+					onClose={closeConfirmationPopover}
+					confirmButtonAppearance="error"
+					portalContainerRef={sidebarActionMenuRef}
+					onConfirm={handleConfrimDeletion}
+					confirmationText="Подтверди удаление привычки"
+				>
+					<Sidebar.Action
+						iconSlot={<Icon name="trash" />}
+						labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+						onClick={() => setIsConfirmDeletePopoverOpen(true)}
+					/>
+				</ConfirmPopover>
+			]}
+		>
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full">
 					<HabitForm goalsToLinkTo={goals} />

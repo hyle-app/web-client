@@ -1,7 +1,7 @@
 import { TimeUnit, timeService } from '&shared/services/time';
 import dayjs from 'dayjs';
-import { ReminderRepeatRule } from './constants';
-import { Reminder } from './types';
+import { ReminderFormFieldName, ReminderRepeatRule } from './constants';
+import { Reminder, ReminderFormValues } from './types';
 
 export function getOverdueDetailsOnDate(
 	reminder: Pick<Reminder, 'targetDateTime' | 'rule' | 'completions'>,
@@ -209,7 +209,106 @@ export function getLastTriggerDateBefore(
 	return currentTriggerTimestamp;
 }
 
+function isReminderAttachedToDay(reminder: Reminder, realTimestamp: number, timestamp: number): boolean {
+	const startOfTargetDate = timeService.lib.getStartOfTheDay(reminder.targetDateTime);
+	const startOfCheckedTimestamp = timeService.lib.getStartOfTheDay(timestamp);
+	const startOfRealTimestamp = timeService.lib.getStartOfTheDay(realTimestamp);
+
+	// Planned on checked day
+	if (startOfCheckedTimestamp === startOfTargetDate) return true;
+
+	// Show overdue reminders on TODAY view
+	const lastCompletion = reminder.completions?.[reminder.completions.length - 1] ?? null;
+	if (
+		lastCompletion === null &&
+		startOfTargetDate === startOfCheckedTimestamp &&
+		startOfRealTimestamp === startOfCheckedTimestamp
+	)
+		return true;
+
+	if (reminder.rule === ReminderRepeatRule.EveryWeek) {
+		return timeService.lib.getDayOfWeek(startOfTargetDate) === timeService.lib.getDayOfWeek(startOfCheckedTimestamp);
+	}
+
+	if (reminder.rule === ReminderRepeatRule.EveryMonth) {
+		return (
+			new Date(reminder.targetDateTime).getMonth() === new Date(timestamp).getMonth() &&
+			new Date(reminder.targetDateTime).getDate() === new Date(timestamp).getDate()
+		);
+	}
+
+	if (reminder.rule === ReminderRepeatRule.EveryYear) {
+		return (
+			new Date(reminder.targetDateTime).getMonth() === new Date(timestamp).getMonth() &&
+			new Date(reminder.targetDateTime).getDate() === new Date(timestamp).getDate()
+		);
+	}
+
+	return false;
+}
+
+function updateReminderWithFormValues(reminder: Reminder, formValues: ReminderFormValues): Reminder {
+	return {
+		...reminder,
+		title: formValues[ReminderFormFieldName.Title],
+		description: formValues[ReminderFormFieldName.Description],
+		targetDateTime: new Date(formValues[ReminderFormFieldName.TargetDate]).setMilliseconds(
+			formValues[ReminderFormFieldName.TargetTime]
+		),
+		rule: formValues[ReminderFormFieldName.RepeatRule],
+		linkedGoalId: formValues[ReminderFormFieldName.LinkedGoalId]
+	};
+}
+
+function completeReminderOnDate(reminder: Reminder, timestamp: number) {
+	const completions = reminder.completions ?? [];
+	completions.push(timeService.lib.getStartOfTheDay(timestamp));
+
+	if (reminder.rule === ReminderRepeatRule.Never) {
+		return {
+			...reminder,
+			completions,
+			completedAt: timestamp
+		};
+	}
+
+	const nextTriggerDate = getNextTriggerDate(reminder.targetDateTime, reminder.rule);
+	return {
+		...reminder,
+		completions,
+		targetDateTime: nextTriggerDate,
+		completedAt: timestamp
+	};
+}
+
+function uncompleteReminderOnDate(reminder: Reminder, timestamp: number): Reminder {
+	const completions = reminder.completions ?? [];
+	const newCompletions = completions.filter(
+		(completion) => timeService.lib.getStartOfTheDay(completion) !== timeService.lib.getStartOfTheDay(timestamp)
+	);
+	return {
+		...reminder,
+		completions: newCompletions,
+		completedAt: null,
+		targetDateTime: getPreviousTriggerDate(reminder.targetDateTime, reminder.rule)
+	};
+}
+
+export function isReminderCompletedOnDay(reminder: Reminder, timestamp: number): boolean {
+	const potentialCompletionDateStart = timeService.lib.getStartOfTheDay(timestamp);
+	return (
+		reminder.completions?.some(
+			(completion) => timeService.lib.getStartOfTheDay(completion) === potentialCompletionDateStart
+		) ?? false
+	);
+}
+
 export const lib = {
 	getOverdueDetailsOnDate,
-	getNextTriggerDate
+	getNextTriggerDate,
+	isReminderAttachedToDay,
+	updateReminderWithFormValues,
+	completeReminderOnDate,
+	uncompleteReminderOnDate,
+	isReminderCompletedOnDay
 } as const;

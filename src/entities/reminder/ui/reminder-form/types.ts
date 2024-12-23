@@ -6,4 +6,5 @@ export type GoalToLinkTo = {
 
 export type Props = {
 	goalsToLinkTo: GoalToLinkTo[];
+	withCalendarShortcuts?: boolean;
 };

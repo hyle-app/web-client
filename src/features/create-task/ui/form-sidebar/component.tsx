@@ -35,7 +35,7 @@ export function CreateTaskFormSidebar({ isOpen, onClose }: Props) {
 		<Sidebar isOpen={isOpen} onClose={onClose}>
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full">
-					<TaskForm goalsToLinkTo={goals} />
+					<TaskForm goalsToLinkTo={goals} withCalendarShortcuts />
 					<Button
 						variant="button"
 						appearance="primary"

@@ -60,10 +60,10 @@ sample({
 });
 
 sample({
-	clock: internals.deleteTaskFx.done,
+	clock: inputs.deleteTask,
 	source: { datedTasksList: internals.$datedTasksList },
-	fn: ({ datedTasksList }, { params }) => {
-		return datedTasksList.filter((task) => task.id !== params.taskId);
+	fn: ({ datedTasksList }, { taskId }) => {
+		return datedTasksList.filter((task) => task.id !== taskId);
 	},
 	target: internals.$datedTasksList
 });

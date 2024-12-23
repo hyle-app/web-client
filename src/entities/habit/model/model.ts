@@ -3,7 +3,6 @@ import { combine, createEffect, createEvent, createStore } from 'effector';
 import { DeleteHabitPayload, Habit, HabitId, UpdateHabitPayload } from './types';
 import { isHabitAttachedToDate } from './lib';
 import { habitApi } from '../api';
-import { debug } from 'patronum';
 
 const $habitsList = createStore<Habit[]>([]);
 const fetchHabitsOfDay = createEvent<number>();
@@ -12,8 +11,6 @@ const deleteHabit = createEvent<DeleteHabitPayload>();
 const updateHabit = createEvent<UpdateHabitPayload>();
 
 const fetchHabitsOfDayFx = createEffect(habitApi.fetchHabitsOfDay);
-
-debug($habitsList);
 
 const $currentAppDateHabits = combine(
 	{ habitsList: $habitsList, currentAppDateStart: timeService.outputs.$currentAppDateStart },

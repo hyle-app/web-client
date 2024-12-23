@@ -10,4 +10,5 @@ export type Props = {
 		value: number;
 	} | null;
 	targetDateTime: number;
+	onToggleCompletion?(): void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;

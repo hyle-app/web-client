@@ -1,4 +1,4 @@
-import { ReminderRepeatRule } from './constants';
+import { ReminderFormFieldName, ReminderRepeatRule } from './constants';
 
 export type ReminderId = string;
 
@@ -16,4 +16,22 @@ export type Reminder = {
 	completions: number[];
 	expirations: number[];
 	rule: ReminderRepeatRule;
+};
+
+export type DeleteReminderPayload = {
+	reminderId: ReminderId;
+};
+
+export type UpdateReminderPayload = {
+	reminderId: ReminderId;
+	reminder: Reminder;
+};
+
+export type ReminderFormValues = {
+	[ReminderFormFieldName.Title]: string;
+	[ReminderFormFieldName.Description]: string | null;
+	[ReminderFormFieldName.TargetDate]: number;
+	[ReminderFormFieldName.TargetTime]: number;
+	[ReminderFormFieldName.RepeatRule]: ReminderRepeatRule;
+	[ReminderFormFieldName.LinkedGoalId]: ReminderLinkedGoalId | null;
 };

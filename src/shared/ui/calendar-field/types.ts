@@ -7,4 +7,6 @@ export type Props<Mode extends 'range' | 'single' = 'single'> = {
 	onChange: Mode extends 'single' ? (date: Date) => void : (date: [Date, Date | null]) => void;
 	label?: React.ReactNode;
 	leftSlot?: React.ReactNode;
+	isForceOpen?: boolean;
+	onClose?(): void;
 };
