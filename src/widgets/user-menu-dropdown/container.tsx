@@ -1,4 +1,4 @@
-import { useAuth } from '&shared/services/auth/hooks';
+import { authService } from '&shared/services/auth';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,7 +12,6 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger
 } from '&shared/ui/dropdown-menu';
-import { authService } from '&shared/services/auth';
 import { Icon } from '&shared/ui/icon';
 import { cn } from '&shared/utils';
 import { Link, useRouter } from '@tanstack/react-router';
@@ -27,7 +26,6 @@ export function UserMenuDropdownWidget() {
 		user: authService.outputs.$user,
 		isLoggedIn: authService.outputs.$isLoggedIn
 	});
-
 
 	const onlogout = () => {
 		logout();
