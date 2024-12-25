@@ -1,20 +1,6 @@
 import './relations';
 
-import {
-	DAY,
-	HOUR,
-	MINUTE,
-	SECOND,
-	WEEK,
-	YEAR,
-	LEAP_YEAR,
-	format,
-	getCurrentTimestamp,
-	getDiffInTimeUnits,
-	getStartOfTheDay,
-	getUnitLabel,
-	isInRange
-} from './lib';
+import { lib } from './lib';
 import { inputs, outputs } from './model';
 export type { TimeUnit } from './types';
 
@@ -26,19 +12,5 @@ export type { TimeUnit } from './types';
 export const timeService = {
 	inputs,
 	outputs,
-	lib: {
-		SECOND,
-		MINUTE,
-		HOUR,
-		DAY,
-		WEEK,
-		YEAR,
-		LEAP_YEAR,
-		getCurrentTimestamp,
-		getUnitLabel,
-		format,
-		getStartOfTheDay,
-		getDiffInTimeUnits,
-		isInRange
-	}
+	lib
 };

@@ -65,6 +65,26 @@ export function isInRange(range: [number, number], date: number) {
 	return dayjs(date).isBetween(range[0], range[1]);
 }
 
+export function getDayOfWeek(date: number) {
+	return dayjs(date).day();
+}
+
+export function isToday(date: number) {
+	return getStartOfTheDay(date) === getStartOfTheDay(getCurrentTimestamp());
+}
+
+export function isTomorrow(date: number) {
+	return getStartOfTheDay(dayjs(getCurrentTimestamp()).add(1, 'day').toDate().getTime()) === getStartOfTheDay(date);
+}
+
+export function getTomorrow(): number {
+	return dayjs().add(1, 'day').toDate().getTime();
+}
+
+export function getDayAfterTomorrow(): number {
+	return dayjs().add(2, 'day').toDate().getTime();
+}
+
 export const SECOND = 1000;
 export const MINUTE = SECOND * 60;
 export const HOUR = MINUTE * 60;
@@ -72,3 +92,24 @@ export const DAY = HOUR * 24;
 export const WEEK = DAY * 7;
 export const YEAR = DAY * 365;
 export const LEAP_YEAR = DAY * 366;
+
+export const lib = {
+	DAY,
+	HOUR,
+	MINUTE,
+	SECOND,
+	WEEK,
+	YEAR,
+	LEAP_YEAR,
+	format,
+	getCurrentTimestamp,
+	getDiffInTimeUnits,
+	getStartOfTheDay,
+	getUnitLabel,
+	isInRange,
+	getDayOfWeek,
+	isToday,
+	isTomorrow,
+	getTomorrow,
+	getDayAfterTomorrow
+};

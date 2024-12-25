@@ -1,18 +1,32 @@
 import { timeService } from '&shared/services/time';
-import { combine, createStore } from 'effector';
-import { getMockHabits } from './__mocks__';
-import { Habit } from './types';
+import { combine, createEffect, createEvent, createStore } from 'effector';
+import { DeleteHabitPayload, Habit, HabitId, UpdateHabitPayload } from './types';
+import { isHabitAttachedToDate } from './lib';
+import { habitApi } from '../api';
 
-const $habitsByDays = createStore<Record<number, Habit[]>>({
-	[timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp())]: getMockHabits()
-});
+const $habitsList = createStore<Habit[]>([]);
+const fetchHabitsOfDay = createEvent<number>();
+const addHabit = createEvent<Habit>();
+const deleteHabit = createEvent<DeleteHabitPayload>();
+const updateHabit = createEvent<UpdateHabitPayload>();
+
+const fetchHabitsOfDayFx = createEffect(habitApi.fetchHabitsOfDay);
 
 const $currentAppDateHabits = combine(
-	{ habitsByDays: $habitsByDays, currentAppDateStart: timeService.outputs.$currentAppDateStart },
-	({ currentAppDateStart, habitsByDays }) => {
-		return habitsByDays[currentAppDateStart] ?? [];
+	{ habitsList: $habitsList, currentAppDateStart: timeService.outputs.$currentAppDateStart },
+	({ currentAppDateStart, habitsList }) => {
+		return habitsList.filter((habit) => isHabitAttachedToDate(habit, currentAppDateStart));
 	}
 );
 
-export const inputs = {};
-export const outputs = { $habitsByDays, $currentAppDateHabits };
+const getHabitById = (id: HabitId) => $habitsList.map((habits) => habits.find((habit) => habit.id === id) ?? null);
+
+export const inputs = {
+	updateHabit,
+	addHabit,
+	deleteHabit,
+	fetchHabitsOfDay
+};
+export const outputs = { $currentAppDateHabits, $habitsList, getHabitById };
+
+export const internals = { fetchHabitsOfDayFx };

@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector';
+import { combine, createEvent, createStore } from 'effector';
 import { time } from 'patronum/time';
 import { interval } from 'patronum/interval';
 import { getCurrentTimestamp, getStartOfTheDay } from './lib';
@@ -11,11 +11,20 @@ const { tick } = interval({
 	leading: true
 });
 
+const changeCurrentAppDate = createEvent<number>();
+
 const $currentAppDateStart = createStore<number>(getStartOfTheDay(getCurrentTimestamp()));
 const $realTimestamp = time(tick);
+const $isViewingToday = combine(
+	{ currentAppDateStart: $currentAppDateStart, realTimestamp: $realTimestamp },
+	({ currentAppDateStart, realTimestamp }) => {
+		return getStartOfTheDay(realTimestamp) === currentAppDateStart;
+	}
+);
 
-export const inputs = { init };
+export const inputs = { init, changeCurrentAppDate };
 export const outputs = {
 	$currentAppDateStart,
-	$realTimestamp
+	$realTimestamp,
+	$isViewingToday
 };

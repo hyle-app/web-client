@@ -17,10 +17,12 @@ import { CalendarField } from '&shared/ui/calendar-field/component';
 import { useController, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { TaskFormFieldName } from '&entities/task/model/constants';
 import { TaskFormValues } from '&entities/task/model/types';
+import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
+import { timeService } from '&shared/services/time';
 
 const TIME_OPTIONS = getReminderTimeOptions();
 
-export function TaskForm({ goalsToLinkTo }: Props) {
+export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 	const { control } = useFormContext<TaskFormValues>();
 	const { field: titleField } = useController({
 		control,
@@ -64,11 +66,34 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 					onChange={titleField.onChange}
 					persistantLabel={false}
 					inputClassName="text-heading-3 h-full"
-					labelClassName="!text-heading-3 font-normal"
+					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
 				/>
 			</FormSection>
-			<FormSection>
+			<FormSection className="flex flex-col gap-4">
+				{withCalendarShortcuts && (
+					<CalendarFieldShortcuts
+						onTomorrowPress={() =>
+							expirationDateRangeField.onChange([
+								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getTomorrow())),
+								null
+							])
+						}
+						onTodayPress={() =>
+							expirationDateRangeField.onChange([
+								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp())),
+								null
+							])
+						}
+						onCalendarPress={() => {
+							expirationDateRangeField.onChange([
+								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getDayAfterTomorrow())),
+								null
+							]);
+						}}
+						value={[expirationDateRangeField.value[0].getTime(), expirationDateRangeField.value[1]?.getTime() ?? null]}
+					/>
+				)}
 				<CalendarField
 					value={expirationDateRangeField.value}
 					mode="range"
@@ -114,7 +139,7 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 						<div className="group flex gap-3" key={subtask.id}>
 							<SubtaskCard isCompleted={subtask.isCompleted}>{subtask.title}</SubtaskCard>
 							<button
-								className="w-8 self-stretch flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity"
+								className="w-8 self-stretch flex justify-center items-center opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity"
 								onClick={() => removeSubtask(index)}
 							>
 								<Icon name="plus" className="text-color-error rotate-45 h-5 w-5" />
@@ -126,7 +151,7 @@ export function TaskForm({ goalsToLinkTo }: Props) {
 			<FormSection>
 				<SeamlessSelect
 					label="Прикрепить цель"
-					leftSlot={<SeamlessSelect.Icon name="pin" />}
+					leftSlot={<SeamlessSelect.Icon name="goal" />}
 					className="w-full"
 					inputClassName="md:max-w-full w-full"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"

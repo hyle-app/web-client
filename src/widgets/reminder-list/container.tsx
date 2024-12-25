@@ -1,4 +1,4 @@
-import { ReminderCard, reminderEntity } from '&entities/reminder';
+import { ReminderCard, reminderEntity, ReminderId } from '&entities/reminder';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
@@ -9,14 +9,27 @@ import { useUnit } from 'effector-react';
 import { CreateReminderFormSidebar } from '&features/create-reminder';
 import React from 'react';
 import { Props } from './types';
+import { EditReminderFormSidebar } from '&features/edit-reminder';
+import { toggleReminderCompletionFeature } from '&features/toggle-reminder-completion';
 
 export function ReminderListWidget({ className, ...attributes }: Props) {
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
-	const { reminders, selectedAppDateStart, realTimestamp } = useUnit({
+	const [selectedReminderId, setSelectedReminderId] = React.useState<ReminderId | null>(null);
+
+	const { reminders, selectedAppDateStart, realTimestamp, toggleCompletionEvent } = useUnit({
 		reminders: reminderEntity.outputs.$currentAppDateReminders,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
-		realTimestamp: timeService.outputs.$realTimestamp
+		realTimestamp: timeService.outputs.$realTimestamp,
+		toggleCompletionEvent: toggleReminderCompletionFeature.inputs.toggleReminderCompletion
 	});
+
+	const handleCloseCreateForm = React.useCallback(() => {
+		setIsCreateFormVisible(false);
+	}, []);
+
+	const handleCloseEditForm = React.useCallback(() => {
+		setSelectedReminderId(null);
+	}, []);
 
 	return (
 		<section className={cn('overflow-y-scroll no-scrollbar pb-6', className)} {...attributes}>
@@ -39,6 +52,8 @@ export function ReminderListWidget({ className, ...attributes }: Props) {
 								key={reminder.id}
 								title={reminder.title}
 								isCompleted={reminder.completedAt !== null}
+								onClick={() => setSelectedReminderId(reminder.id)}
+								onToggleCompletion={() => toggleCompletionEvent({ reminderId: reminder.id })}
 								targetDateTime={reminder.targetDateTime}
 								overdueDetails={reminderEntity.lib.getOverdueDetailsOnDate(
 									reminder,
@@ -51,7 +66,10 @@ export function ReminderListWidget({ className, ...attributes }: Props) {
 				</div>
 			</div>
 
-			<CreateReminderFormSidebar isOpen={isCreateFormVisible} onClose={() => setIsCreateFormVisible(false)} />
+			<CreateReminderFormSidebar isOpen={isCreateFormVisible} onClose={handleCloseCreateForm} />
+			{selectedReminderId !== null && (
+				<EditReminderFormSidebar isOpen={true} onClose={handleCloseEditForm} reminderId={selectedReminderId} />
+			)}
 		</section>
 	);
 }

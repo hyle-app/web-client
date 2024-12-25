@@ -23,6 +23,8 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	mode,
 	label,
 	leftSlot,
+	isForceOpen,
+	onClose,
 	...props
 }: Props<Mode>) {
 	type Value = Mode extends 'single' ? Date | null : [Date | null, Date | null];
@@ -30,11 +32,13 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	const [isPickerVisible, setIsPickerVisible] = React.useState(false);
 	const [localValue, setLocalValue] = React.useState(value);
 
+	const isPickerVisibleOrForcedVisible = isForceOpen || isPickerVisible;
+
 	const isValueSelected = Array.isArray(value) ? value[0] !== null : value !== null;
 	const pickerRef = React.useRef<HTMLDivElement>(null);
 
 	React.useEffect(() => {
-		if (!isPickerVisible) return;
+		if (!isPickerVisibleOrForcedVisible) return;
 
 		setLocalValue(value);
 
@@ -52,11 +56,12 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 		return () => {
 			window.removeEventListener('click', eventHandler);
 		};
-	}, [isPickerVisible, value]);
+	}, [isPickerVisibleOrForcedVisible, value]);
 
 	const handleClose = React.useCallback(() => {
 		setIsPickerVisible(false);
-	}, []);
+		onClose?.();
+	}, [onClose]);
 
 	const handleSubmit = React.useCallback(
 		(value: Value) => {
@@ -212,7 +217,7 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 			>
 				{leftSlot && <div className={cn('w-6 h-6 will-change-auto transition-all row-span-1')}>{leftSlot}</div>}
 				<Typography
-					className={cn('font-medium', {
+					className={cn('font-medium text-left', {
 						'text-color-gray-80': !isValueSelected,
 						'text-color-text-and-icon-80': isValueSelected
 					})}
@@ -231,11 +236,11 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 			<div
 				ref={pickerRef}
 				className={cn('absolute left-8 bottom-0 w-fit h-fit translate-y-full bg-color-bg-100 p-6 z-10', {
-					'pointer-events-none p-0': !isPickerVisible
+					'pointer-events-none p-0': !isPickerVisibleOrForcedVisible
 				})}
 			>
-				{isPickerVisible && picker}
-				{isPickerVisible && mode === 'range' && (
+				{isPickerVisibleOrForcedVisible && picker}
+				{isPickerVisibleOrForcedVisible && mode === 'range' && (
 					<div className="flex gap-2 justify-end">
 						<Button variant="text" appearance="ghost" className="px-4 py-2" onClick={handleClose}>
 							Отмена

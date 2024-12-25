@@ -1,11 +1,11 @@
-import { HabitRepeatRule } from './constants';
+import { HabitFormFieldName, HabitRepeatRule } from './constants';
 
 export type HabitId = string;
 export type HabitLinkedGoalId = string;
 
 type DailyHabitTargetProgressDetails = {
 	targetProgress: number;
-	label: string;
+	label: string | null;
 };
 
 export type Habit = {
@@ -27,4 +27,25 @@ export type Habit = {
 	dailyTargetProgressDetails: DailyHabitTargetProgressDetails | null;
 
 	completions: number[];
+};
+
+export type DeleteHabitPayload = {
+	habitId: HabitId;
+};
+
+export type UpdateHabitPayload = {
+	habit: Habit;
+};
+
+export type HabitFormValues = {
+	[HabitFormFieldName.Title]: string;
+	[HabitFormFieldName.Description]: string | null;
+	[HabitFormFieldName.TotalRepeatCount]: number;
+	[HabitFormFieldName.Penalty]: number | null;
+	[HabitFormFieldName.RepeatRule]: HabitRepeatRule[];
+	[HabitFormFieldName.DailyTargetProgress]: number | null;
+	[HabitFormFieldName.DailyTargetProgressLabel]: string | null;
+	[HabitFormFieldName.ReminderTime]: number | null;
+	[HabitFormFieldName.Emoji]: string | null;
+	[HabitFormFieldName.LinkedGoalId]: HabitLinkedGoalId | null;
 };

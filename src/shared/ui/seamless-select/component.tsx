@@ -34,18 +34,19 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 
 	const finalRenderOption = React.useCallback(
 		(option: Options, value: Value | undefined) => {
-			if (renderOption)
+			if (renderOption) {
 				return (
 					<Select.Item asChild value={option.value} key={option.key ?? option.value}>
 						{renderOption({ option, isSelected: option.value === value })}
 					</Select.Item>
 				);
+			}
 
 			return (
 				<Select.Item
 					value={option.value}
 					key={option.key ?? option.value}
-					className="w-full cursor-pointer px-4 py-1 focus:outline-none focus:bg-color-gray-10 transition-colors relative data-[state=checked]:text-color-brand-primary-50"
+					className="w-full cursor-pointer px-4 py-2 focus:outline-none focus:bg-color-gray-10 transition-colors relative data-[state=checked]:text-color-brand-primary-50"
 				>
 					<Select.ItemText>{option.label}</Select.ItemText>
 				</Select.Item>
@@ -54,26 +55,30 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 		[renderOption]
 	);
 
+	const rootElementRef = React.useRef<HTMLButtonElement>(null);
+
 	const finalRenderSelected = React.useCallback(
 		(value: Value | undefined) => {
-			if (!value || !renderOption)
+			if (!value || !renderOption || !options.find((option) => option.value === value)) {
 				return (
 					<Select.Trigger
 						className={cn(
-							'w-full md:max-w-[194px] text-start outline-none border-0 !border-b border-transparent border-solid focus:border-b-color-brand-primary-50 relative pl-4 !m-0',
+							'w-full text-start outline-none border-0 !border-b border-transparent border-solid focus:border-b-color-brand-primary-50 relative pl-4 !m-0',
 							inputClassName
 						)}
+						ref={rootElementRef}
 					>
 						<Select.Value
 							className="w-full ml-4"
-							placeholder={<span className="text-color-gray-80 font-medium ">{label}</span>}
+							placeholder={<span className="text-color-gray-80 font-medium w-full ">{label}</span>}
 						/>
 					</Select.Trigger>
 				);
+			}
 
 			const option = options.find((option) => option.value === value)!;
 			return (
-				<Select.Trigger asChild className={inputClassName}>
+				<Select.Trigger asChild className={inputClassName} ref={rootElementRef}>
 					{renderSelected!(option)}
 				</Select.Trigger>
 			);
@@ -108,20 +113,18 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 					</Select.SelectIcon>
 				)}
 
-				<Select.Portal>
+				<Select.Portal container={rootElementRef.current}>
 					<Select.Content
+						className="z-select-dropdown w-[var(--radix-select-trigger-width)] rounded-2xl overflow-hidden"
 						position="popper"
-						className={cn('w-screen md:max-w-[194px] bg-color-bg-100', contentWrapperClassName)}
+						sticky="always"
 					>
-						<ScrollArea.Root type="auto">
-							<Select.Viewport asChild className="max-h-[256px] w-full">
-								<ScrollArea.Viewport className="w-full">
+						<ScrollArea.Root className="w-full h-full" type="auto">
+							<Select.Viewport asChild>
+								<ScrollArea.Viewport className="max-h-[256px] w-full h-full bg-color-bg-100">
 									{options.map((option) => finalRenderOption(option, value))}
 								</ScrollArea.Viewport>
 							</Select.Viewport>
-							<ScrollArea.Scrollbar orientation="vertical" className="bg-color-gray-10 w-1">
-								<ScrollArea.Thumb className="w-1 bg-color-brand-primary-50 rounded-sm" />
-							</ScrollArea.Scrollbar>
 						</ScrollArea.Root>
 					</Select.Content>
 				</Select.Portal>

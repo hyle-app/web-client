@@ -1,18 +1,41 @@
 import { cn } from '&shared/utils';
 import React from 'react';
-import { CloseButtonProps, Props } from './types';
+import { ActionButtonProps, ActionProps, CloseButtonProps, Props } from './types';
 import { Icon } from '../icon';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuPortal,
+	DropdownMenuTrigger
+} from '../dropdown-menu';
 
 const SIDEBAR_ANIMATION_DURATION = 300;
 const BACKDROP_ANIMATION_DURATION = 100;
 
-export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true }: React.PropsWithChildren<Props>) {
-	const [isComponentMounted, setIsComponentMounted] = React.useState(false);
+export function Sidebar({
+	children,
+	isOpen,
+	onClose,
+	onCloseActionMenu,
+	closeOnOverlayClick = true,
+	actions,
+	actionMenuContentRef
+}: React.PropsWithChildren<Props>) {
+	const [isActionsMenuOpen, setIsActionMenuOpen] = React.useState(false);
 	const [isSidebarVisible, setIsSidebarVisible] = React.useState(false);
 	const [isBackdropVisible, setIsBackdropVisible] = React.useState(false);
+
+	const handleClose = React.useCallback(() => {
+		setIsSidebarVisible(false);
+		setIsBackdropVisible(false);
+		setTimeout(() => {
+			onClose();
+		}, SIDEBAR_ANIMATION_DURATION);
+	}, [onClose]);
+
 	React.useLayoutEffect(() => {
 		if (isOpen) {
-			setIsComponentMounted(true);
 			const backdropAnimationTimeoutId = setTimeout(setIsBackdropVisible, 0, true);
 			const sidebarAnimationTimeoutId = setTimeout(setIsSidebarVisible, BACKDROP_ANIMATION_DURATION, true);
 
@@ -22,25 +45,23 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 			};
 		}
 
-		setIsSidebarVisible(false);
-		const backdropAnimationTimeoutId = setTimeout(setIsBackdropVisible, SIDEBAR_ANIMATION_DURATION, false);
-		const sidebarAnimationTimeoutId = setTimeout(
-			setIsComponentMounted,
-			BACKDROP_ANIMATION_DURATION + SIDEBAR_ANIMATION_DURATION,
-			false
-		);
-
-		return () => {
-			clearTimeout(backdropAnimationTimeoutId);
-			clearTimeout(sidebarAnimationTimeoutId);
-		};
+		return () => {};
 	}, [isOpen]);
+
+	const handleCloseActionMenu = () => {
+		setIsActionMenuOpen(false);
+		onCloseActionMenu?.();
+	};
+
+	const handleOpenActionMenu = () => {
+		setIsActionMenuOpen(true);
+	};
 
 	return (
 		<div
-			className={cn('fixed top-0 left-0 right-0 bottom-0', {
-				'block touch-all': isComponentMounted,
-				'hidden touch-none': !isComponentMounted
+			className={cn('fixed top-0 left-0 right-0 bottom-0 z-sidebar', {
+				'block touch-all': isOpen,
+				'hidden touch-none': !isOpen
 			})}
 		>
 			<div
@@ -48,7 +69,7 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 					'opacity-1 touch-all': isBackdropVisible,
 					'touch-none opacity-0': !isBackdropVisible
 				})}
-				onClick={closeOnOverlayClick ? onClose : undefined}
+				onClick={closeOnOverlayClick ? handleClose : undefined}
 			></div>
 			<div
 				className={cn(
@@ -59,7 +80,27 @@ export function Sidebar({ children, isOpen, onClose, closeOnOverlayClick = true 
 					}
 				)}
 			>
-				<CloseButton className={'absolute right-0 top-4'} onClick={onClose} />
+				<div className="absolute right-0 top-4 flex gap-2 z-10">
+					{actions && actions.length > 0 && (
+						<DropdownMenu defaultOpen open={isActionsMenuOpen}>
+							<DropdownMenuTrigger asChild>
+								<ActionButton onClick={handleOpenActionMenu} />
+							</DropdownMenuTrigger>
+							<DropdownMenuPortal>
+								<DropdownMenuContent
+									onInteractOutside={handleCloseActionMenu}
+									className="z-select-dropdown bg-color-bg-100 rounded-2xl min-w-[234px]"
+									ref={actionMenuContentRef}
+								>
+									{actions.map((action, idx) => (
+										<React.Fragment key={idx}>{action}</React.Fragment>
+									))}
+								</DropdownMenuContent>
+							</DropdownMenuPortal>
+						</DropdownMenu>
+					)}
+					<CloseButton onClick={handleClose} />
+				</div>
 				{children}
 			</div>
 		</div>
@@ -73,3 +114,28 @@ function CloseButton({ className, ...attributes }: CloseButtonProps) {
 		</button>
 	);
 }
+
+const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProps>(({ className, ...attributes }, ref) => {
+	return (
+		<button className={cn('p-2', className)} {...attributes} ref={ref}>
+			<div className="flex gap-0.5">
+				{Array.from({ length: 3 }).map((_, index) => (
+					<div key={index} className="w-1 h-1 rounded-full bg-color-text-and-icon-80"></div>
+				))}
+			</div>
+		</button>
+	);
+});
+
+function Action({ className, iconSlot, labelSlot, ...attributes }: ActionProps) {
+	return (
+		<DropdownMenuItem asChild>
+			<button className={cn('flex bg-color-bg-100 gap-2 w-full', className)} {...attributes}>
+				{iconSlot}
+				{labelSlot}
+			</button>
+		</DropdownMenuItem>
+	);
+}
+
+Sidebar.Action = Action;

@@ -13,6 +13,7 @@ export function ReminderCard({
 	targetDateTime,
 	relatedGoalName,
 	overdueDetails,
+	onToggleCompletion,
 	...attributes
 }: Props) {
 	const expiredBlock = React.useMemo(() => {
@@ -38,7 +39,7 @@ export function ReminderCard({
 		return (
 			<div className="flex gap-0.5 items-center">
 				<Typography variant="caption-2" className="text-color-gray-80">
-					{timeService.lib.format(targetDateTime, 'hh:mm')}
+					{timeService.lib.format(targetDateTime, 'HH:mm')}
 				</Typography>
 				<Icon name="watch" className="text-color-gray-80 w-4 h-4" />
 			</div>
@@ -50,8 +51,13 @@ export function ReminderCard({
 			className={className}
 			titleSlot={<Typography>{title}</Typography>}
 			leftSlot={
-				<div className="w-6 h-10 flex items-center justify-center shrink-0">
-					<Checkbox checked={isCompleted} />
+				<div
+					className="w-6 h-10 flex items-center justify-center shrink-0"
+					onClick={(event) => {
+						if (onToggleCompletion) event.stopPropagation();
+					}}
+				>
+					<Checkbox checked={isCompleted} onClick={onToggleCompletion} />
 				</div>
 			}
 			relationSlot={

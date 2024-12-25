@@ -25,6 +25,13 @@ import tick from './assets/tick.svg';
 import trash from './assets/trash.svg';
 import triangleDanger from './assets/triangle-danger.svg';
 import watch from './assets/watch.svg';
+import help from './assets/help.svg';
+import pin from './assets/pin.svg';
+import smiley from './assets/smiley.svg';
+import description from './assets/description.svg';
+import habit from './assets/habit.svg';
+import ruler from './assets/ruler.svg';
+
 export const ICONS = {
 	balance,
 	goal,
@@ -52,5 +59,9 @@ export const ICONS = {
 	medal,
 	'triangle-danger': triangleDanger,
 	help,
-	pin
+	pin,
+	smiley,
+	ruler,
+	habit,
+	description
 };
