@@ -49,6 +49,12 @@ export function SeamlessInput<Value extends number | string = string>({
 		inputRef.current.style.minHeight = `${inputRef.current.offsetHeight}px`;
 	}, [inputRef.current]);
 
+	React.useLayoutEffect(() => {
+		if (value && inputRef.current && multiline && inputRef.current.scrollHeight > 0) {
+			inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+		}
+	}, []);
+
 	const handleFocus = React.useCallback(
 		(event: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 			setIsFocused(true);
