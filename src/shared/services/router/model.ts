@@ -70,7 +70,7 @@ function createQueryParamStorage(name: string, defaultValue?: string): QueryPara
 	type UnsubFunction = () => void;
 	const $subscriptions = createStore<UnsubFunction[]>([]);
 	const createSubscriptionFx = createEffect((router: RegisteredRouter) => {
-		const unsub = router.subscribe('onBeforeNavigate', (_event) => {
+		const unsub = router.subscribe('onResolved', (_event) => {
 			dispatchEvent(readStateFx);
 		});
 
