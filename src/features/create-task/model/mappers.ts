@@ -7,7 +7,8 @@ export function mapFormValueToDto(formValues: TaskFormValues): CreateTaskDTO {
 		title: formValues[TaskFormFieldName.Title],
 		taskCompletionDateRange: [
 			formValues[TaskFormFieldName.ExpirationDateRange].at(0)!.getTime(),
-			formValues[TaskFormFieldName.ExpirationDateRange].at(1)?.getTime() ?? null
+			formValues[TaskFormFieldName.ExpirationDateRange].at(1)?.getTime() ??
+				formValues[TaskFormFieldName.ExpirationDateRange].at(0)!.getTime()
 		],
 		description: formValues[TaskFormFieldName.Description] ?? undefined,
 		subtasks: formValues[TaskFormFieldName.Subtasks].map((subtask) => ({
@@ -25,12 +26,33 @@ export function mapFormValueToDto(formValues: TaskFormValues): CreateTaskDTO {
 }
 
 export function mapDtoToTask(dto: CreateTaskResponse): Task {
+	const targetCompletionDateRange: [number, null | number] = [0, null];
+
+	if (
+		dto.taskCompletionDateRange &&
+		dto.taskCompletionDateRange[0] &&
+		dto.taskCompletionDateRange[1] &&
+		dto.taskCompletionDateRange[0] !== dto.taskCompletionDateRange[1]
+	) {
+		targetCompletionDateRange[0] = dto.taskCompletionDateRange[0];
+		targetCompletionDateRange[1] = dto.taskCompletionDateRange[1];
+	}
+
+	if (
+		(dto.taskCompletionDateRange && dto.taskCompletionDateRange[0] && !dto.taskCompletionDateRange[1]) ||
+		(dto.taskCompletionDateRange &&
+			dto.taskCompletionDateRange[0] &&
+			dto.taskCompletionDateRange[0] === dto.taskCompletionDateRange[1])
+	) {
+		targetCompletionDateRange[0] = dto.taskCompletionDateRange[0];
+		targetCompletionDateRange[1] = null;
+	}
 	return {
 		id: dto.taskId,
 		title: dto.title,
 		createdAt: dto.createdAt,
 		completedAt: dto.completedAt,
-		targetCompletionDateRange: dto.taskCompletionDateRange ?? [0, null],
+		targetCompletionDateRange: targetCompletionDateRange,
 		description: dto.description ?? null,
 		subtasks: dto.subtasks.map((subtask) => ({
 			id: String(subtask.id),

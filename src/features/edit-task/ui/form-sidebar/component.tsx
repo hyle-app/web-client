@@ -42,7 +42,7 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 	};
 
 	useEventEffect(outputs.taskEdited, () => {
-		form.reset();
+		form.reset(getDefaultFormValues(task!));
 	});
 
 	const handleClose = () => {
