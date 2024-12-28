@@ -1,12 +1,10 @@
-import { timeService } from '&shared/services/time';
 import { Icon } from '&shared/ui/icon';
-import { InlineCalendar } from '&shared/ui/inline-calendar';
 import { Logo } from '&shared/ui/logo';
 import { MenuNavItem } from '&shared/ui/menu-nav-item/component';
 import { cn } from '&shared/utils';
+import { LeftSideCalendarWidget } from '&widgets/left-side-calendar';
 import { UserMenuDropdownWidget } from '&widgets/user-menu-dropdown';
 import { Outlet, createFileRoute, useMatchRoute, useRouter, useRouterState } from '@tanstack/react-router';
-import { useUnit } from 'effector-react';
 import React from 'react';
 
 export const Route = createFileRoute('/_auth')({
@@ -24,10 +22,6 @@ function AuthLayout() {
 	const router = useRouter();
 	const matchRoute = useMatchRoute();
 	const routerState = useRouterState();
-	const { changeAppDateEvent, currentAppDateStart } = useUnit({
-		currentAppDateStart: timeService.outputs.$currentAppDateStart,
-		changeAppDateEvent: timeService.inputs.changeCurrentAppDate
-	});
 
 	const [isExpanded, setIsExpanded] = React.useState(true);
 
@@ -86,11 +80,7 @@ function AuthLayout() {
 						</button>
 					</div>
 					<div className="mt-3 h-[276px] flex justify-center items-center mb-4 min-h-[312px]">
-						<InlineCalendar
-							value={currentAppDateStart}
-							onChange={changeAppDateEvent}
-							className={cn({ hidden: !isExpanded })}
-						/>
+						<LeftSideCalendarWidget className={cn({ hidden: !isExpanded })} />
 					</div>
 					<hr />
 					<ul className="grid grid-cols-1 gap-6 max-w-[185px] md:max-w-none mt-14 px-6 w-full">

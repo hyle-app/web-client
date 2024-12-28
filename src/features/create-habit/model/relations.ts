@@ -1,8 +1,8 @@
 import { authService } from '&shared/services/auth';
-import { createEffect, sample } from 'effector';
+import { sample } from 'effector';
 import { inputs, internals, outputs } from './model';
 import { mapDtoToHabit, mapFormValuesToDTO } from './mappers';
-import { Habit, habitEntity } from '&entities/habit';
+import { habitEntity } from '&entities/habit';
 
 sample({
 	clock: inputs.createNewHabit,
@@ -15,9 +15,7 @@ sample({
 sample({
 	clock: internals.createNewHabitFx.doneData,
 	fn: (response) => mapDtoToHabit(response),
-	target: createEffect((value: Habit) => {
-		console.log(value);
-	})
+	target: habitEntity.inputs.addHabit
 });
 
 sample({
