@@ -48,7 +48,7 @@ export function mapDtoToTask(dto: CreateTaskResponse): Task {
 		targetCompletionDateRange[1] = null;
 	}
 	return {
-		id: dto.taskId,
+		id: dto.taskId.toString(),
 		title: dto.title,
 		createdAt: dto.createdAt,
 		completedAt: dto.completedAt,

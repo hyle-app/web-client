@@ -25,7 +25,7 @@ export function mapDtoToTask(dto: TaskDTO): Task {
 	}
 
 	return {
-		id: dto.taskId,
+		id: dto.taskId.toString(),
 		title: dto.title,
 		createdAt: dto.createdAt,
 		completedAt: dto.completedAt,
