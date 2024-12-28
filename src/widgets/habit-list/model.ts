@@ -1,7 +1,6 @@
 import { habitEntity, HabitId } from '&entities/habit';
 import { routerService } from '&shared/services/router';
 import { combine, createEvent, sample } from 'effector';
-import { debug } from 'patronum';
 
 const selectedHabitIdStorage = routerService.outputs.createQueryParamStorage('selected_habit_id');
 
