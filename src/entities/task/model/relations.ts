@@ -3,6 +3,7 @@ import { inputs, internals } from './model';
 import { authService } from '&shared/services/auth';
 import { mapDtoToTask } from './mappers';
 import { isTaskAttachedToDay } from './lib';
+import { timeService } from '&shared/services/time';
 
 sample({
 	clock: inputs.fetchTasksOfDay,
@@ -16,12 +17,12 @@ sample({
 
 sample({
 	clock: internals.fetchTasksOfDayFx.done,
-	source: { datedTasksList: internals.$datedTasksList },
-	fn: ({ datedTasksList }, { params, result }) => {
+	source: { datedTasksList: internals.$datedTasksList, currentTimestamp: timeService.outputs.$realTimestamp },
+	fn: ({ datedTasksList, currentTimestamp }, { params, result }) => {
 		const newTasksList = result
 			.map((task) => ({ ...mapDtoToTask(task), __DATE_TIMESTAMP__: params.dateTimestamp }))
 			// NOTE: Only persist tasks that are related to day they were fetched to
-			.filter((task) => isTaskAttachedToDay(task, params.dateTimestamp));
+			.filter((task) => isTaskAttachedToDay(task, params.dateTimestamp, currentTimestamp));
 		const ids = newTasksList.map((task) => task.id);
 
 		return [...datedTasksList.filter((task) => !ids.includes(task.id)), ...newTasksList];

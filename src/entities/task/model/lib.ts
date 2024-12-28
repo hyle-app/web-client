@@ -97,15 +97,27 @@ export function isSubtaskCompleted(task: Task, subtaskId: SubtaskId): boolean {
 	return subtask.isCompleted;
 }
 
-export function isTaskAttachedToDay(task: Task, dayTimestamp: number): boolean {
+export function isTaskAttachedToDay(task: Task, dayTimestamp: number, realTimestamp: number): boolean {
 	const targetCompletionDate = getTaskTargetDate(task, dayTimestamp);
-	return (
-		targetCompletionDate === dayTimestamp ||
-		(isTaskCompleted(task) &&
-			timeService.lib.getStartOfTheDay(task.completedAt!) === timeService.lib.getStartOfTheDay(dayTimestamp)) ||
-		(!isTaskCompleted(task) &&
-			timeService.lib.getStartOfTheDay(targetCompletionDate) < timeService.lib.getStartOfTheDay(dayTimestamp))
-	);
+	const realTimestampStart = timeService.lib.getStartOfTheDay(realTimestamp);
+
+	if (targetCompletionDate === dayTimestamp) {
+		return true;
+	}
+
+	if (
+		isTaskCompleted(task) &&
+		timeService.lib.getStartOfTheDay(task.completedAt!) === timeService.lib.getStartOfTheDay(dayTimestamp)
+	) {
+		return true;
+	}
+
+	console.log('task checking', task.title);
+	if (!isTaskCompleted(task) && realTimestampStart === timeService.lib.getStartOfTheDay(dayTimestamp)) {
+		return true;
+	}
+
+	return false;
 }
 
 export function updateTaskWithFormValues(task: Task, formValues: TaskFormValues): Task {
