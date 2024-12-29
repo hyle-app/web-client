@@ -44,22 +44,27 @@ export function SeamlessArrayInput<Value>({
 	return (
 		<div className={cn('', className)} {...attributes}>
 			<div className={cn('flex flex-col gap-3', elementListClassName)}>
-				{(groupLabel ?? inputLabel) && (
-					<Typography
-						variant="caption-1"
-						className={cn('text-color-gray-80 will-change-auto', {
-							'opacity-0': !hasElements,
-							'opacity-100': hasElements
-						})}
-					>
-						{groupLabel ?? inputLabel}
-					</Typography>
+				{value.length > 0 && (
+					<div className="flex gap-3 items-center">
+						{inputLeftSlot}
+						{(groupLabel ?? inputLabel) && (
+							<Typography
+								variant="caption-1"
+								className={cn('text-color-gray-80 will-change-auto', {
+									'opacity-0': !hasElements,
+									'opacity-100': hasElements
+								})}
+							>
+								{groupLabel ?? inputLabel}
+							</Typography>
+						)}
+					</div>
 				)}
 				{value.map((element, index) => renderElement(element, index))}
 			</div>
 			<SeamlessInput
 				label={inputLabel}
-				leftSlot={inputLeftSlot}
+				leftSlot={value.length === 0 ? inputLeftSlot : <SeamlessInput.Icon name="plus" />}
 				className={inputClassName}
 				value={newElementTitle}
 				onChange={setNewElementTitle}

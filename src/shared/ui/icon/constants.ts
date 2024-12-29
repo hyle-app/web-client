@@ -29,6 +29,7 @@ import smiley from './assets/smiley.svg';
 import description from './assets/description.svg';
 import habit from './assets/habit.svg';
 import ruler from './assets/ruler.svg';
+import subtask from './assets/subtask.svg';
 
 export const ICONS = {
 	balance,
@@ -61,5 +62,6 @@ export const ICONS = {
 	smiley,
 	ruler,
 	habit,
-	description
+	description,
+	subtask
 };

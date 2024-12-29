@@ -4,6 +4,8 @@ import { cn } from '&shared/utils';
 import { Icon } from '&shared/ui/icon';
 
 import { Props } from './types';
+import { ErrorMessage } from '../error-message';
+import { MoveUpLeftIcon } from 'lucide-react';
 
 export function SeamlessInput(props: Props<string>): React.ReactNode;
 export function SeamlessInput(props: Props<number>): React.ReactNode;
@@ -14,11 +16,12 @@ export function SeamlessInput<Value extends number | string = string>({
 	onChange,
 	label,
 	className,
-	hideLeftSlotWhenHasContnent = true,
+	hideLeftSlotWhenHasContnent = false,
 	persistantLabel = true,
 	multiline,
 	inputClassName,
 	labelClassName,
+	error,
 	...attributes
 }: Props<Value>): React.ReactNode {
 	const [isFocused, setIsFocused] = React.useState(false);
@@ -88,7 +91,8 @@ export function SeamlessInput<Value extends number | string = string>({
 				<div
 					className={cn('w-6 h-6 will-change-auto transition-all', {
 						'opacity-0 w-0 -ml-4': !isLeftSlotVisible,
-						'opacity-1 ': isLeftSlotVisible
+						'opacity-1 ': isLeftSlotVisible,
+						'self-start': multiline
 					})}
 				>
 					{leftSlot}
@@ -124,6 +128,7 @@ export function SeamlessInput<Value extends number | string = string>({
 						inputClassName
 					)}
 				/>
+				{error && <ErrorMessage className="absolute -bottom-1 translate-y-full">{error}</ErrorMessage>}
 			</div>
 		</label>
 	);

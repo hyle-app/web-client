@@ -20,6 +20,8 @@ export type Props<Value, Options extends Option<Value>> = {
 	inputClassName?: string;
 	contentWrapperClassName?: string;
 	leftSlot?: React.ReactNode;
+	error?: string | null | undefined;
+	clearable?: boolean;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> &
 	(
 		| {

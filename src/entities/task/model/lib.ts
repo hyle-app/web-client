@@ -112,7 +112,6 @@ export function isTaskAttachedToDay(task: Task, dayTimestamp: number, realTimest
 		return true;
 	}
 
-	console.log('task checking', task.title);
 	if (!isTaskCompleted(task) && realTimestampStart === timeService.lib.getStartOfTheDay(dayTimestamp)) {
 		return true;
 	}

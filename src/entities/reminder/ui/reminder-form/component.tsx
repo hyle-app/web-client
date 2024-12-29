@@ -4,7 +4,7 @@ import { useController, useFormContext } from 'react-hook-form';
 import { SeamlessInput } from '&shared/ui/seamless-input';
 import { SeamlessSelect } from '&shared/ui/seamless-select';
 import { FormSection } from '&shared/ui/form-section';
-import { unicodeToEmoji } from '&shared/utils';
+import { getPlainErrors, unicodeToEmoji } from '&shared/utils';
 import { EntityCard } from '&shared/ui/entity-card';
 import { Typography } from '&shared/ui/typography';
 import { CalendarField } from '&shared/ui/calendar-field/component';
@@ -19,13 +19,18 @@ const TIME_OPTIONS = getReminderTimeOptions();
 const REPEAT_OPTIONS = getReminderRepeatOptions();
 
 export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
-	const { control } = useFormContext<ReminderFormValues>();
+	const {
+		control,
+		formState: { errors }
+	} = useFormContext<ReminderFormValues>();
 	const { field: titleField } = useController({ control, name: ReminderFormFieldName.Title });
 	const { field: descriptionField } = useController({ control, name: ReminderFormFieldName.Description });
 	const { field: targetDateField } = useController({ control, name: ReminderFormFieldName.TargetDate });
 	const { field: targetTimeField } = useController({ control, name: ReminderFormFieldName.TargetTime });
 	const { field: repeatRuleField } = useController({ control, name: ReminderFormFieldName.RepeatRule });
 	const { field: linkedGoalIdField } = useController({ control, name: ReminderFormFieldName.LinkedGoalId });
+
+	const plainErrors = React.useMemo(() => getPlainErrors(errors), [errors]);
 
 	const goalsOptions = React.useMemo(
 		() => goalsToLinkTo.map((goal) => ({ value: goal.id, label: goal.title, icon: goal.emoji })),
@@ -43,6 +48,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					inputClassName="text-heading-3 h-full"
 					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
+					error={plainErrors[titleField.name]}
 				/>
 			</FormSection>
 			<FormSection className="flex flex-col gap-4">
@@ -66,27 +72,29 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					onChange={(date) => targetDateField.onChange(date.getTime())}
 					label="Когда напомнить"
 					leftSlot={<CalendarField.Icon name="calendar" />}
+					error={plainErrors[targetDateField.name]}
 				/>
 			</FormSection>
 			<FormSection>
 				<SeamlessSelect
 					options={TIME_OPTIONS}
 					value={targetTimeField.value ? targetTimeField.value.toString() : undefined}
-					hideLeftSlotWhenHasContnent={false}
 					onChange={(value: string | undefined) => targetTimeField.onChange(value ? parseInt(value) : null)}
 					label="Время напоминания"
 					leftSlot={<SeamlessSelect.Icon name="watch" />}
 					inputClassName="max-w-[194px]"
+					error={plainErrors[targetTimeField.name]}
 				/>
 			</FormSection>
 			<FormSection>
 				<SeamlessSelect
 					options={REPEAT_OPTIONS}
 					value={repeatRuleField.value}
-					hideLeftSlotWhenHasContnent={false}
-					onChange={repeatRuleField.onChange}
+					onChange={(value: string | undefined) => repeatRuleField.onChange(value ?? null)}
 					label="Повторять"
 					leftSlot={<SeamlessSelect.Icon name="refresh" />}
+					clearable={false}
+					error={plainErrors[repeatRuleField.name]}
 				/>
 			</FormSection>
 			<FormSection>
@@ -96,6 +104,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					value={descriptionField.value || ''}
 					onChange={(value) => descriptionField.onChange(value || null)}
 					multiline
+					error={plainErrors[descriptionField.name]}
 				/>
 			</FormSection>
 			<FormSection>
@@ -108,6 +117,8 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					value={linkedGoalIdField.value || undefined}
 					options={goalsOptions}
 					onChange={(goalId) => linkedGoalIdField.onChange(goalId || null)}
+					error={plainErrors[linkedGoalIdField.name]}
+					hideLeftSlotWhenHasContnent
 					renderOption={({ option }) => (
 						<div>
 							<EntityCard
