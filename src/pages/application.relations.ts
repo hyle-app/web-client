@@ -8,6 +8,7 @@ import { authService } from '&shared/services/auth';
 import { habitEntity } from '&entities/habit';
 import { reminderEntity } from '&entities/reminder';
 import { routerService } from '&shared/services/router';
+import { goalEntity } from '&entities/goal';
 
 sample({
 	clock: inputs.startApplication,
@@ -52,7 +53,8 @@ sample({
 	target: [
 		taskEntity.inputs.fetchTasksOfDay,
 		habitEntity.inputs.fetchHabitsOfDay,
-		reminderEntity.inputs.fetchRemindersOfDay
+		reminderEntity.inputs.fetchRemindersOfDay,
+		goalEntity.inputs.fetchGoalsAndAchievements
 	]
 });
 

@@ -41,7 +41,7 @@ export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 								progress={{
 									current: goal.progress.currentProgress,
 									target: goal.progress.targetProgress,
-									label: goal.progress.label
+									label: goal.progress.label || undefined
 								}}
 								timeLeft={timeService.lib.getDiffInTimeUnits(realTimestamp, goal.targetDate)}
 								overdueDetails={

@@ -14,7 +14,7 @@ import { Props } from './types';
 import { EntityCard } from '&shared/ui/entity-card';
 import { Typography } from '&shared/ui/typography';
 import { CalendarField } from '&shared/ui/calendar-field/component';
-import { useController, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { useController, useFieldArray, useFormContext } from 'react-hook-form';
 import { TaskFormFieldName } from '&entities/task/model/constants';
 import { TaskFormValues } from '&entities/task/model/types';
 import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
