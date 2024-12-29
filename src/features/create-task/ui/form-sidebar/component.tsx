@@ -13,7 +13,7 @@ import React from 'react';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
-export function CreateTaskFormSidebar({ isOpen, onClose }: Props) {
+export const CreateTaskFormSidebar = React.memo(({ isOpen, onClose }: Props) => {
 	const { goals, currentAppDateStart, createNewTaskEvent, isCreatingTask } = useUnit({
 		goals: goalEntity.outputs.$goals,
 		currentAppDateStart: timeService.outputs.$currentAppDateStart,
@@ -60,4 +60,4 @@ export function CreateTaskFormSidebar({ isOpen, onClose }: Props) {
 			</FormProvider>
 		</Sidebar>
 	);
-}
+});

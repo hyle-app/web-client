@@ -13,6 +13,8 @@ import React from 'react';
 import { useEventEffect } from '&shared/utils';
 import { timeService } from '&shared/services/time';
 
+const minDateTime = new Date(timeService.lib.getCurrentTimestamp());
+
 export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props) => {
 	const { goals, createNewReminderEvent } = useUnit({
 		goals: goalEntity.outputs.$goals,
@@ -29,7 +31,7 @@ export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props)
 
 	const form = useForm({
 		defaultValues: getDefaultFormValues(timeService.lib.getCurrentTimestamp()),
-		resolver: zodResolver(getFormValidatorScheme())
+		resolver: zodResolver(getFormValidatorScheme(minDateTime))
 	});
 
 	React.useEffect(() => {

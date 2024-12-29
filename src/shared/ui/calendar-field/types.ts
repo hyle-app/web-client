@@ -9,4 +9,5 @@ export type Props<Mode extends 'range' | 'single' = 'single'> = {
 	leftSlot?: React.ReactNode;
 	isForceOpen?: boolean;
 	onClose?(): void;
+	error?: string | null;
 };

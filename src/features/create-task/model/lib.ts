@@ -17,21 +17,31 @@ export function getFormValidator(minDate: Date) {
 	return z.object({
 		[TaskFormFieldName.Title]: z.string().min(1, 'Укажи название задачи'),
 		[TaskFormFieldName.Description]: z.string().nullable(),
-		[TaskFormFieldName.ExpirationDateRange]: z
-			.tuple([z.date().min(minDate, 'Введи дату не ранее сегодняшнего дня'), z.date().nullable()])
-			.refine((value) => {
-				const [firstDate, secondDate] = value;
+		[TaskFormFieldName.ExpirationDateRange]: z.tuple([z.date(), z.date().nullable()]).superRefine((value, ctx) => {
+			const [firstDate, secondDate] = value;
 
-				if (secondDate === null) {
-					return true;
-				}
+			if (firstDate.getTime() < minDate.getTime()) {
+				ctx.addIssue({
+					path: [TaskFormFieldName.ExpirationDateRange],
+					message: 'Введи дату не ранее сегодняшнего дня',
+					code: z.ZodIssueCode.custom
+				});
+				return;
+			}
 
-				if (firstDate.getTime() > secondDate.getTime()) {
-					return 'Дата окончания не может быть раньше даты начала';
-				}
+			if (secondDate === null) {
+				return;
+			}
 
-				return true;
-			}),
+			if (firstDate.getTime() > secondDate.getTime()) {
+				ctx.addIssue({
+					path: [TaskFormFieldName.ExpirationDateRange],
+					message: 'Дата окончания не может быть раньше даты начала',
+					code: z.ZodIssueCode.custom
+				});
+				return;
+			}
+		}),
 		[TaskFormFieldName.ReminderTime]: z.coerce.number().nullable(),
 		[TaskFormFieldName.Subtasks]: z.array(
 			z.object({

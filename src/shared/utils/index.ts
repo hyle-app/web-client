@@ -5,3 +5,4 @@ export { plural } from './language';
 export { getApplicationScope, useEventEffect, dispatchEvent } from './effector';
 export { generateTemporaryId } from './id';
 export { devLogger } from './dev-logger';
+export { getPlainErrors } from './react-hook-form';

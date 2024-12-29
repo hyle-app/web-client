@@ -3,7 +3,7 @@ import React from 'react';
 import { SeamlessInput } from '&shared/ui/seamless-input';
 import { SeamlessSelect } from '&shared/ui/seamless-select';
 import { FormSection } from '&shared/ui/form-section';
-import { cn, unicodeToEmoji } from '&shared/utils';
+import { cn, getPlainErrors, unicodeToEmoji } from '&shared/utils';
 
 import { getReminderTimeOptions } from './constants';
 import { Props } from './types';
@@ -14,6 +14,7 @@ import { HabitFormFieldName, HabitFormValues } from '&entities/habit';
 import { SquareCheckbox } from '&shared/ui/square-checkbox';
 import { HabitRepeatRule } from '&entities/habit/model/constants';
 import { EmojiPickerField } from '&shared/ui/emoji-picker';
+import { ErrorMessage } from '&shared/ui/error-message';
 
 const TIME_OPTIONS = getReminderTimeOptions();
 
@@ -31,7 +32,11 @@ const REPEAT_RULE_OPTIONS = Object.values(HabitRepeatRule).map((value) => ({
 }));
 
 export function HabitForm({ goalsToLinkTo }: Props) {
-	const { control } = useFormContext<HabitFormValues>();
+	const {
+		control,
+		formState: { errors }
+	} = useFormContext<HabitFormValues>();
+
 	const { field: titleField } = useController({
 		control,
 		name: HabitFormFieldName.Title
@@ -82,6 +87,8 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 
 	const activeRepeatRules = useWatch({ name: HabitFormFieldName.RepeatRule, control });
 
+	const plainErrors = React.useMemo(() => getPlainErrors(errors), [errors]);
+
 	const goalsOptions = React.useMemo(
 		() => goalsToLinkTo.map((goal) => ({ value: goal.id, label: goal.title, icon: goal.emoji })),
 		[goalsToLinkTo]
@@ -120,6 +127,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					inputClassName="text-heading-3 h-full"
 					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
+					error={plainErrors[titleField.name]}
 				/>
 			</FormSection>
 			<FormSection className="flex gap-4">
@@ -127,17 +135,22 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					label="Повторений"
 					value={totalRepeatCountField.value}
 					onChange={totalRepeatCountField.onChange}
-					hideLeftSlotWhenHasContnent={false}
 					leftSlot={<SeamlessSelect.Icon name="refresh" />}
+					error={plainErrors[totalRepeatCountField.name]}
 				/>
-				<SeamlessInput label="Штраф" value={penaltyField.value?.toString() ?? ''} onChange={penaltyField.onChange} />
+				<SeamlessInput
+					label="Штраф"
+					value={penaltyField.value?.toString() ?? ''}
+					onChange={penaltyField.onChange}
+					error={plainErrors[penaltyField.name]}
+				/>
 			</FormSection>
 			<FormSection className="flex flex-col gap-4">
 				<label className="flex gap-4">
 					<SquareCheckbox checked={isRepeatEveryDayActive} onClick={toggleRepeatEveryDay} />
 					<Typography>Повторять каждый день</Typography>
 				</label>
-				<div className="flex gap-2">
+				<div className="flex gap-2 relative">
 					{REPEAT_RULE_OPTIONS.map((option) => (
 						<button
 							key={option.value}
@@ -151,18 +164,23 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 							{option.label}
 						</button>
 					))}
+					{plainErrors[HabitFormFieldName.RepeatRule] && (
+						<ErrorMessage className="absolute -bottom-1 translate-y-full">
+							{plainErrors[HabitFormFieldName.RepeatRule]}
+						</ErrorMessage>
+					)}
 				</div>
 			</FormSection>
 			<FormSection>
 				<SeamlessSelect<string>
 					options={TIME_OPTIONS}
 					value={reminderTimeField.value?.toString() ?? undefined}
-					hideLeftSlotWhenHasContnent={false}
 					onChange={(value) =>
 						value === undefined ? reminderTimeField.onChange(value) : reminderTimeField.onChange(parseInt(value))
 					}
 					label="Напомнить"
 					leftSlot={<SeamlessSelect.Icon name="bell" />}
+					error={plainErrors[reminderTimeField.name]}
 				/>
 			</FormSection>
 			<FormSection>
@@ -172,6 +190,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					value={descriptionField.value || ''}
 					onChange={descriptionField.onChange}
 					multiline
+					error={plainErrors[descriptionField.name]}
 				/>
 			</FormSection>
 
@@ -180,13 +199,14 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					label="Сколько"
 					value={dailyTargetProgressField.value?.toString() ?? ''}
 					onChange={dailyTargetProgressField.onChange}
-					hideLeftSlotWhenHasContnent={false}
 					leftSlot={<SeamlessSelect.Icon name="ruler" />}
+					error={plainErrors[dailyTargetProgressField.name]}
 				/>
 				<SeamlessInput
 					label="Чего"
 					value={dailyTargetProgressLabelField.value ?? ''}
 					onChange={dailyTargetProgressLabelField.onChange}
+					error={plainErrors[dailyTargetProgressLabelField.name]}
 				/>
 			</FormSection>
 			<FormSection>
@@ -196,9 +216,11 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					className="w-full"
 					inputClassName="md:max-w-full w-full"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"
+					hideLeftSlotWhenHasContnent
 					value={linkedGoalIdField.value ?? ''}
 					options={goalsOptions}
 					onChange={(goalId) => linkedGoalIdField.onChange(goalId || null)}
+					error={plainErrors[linkedGoalIdField.name]}
 					renderOption={({ option }) => (
 						<div>
 							<EntityCard
