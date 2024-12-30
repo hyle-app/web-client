@@ -9,8 +9,8 @@ async function fetchTasksOfDay(params: FetchTasksOfDayParams) {
 	return res.data;
 }
 
-async function deleteTask(params: DeleteTaskParams) {
-	await httpService.lib.delete(`/v2/tasks/${params.taskId}`);
+async function deleteTask({ customerId, taskId }: DeleteTaskParams) {
+	await httpService.lib.delete(`/v2/tasks/${taskId}?customerId=${customerId}`);
 }
 
 export const taskApi = {

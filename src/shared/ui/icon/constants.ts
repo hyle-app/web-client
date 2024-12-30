@@ -30,6 +30,7 @@ import description from './assets/description.svg';
 import habit from './assets/habit.svg';
 import ruler from './assets/ruler.svg';
 import subtask from './assets/subtask.svg';
+import scale from './assets/scale.svg';
 
 export const ICONS = {
 	balance,
@@ -63,5 +64,6 @@ export const ICONS = {
 	ruler,
 	habit,
 	description,
-	subtask
+	subtask,
+	scale
 };
