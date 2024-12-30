@@ -1,9 +1,13 @@
-import { createStore } from 'effector';
-import { getRandomBalanceState } from './__mocks__';
+import { createEffect, createEvent, createStore } from 'effector';
 import { BALANCE_MAX_VALUE } from './constants';
 import { BalanceCategory } from '&shared/constants';
+import { balanceApi } from '../api';
+import { getInitialBalance } from './lib';
+import { debug } from 'patronum';
 
-const $balance = createStore(getRandomBalanceState());
+const $balance = createStore(getInitialBalance());
+
+const fetchBalance = createEvent();
 
 const $normalizedBalance = $balance.map((balance) => {
 	return Object.entries(balance).reduce(
@@ -15,7 +19,16 @@ const $normalizedBalance = $balance.map((balance) => {
 	);
 });
 
+const fetchBalanceFx = createEffect(balanceApi.fetchBalance);
+
 export const outputs = {
 	$balance,
 	$normalizedBalance
 };
+
+export const inputs = { fetchBalance };
+export const internals = {
+	fetchBalanceFx
+};
+
+debug($balance);

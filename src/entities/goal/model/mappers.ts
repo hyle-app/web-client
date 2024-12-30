@@ -12,7 +12,7 @@ export function mapDtoToGoal(dto: GoalDTO): Goal {
 		description: dto.goal.description || null,
 		emoji: dto.goal.emoji || null,
 		progress:
-			dto.goal.steps.count > 1
+			dto.goal.steps && dto.goal.steps.count > 1
 				? {
 						targetProgress: dto.goal.steps.count,
 						currentProgress: dto.goal.steps.currentCount || 0,

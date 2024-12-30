@@ -32,7 +32,7 @@ export type GoalDTO = {
 	completedAt: number | null;
 	description: string;
 	emoji: string;
-	steps: GoalSteps;
+	steps: GoalSteps | null;
 	category: string;
 	weight: number;
 	locked: boolean;
