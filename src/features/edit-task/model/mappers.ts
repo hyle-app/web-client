@@ -8,7 +8,10 @@ export function mapTaskToDTO(task: Task): TaskDTO {
 		description: task.description ?? undefined,
 		completedAt: task.completedAt,
 		createdAt: task.createdAt,
-		taskCompletionDateRange: task.targetCompletionDateRange,
+		taskCompletionDateRange: [
+			task.targetCompletionDateRange[0],
+			task.targetCompletionDateRange[1] ?? task.targetCompletionDateRange[0]
+		],
 		subtasks: task.subtasks.map((subtask) => ({
 			id: subtask.id,
 			title: subtask.title,

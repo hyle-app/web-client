@@ -55,3 +55,11 @@ sample({
 	fn: ({ habitsList }, { habitId }) => habitsList.filter((habit) => habit.id !== habitId),
 	target: outputs.$habitsList
 });
+
+sample({
+	clock: inputs.deleteHabit,
+	source: { user: authService.outputs.$user },
+	filter: authService.outputs.$isLoggedIn,
+	fn: ({ user }, { habitId }) => ({ habitId, customerId: user!.uid }),
+	target: internals.deleteHabitFx
+});

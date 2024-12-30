@@ -5,6 +5,7 @@ import { Icon } from '&shared/ui/icon';
 import type { Props, Option } from './types';
 import { cn } from '&shared/utils';
 import React from 'react';
+import { ErrorMessage } from '../error-message';
 
 export function SeamlessSelect<Value extends string = string, Options extends Option<Value> = Option<Value>>({
 	options,
@@ -12,12 +13,15 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 	onChange,
 	leftSlot,
 	label,
-	hideLeftSlotWhenHasContnent = true,
+	hideLeftSlotWhenHasContnent = false,
 	className,
 	inputClassName,
 	renderOption,
 	renderSelected,
 	contentWrapperClassName,
+	error,
+	clearable = true,
+	disabled,
 	...attributes
 }: Props<Value, Options>) {
 	const isLeftSlotVisible = hideLeftSlotWhenHasContnent ? !value : true;
@@ -62,6 +66,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 			if (!value || !renderOption || !options.find((option) => option.value === value)) {
 				return (
 					<Select.Trigger
+						disabled={disabled}
 						className={cn(
 							'w-full text-start outline-none border-0 !border-b border-transparent border-solid focus:border-b-color-brand-primary-50 relative pl-4 !m-0',
 							inputClassName
@@ -72,18 +77,21 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 							className="w-full ml-4"
 							placeholder={<span className="text-color-gray-80 font-medium w-full ">{label}</span>}
 						/>
+
+						{error && <ErrorMessage className="absolute -bottom-1 translate-y-full">{error}</ErrorMessage>}
 					</Select.Trigger>
 				);
 			}
 
 			const option = options.find((option) => option.value === value)!;
 			return (
-				<Select.Trigger asChild className={inputClassName} ref={rootElementRef}>
+				<Select.Trigger className={cn('relative', inputClassName)} ref={rootElementRef} disabled={disabled}>
 					{renderSelected!(option)}
+					{error && <ErrorMessage className="absolute -bottom-1 translate-y-full">{error}</ErrorMessage>}
 				</Select.Trigger>
 			);
 		},
-		[renderSelected, options]
+		[renderSelected, options, error]
 	);
 
 	return (
@@ -102,7 +110,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 			<Select.Root value={value ?? ''} onValueChange={onChange}>
 				{finalRenderSelected(value)}
 
-				{value && (
+				{value && clearable && (
 					<Select.SelectIcon asChild>
 						<button
 							className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none group-hover:pointer-events-auto text-color-gray-80 group"

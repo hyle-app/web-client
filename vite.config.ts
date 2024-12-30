@@ -10,7 +10,11 @@ export default defineConfig({
 			svgrOptions: { exportType: 'default', ref: true, svgo: false, titleProp: true },
 			include: '**/*.svg'
 		}),
-		viteReact(),
+		viteReact({
+			babel: {
+				plugins: ['effector/babel-plugin']
+			}
+		}),
 		TanStackRouterVite({
 			routesDirectory: './src/pages',
 			routeFileIgnorePattern: '.(model|constants|types|relations).tsx?'

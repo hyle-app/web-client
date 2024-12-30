@@ -9,12 +9,10 @@ import doubleChevronLeft from './assets/double-chevron-left.svg';
 import flag from './assets/flag.svg';
 import gear from './assets/gear.svg';
 import goal from './assets/goal.svg';
-import help from './assets/help.svg';
 import home from './assets/home.svg';
 import logout from './assets/logout.svg';
 import medal from './assets/medal.svg';
 import moon from './assets/moon.svg';
-import pin from './assets/pin.svg';
 import plus from './assets/plus.svg';
 import refresh from './assets/refresh.svg';
 import search from './assets/search.svg';
@@ -31,6 +29,8 @@ import smiley from './assets/smiley.svg';
 import description from './assets/description.svg';
 import habit from './assets/habit.svg';
 import ruler from './assets/ruler.svg';
+import subtask from './assets/subtask.svg';
+import scale from './assets/scale.svg';
 
 export const ICONS = {
 	balance,
@@ -63,5 +63,7 @@ export const ICONS = {
 	smiley,
 	ruler,
 	habit,
-	description
+	description,
+	subtask,
+	scale
 };

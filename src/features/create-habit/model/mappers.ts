@@ -24,7 +24,7 @@ export function mapFormValuesToDTO(formValues: HabitFormValues): HabitDTO {
 
 export function mapDtoToHabit(dto: CreateHabitResponse): Habit {
 	return {
-		id: dto.habitId,
+		id: dto.habitId.toString(),
 		title: dto.title ?? '',
 		createdAt: dto.createdAt,
 		completedAt: dto.completedAt ?? null,

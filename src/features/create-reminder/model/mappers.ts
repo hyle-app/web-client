@@ -16,7 +16,7 @@ export function mapFormValuesToDTO(form: ReminderFormValues): CreateReminderDTO 
 
 export function mapDtoToReminder(dto: ReminderDTO): Reminder {
 	return {
-		id: dto.reminderId,
+		id: dto.reminderId.toString(),
 		title: dto.title,
 		description: dto.description,
 		linkedGoalId: dto.linkedGoal?.id?.toString() ?? null,

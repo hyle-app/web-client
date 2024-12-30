@@ -1,4 +1,4 @@
-import { habitEntity, HabitCard, HabitId } from '&entities/habit';
+import { habitEntity, HabitCard } from '&entities/habit';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
@@ -10,16 +10,29 @@ import React from 'react';
 import { CreateHabitFormSidebar } from '&features/create-habit';
 import { EditHabitFormSidebar } from '&features/edit-habit';
 import { completeHabitFeature } from '&features/complete-habit';
+import { inputs, outputs } from './model';
 
 export function HabitListWidget({ className, ...attributes }: Props) {
-	const { habits, selectedAppDateStart, fillComplexHabitDayProgressEvent, completeSimpleHabitEvent } = useUnit({
+	const {
+		habits,
+		selectedAppDateStart,
+		fillComplexHabitDayProgressEvent,
+		completeSimpleHabitEvent,
+		selectedHabitId,
+		setSelectedHabitIdEvent,
+		resetSelectedHabitIdEvent
+	} = useUnit({
 		habits: habitEntity.outputs.$currentAppDateHabits,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
 		completeSimpleHabitEvent: completeHabitFeature.inputs.completeSimpleHabit,
-		fillComplexHabitDayProgressEvent: completeHabitFeature.inputs.fillComplexHabitDayProgress
+		fillComplexHabitDayProgressEvent: completeHabitFeature.inputs.fillComplexHabitDayProgress,
+		selectedHabitId: outputs.$selectedHabitId,
+		setSelectedHabitIdEvent: inputs.setSelectedHabitId,
+		resetSelectedHabitIdEvent: inputs.resetSelectedHabitId
 	});
-	const [selectedHabitId, setSelectedHabitId] = React.useState<HabitId | null>(null);
+
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
+
 	const closeCreateHabitForm = React.useCallback(() => {
 		setIsCreateFormVisible(false);
 	}, []);
@@ -48,7 +61,7 @@ export function HabitListWidget({ className, ...attributes }: Props) {
 								key={habit.id}
 								title={habit.title}
 								emoji={habit.emoji}
-								onClick={() => setSelectedHabitId(habit.id)}
+								onClick={() => setSelectedHabitIdEvent(habit.id)}
 								overallProgress={{ current: habit.currentProgress, target: habit.targetProgress }}
 								dailyProgress={
 									habit.dailyTargetProgressDetails && habit.dailyTargetProgressDetails.targetProgress > 1
@@ -68,7 +81,7 @@ export function HabitListWidget({ className, ...attributes }: Props) {
 			{selectedHabitId && (
 				<EditHabitFormSidebar
 					isOpen={true}
-					onClose={() => setSelectedHabitId(null)}
+					onClose={() => resetSelectedHabitIdEvent()}
 					habitId={selectedHabitId}
 					onCompleteSimpleHabit={() => completeSimpleHabitEvent({ habitId: selectedHabitId })}
 					onFillComplexHabitDayProgress={(delta) =>

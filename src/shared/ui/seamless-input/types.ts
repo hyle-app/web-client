@@ -6,6 +6,7 @@ export type Props<Value extends string | number = string> = {
 	leftSlot?: React.ReactNode;
 	inputClassName?: string;
 	labelClassName?: string;
+	error?: string | null | undefined;
 
 	/**
 	 * Marker if left slot should be hidden when input has content

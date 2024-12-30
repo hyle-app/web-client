@@ -5,7 +5,7 @@ import { Reminder } from './types';
 export function mapDtoToReminder(dto: ReminderDTO): Reminder {
 	const linkedGoalId = dto.linkedGoal?.id ?? null;
 	return {
-		id: dto.reminderId,
+		id: dto.reminderId.toString(),
 		title: dto.title,
 		description: dto.description,
 		linkedGoalId: linkedGoalId === null || linkedGoalId === 0 ? null : linkedGoalId.toString(),

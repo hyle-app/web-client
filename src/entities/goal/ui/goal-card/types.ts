@@ -6,7 +6,7 @@ export type Props = {
 	progress: {
 		current: number;
 		target: number;
-		label?: string;
+		label?: string | undefined;
 	};
 	timeLeft?: {
 		value: number;

@@ -16,6 +16,7 @@ export function getDefaultFormValues(reminder: Reminder): ReminderFormValues {
 }
 
 export function getFormValidatorScheme(reminder: Reminder, realTimestamp: number) {
+	const minDateStart = timeService.lib.getStartOfTheDay(realTimestamp);
 	return z
 		.object({
 			[ReminderFormFieldName.Title]: z.string().min(1, 'Введи название напоминания'),
@@ -23,25 +24,45 @@ export function getFormValidatorScheme(reminder: Reminder, realTimestamp: number
 			[ReminderFormFieldName.TargetDate]: z
 				.number()
 				.int()
-				.refine((timestamp) => {
-					const startOfTargetDate = timeService.lib.getStartOfTheDay(timestamp);
-					const startOfRealTimestamp = timeService.lib.getStartOfTheDay(realTimestamp);
-
-					return startOfTargetDate >= startOfRealTimestamp;
-				}, 'Нельзя планировать прошлое'),
+				.min(minDateStart, 'Дата напоминания не может быть раньше сегодняшнего дня'),
 			[ReminderFormFieldName.TargetTime]: z
-				.number()
+				.number({
+					required_error: 'Обязательно укажи время напоминания',
+					invalid_type_error: 'Обязательно укажи время напоминания'
+				})
 				.int()
 				.min(0, 'Введи время')
 				.max(timeService.lib.HOUR * 24 - 1, 'Введи время'),
-			[ReminderFormFieldName.RepeatRule]: z.nativeEnum(ReminderRepeatRule),
+			[ReminderFormFieldName.RepeatRule]: z.nativeEnum(ReminderRepeatRule, {
+				invalid_type_error: 'Выбери правило повторения'
+			}),
 			[ReminderFormFieldName.LinkedGoalId]: z.string().nullable()
 		})
-		.refine((formValues) => {
-			const newDateTime = formValues[ReminderFormFieldName.TargetDate] + formValues[ReminderFormFieldName.TargetTime];
-			if (newDateTime < realTimestamp && newDateTime !== reminder.targetDateTime) {
-				return false;
+		.superRefine((values, ctx) => {
+			if (
+				values[ReminderFormFieldName.TargetDate] + values[ReminderFormFieldName.TargetTime] !==
+				reminder.targetDateTime
+			) {
+				const startOfTargetDate = timeService.lib.getStartOfTheDay(values[ReminderFormFieldName.TargetDate]);
+
+				if (startOfTargetDate < realTimestamp) {
+					ctx.addIssue({
+						path: [ReminderFormFieldName.TargetDate],
+						message: 'Дата напоминания не может быть раньше сегодняшнего дня',
+						code: z.ZodIssueCode.custom
+					});
+				}
+
+				if (
+					startOfTargetDate === minDateStart &&
+					values[ReminderFormFieldName.TargetTime] < realTimestamp - minDateStart
+				) {
+					ctx.addIssue({
+						path: [ReminderFormFieldName.TargetTime],
+						message: 'Ты не можешь поставить напоминание в прошлое',
+						code: z.ZodIssueCode.custom
+					});
+				}
 			}
-			return true;
-		}, 'Нельзя планировать прошлое');
+		});
 }

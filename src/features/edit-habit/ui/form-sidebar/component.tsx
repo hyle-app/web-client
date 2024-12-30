@@ -50,7 +50,7 @@ export function EditHabitFormSidebar({
 	});
 
 	useEventEffect(outputs.habitEdited, () => {
-		form.reset();
+		form.reset(getDefaultFormValues(habit!));
 	});
 
 	const handleFillComplexHabitDayProgressButtonClick = () => {

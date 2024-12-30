@@ -1,0 +1,1 @@
+export { LeftSideCalendarWidget } from './component';

@@ -15,6 +15,7 @@ import { Icon } from '&shared/ui/icon';
 import { timeService } from '&shared/services/time';
 import { Typography } from '../typography';
 import { Button } from '../button';
+import { ErrorMessage } from '../error-message';
 
 export function CalendarField<Mode extends 'range' | 'single'>({
 	className,
@@ -25,6 +26,8 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	leftSlot,
 	isForceOpen,
 	onClose,
+	error,
+	disabled,
 	...props
 }: Props<Mode>) {
 	type Value = Mode extends 'single' ? Date | null : [Date | null, Date | null];
@@ -32,7 +35,7 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	const [isPickerVisible, setIsPickerVisible] = React.useState(false);
 	const [localValue, setLocalValue] = React.useState(value);
 
-	const isPickerVisibleOrForcedVisible = isForceOpen || isPickerVisible;
+	const isPickerVisibleOrForcedVisible = (isForceOpen || isPickerVisible) && !disabled;
 
 	const isValueSelected = Array.isArray(value) ? value[0] !== null : value !== null;
 	const pickerRef = React.useRef<HTMLDivElement>(null);
@@ -205,9 +208,9 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	);
 
 	return (
-		<div className="relative">
+		<div className="relative ">
 			<button
-				className={cn('grid gap-x-4', {
+				className={cn('grid gap-x-4 w-full', {
 					'grid-cols-[24px_auto]': Boolean(leftSlot),
 					'grid-cols-1': !leftSlot
 				})}
@@ -216,21 +219,25 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 				}}
 			>
 				{leftSlot && <div className={cn('w-6 h-6 will-change-auto transition-all row-span-1')}>{leftSlot}</div>}
-				<Typography
-					className={cn('font-medium text-left', {
-						'text-color-gray-80': !isValueSelected,
-						'text-color-text-and-icon-80': isValueSelected
-					})}
-				>
-					{mainText}
-				</Typography>
-				{subText && (
+				<div className="relative w-full">
 					<Typography
-						className={cn('text-caption-1 text-color-gray-80 col-span-1 text-left', { 'col-start-2': leftSlot })}
+						className={cn('font-medium text-left', {
+							'text-color-gray-80': !isValueSelected,
+							'text-color-text-and-icon-80': isValueSelected
+						})}
 					>
-						{subText}
+						{mainText}
 					</Typography>
-				)}
+					{subText && (
+						<Typography
+							className={cn('text-caption-1 text-color-gray-80 col-span-1 text-left', { 'col-start-2': leftSlot })}
+						>
+							{subText}
+						</Typography>
+					)}
+
+					{error && <ErrorMessage className="absolute -bottom-1 translate-y-full">{error}</ErrorMessage>}
+				</div>
 			</button>
 
 			<div

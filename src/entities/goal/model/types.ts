@@ -1,11 +1,12 @@
 import { BalanceCategory } from '&shared/constants';
+import { GoalFormFieldName } from './constants';
 
 export type GoalId = string;
 
 export type GoalProgress = {
 	targetProgress: number;
 	currentProgress: number;
-	label: string;
+	label: string | null;
 };
 
 export type Goal = {
@@ -16,7 +17,32 @@ export type Goal = {
 	completedAt: number | null;
 	description: string | null;
 	emoji: string | null;
-	progress: GoalProgress;
+	progress: GoalProgress | null;
 	category: BalanceCategory;
 	weight: number;
+};
+
+export type GoalFormValues = {
+	[GoalFormFieldName.Title]: string;
+	[GoalFormFieldName.Category]: BalanceCategory;
+	[GoalFormFieldName.Description]: string | null;
+	[GoalFormFieldName.Emoji]: string | null;
+	[GoalFormFieldName.Weight]: number;
+	[GoalFormFieldName.TargetDate]: number;
+	[GoalFormFieldName.ProgressDetailsCount]: number | null;
+	[GoalFormFieldName.ProgressDetailsLabel]: string | null;
+	[GoalFormFieldName.LinkedEntities]: {
+		taskIds: string[];
+		reminderIds: string[];
+		habitIds: string[];
+	};
+};
+
+export type DeleteGoalPayload = {
+	goalId: GoalId;
+};
+
+export type UpdateGoalPayload = {
+	goalId: GoalId;
+	goal: Goal;
 };

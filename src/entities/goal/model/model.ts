@@ -1,10 +1,18 @@
-import { createStore, combine } from 'effector';
+import { createStore, combine, createEvent, createEffect } from 'effector';
 import { timeService } from '&shared/services/time';
 
-import type { Goal } from './types';
-import { getMockGoals } from './__mocks__';
+import type { DeleteGoalPayload, Goal, GoalId, UpdateGoalPayload } from './types';
+import { goalApi } from '../api';
+import { once } from 'patronum';
 
-export const $goalsAndAchievements = createStore<Goal[]>(getMockGoals());
+const $goalsAndAchievements = createStore<Goal[]>([]);
+const fetchGoalsAndAchievements = createEvent();
+const addGoal = createEvent<Goal>();
+const deleteGoal = createEvent<DeleteGoalPayload>();
+const updateGoal = createEvent<UpdateGoalPayload>();
+
+const fetchGoalsAndAchievementsFx = createEffect(goalApi.fetchGoals);
+const deleteGoalFx = createEffect(goalApi.deleteGoal);
 
 export const $goals = $goalsAndAchievements.map((goalsAndAchievements) =>
 	goalsAndAchievements.filter((goal) => goal.completedAt === null)
@@ -22,10 +30,24 @@ export const $overdueGoals = combine(
 	({ goals, realTimestamp }) => goals.filter((goal) => goal.targetDate < realTimestamp)
 );
 
-export const inputs = {};
+const getGoalOrAchievementById = (goalId: GoalId) =>
+	$goalsAndAchievements.map((goalsAndAchievements) => goalsAndAchievements.find((goal) => goal.id === goalId) ?? null);
+
+const initialGoalFetched = once(fetchGoalsAndAchievementsFx.done);
+
+export const inputs = {
+	fetchGoalsAndAchievements,
+	updateGoal,
+	addGoal,
+	deleteGoal
+};
 export const outputs = {
 	$goals,
 	$achievements,
 	$goalsAndAchievements,
-	$overdueGoals
+	$overdueGoals,
+	getGoalOrAchievementById,
+	initialGoalFetched
 };
+
+export const internals = { fetchGoalsAndAchievementsFx, deleteGoalFx };

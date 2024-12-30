@@ -27,13 +27,49 @@ export function getDefaultFormValues(timestamp: number): ReminderFormValues {
 	};
 }
 
-export function getFormValidatorScheme() {
-	return z.object({
-		[ReminderFormFieldName.Title]: z.string().min(1, 'Введи название напоминания'),
-		[ReminderFormFieldName.Description]: z.string().nullable(),
-		[ReminderFormFieldName.TargetDate]: z.number().int(),
-		[ReminderFormFieldName.TargetTime]: z.number().int(),
-		[ReminderFormFieldName.RepeatRule]: z.nativeEnum(ReminderRepeatRule),
-		[ReminderFormFieldName.LinkedGoalId]: z.string().nullable()
-	});
+export function getFormValidatorScheme(minDateTime: Date) {
+	const minDateStart = timeService.lib.getStartOfTheDay(minDateTime.getTime());
+	return z
+		.object({
+			[ReminderFormFieldName.Title]: z.string().min(1, 'Введи название напоминания'),
+			[ReminderFormFieldName.Description]: z.string().nullable(),
+			[ReminderFormFieldName.TargetDate]: z
+				.number()
+				.int()
+				.min(minDateStart, 'Дата напоминания не может быть раньше сегодняшнего дня'),
+			[ReminderFormFieldName.TargetTime]: z
+				.number({
+					required_error: 'Обязательно укажи время напоминания',
+					invalid_type_error: 'Обязательно укажи время напоминания'
+				})
+				.int()
+				.min(0, 'Введи время')
+				.max(timeService.lib.HOUR * 24 - 1, 'Введи время'),
+			[ReminderFormFieldName.RepeatRule]: z.nativeEnum(ReminderRepeatRule, {
+				invalid_type_error: 'Выбери правило повторения'
+			}),
+			[ReminderFormFieldName.LinkedGoalId]: z.string().nullable()
+		})
+		.superRefine((values, ctx) => {
+			const startOfTargetDate = timeService.lib.getStartOfTheDay(values[ReminderFormFieldName.TargetDate]);
+
+			if (startOfTargetDate < minDateStart) {
+				ctx.addIssue({
+					path: [ReminderFormFieldName.TargetDate],
+					message: 'Дата напоминания не может быть раньше сегодняшнего дня',
+					code: z.ZodIssueCode.custom
+				});
+			}
+
+			if (
+				startOfTargetDate === minDateStart &&
+				values[ReminderFormFieldName.TargetTime] < minDateTime.getTime() - minDateStart
+			) {
+				ctx.addIssue({
+					path: [ReminderFormFieldName.TargetTime],
+					message: 'Ты не можешь поставить напоминание в прошлое',
+					code: z.ZodIssueCode.custom
+				});
+			}
+		});
 }
