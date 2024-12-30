@@ -8,15 +8,31 @@ import { cn } from '&shared/utils';
 import { goalEntity, GoalCard } from '&entities/goal';
 import { CreateGoalFormSidebar } from '&features/create-goal';
 import React from 'react';
+import { EditGoalFormSidebar } from '&features/edit-goal';
+import { inputs, outputs } from './model';
 
 export function GoalListWidget({ className, ...attributes }: Props) {
-	const { goals, realTimestamp } = useUnit({
+	const {
+		goals,
+		realTimestamp,
+
+		setSelectedGoalIdEvent,
+		resetSelectedGoalIdEvent,
+		selectedGoalId
+	} = useUnit({
 		goals: goalEntity.outputs.$goals,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
-		realTimestamp: timeService.outputs.$realTimestamp
+		realTimestamp: timeService.outputs.$realTimestamp,
+		selectedGoalId: outputs.$selectedGoalId,
+		setSelectedGoalIdEvent: inputs.setSelectedGoalId,
+		resetSelectedGoalIdEvent: inputs.resetSelectedGoalId
 	});
 
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
+
+	const handleCloseEditForm = React.useCallback(() => {
+		resetSelectedGoalIdEvent();
+	}, []);
 
 	const handleCloseCreateForm = React.useCallback(() => {
 		setIsCreateFormVisible(false);
@@ -46,8 +62,9 @@ export function GoalListWidget({ className, ...attributes }: Props) {
 								progress={{
 									current: goal.progress.currentProgress,
 									target: goal.progress.targetProgress,
-									label: goal.progress.label
+									label: goal.progress.label || undefined
 								}}
+								onClick={() => setSelectedGoalIdEvent(goal.id)}
 								timeLeft={timeService.lib.getDiffInTimeUnits(realTimestamp, goal.targetDate)}
 								overdueDetails={
 									realTimestamp > goal.targetDate
@@ -60,6 +77,9 @@ export function GoalListWidget({ className, ...attributes }: Props) {
 				</div>
 			</div>
 			<CreateGoalFormSidebar isOpen={isCreateFormVisible} onClose={handleCloseCreateForm} />
+			{selectedGoalId && (
+				<EditGoalFormSidebar isOpen={Boolean(selectedGoalId)} onClose={handleCloseEditForm} goalId={selectedGoalId} />
+			)}
 		</section>
 	);
 }
