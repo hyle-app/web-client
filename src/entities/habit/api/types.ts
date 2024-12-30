@@ -33,3 +33,8 @@ export type FetchHabitsOfDayParams = {
 	customerId: string;
 	dateTimestamp: number;
 };
+
+export type DeleteHabitParams = {
+	customerId: string;
+	habitId: string;
+};

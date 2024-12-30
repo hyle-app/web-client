@@ -9,9 +9,9 @@ export function mapGoalToDto(goal: Goal): EditGoalDTO {
 		description: goal.description || '',
 		emoji: goal.emoji || '',
 		steps: {
-			count: goal.progress.targetProgress || 1,
-			currentCount: goal.progress.currentProgress || 0,
-			rate: goal.progress.label || ''
+			count: goal.progress?.targetProgress || 1,
+			currentCount: goal.progress?.currentProgress || 0,
+			rate: goal.progress?.label || ''
 		},
 		category: goal.category,
 		weight: goal.weight,

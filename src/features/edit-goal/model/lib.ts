@@ -10,8 +10,8 @@ export function getDefaultFormValues(initialGoal: Goal): GoalFormValues {
 		[GoalFormFieldName.TargetDate]: initialGoal.targetDate,
 		[GoalFormFieldName.Emoji]: initialGoal.emoji,
 		[GoalFormFieldName.Weight]: initialGoal.weight,
-		[GoalFormFieldName.ProgressDetailsCount]: initialGoal.progress.targetProgress,
-		[GoalFormFieldName.ProgressDetailsLabel]: initialGoal.progress.label,
+		[GoalFormFieldName.ProgressDetailsCount]: initialGoal.progress?.targetProgress || null,
+		[GoalFormFieldName.ProgressDetailsLabel]: initialGoal.progress?.label || null,
 		[GoalFormFieldName.LinkedEntities]: {
 			taskIds: [],
 			reminderIds: [],

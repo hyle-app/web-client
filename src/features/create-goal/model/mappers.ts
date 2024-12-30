@@ -32,11 +32,14 @@ export function mapDtoToGoal(dto: GoalDTO): Goal {
 		completedAt: dto.completedAt || null,
 		description: dto.description || null,
 		emoji: dto.emoji || null,
-		progress: {
-			targetProgress: dto.steps.count || 1,
-			currentProgress: dto.steps.currentCount || 0,
-			label: dto.steps.rate || null
-		},
+		progress:
+			dto.steps.count > 1
+				? {
+						targetProgress: dto.steps.count,
+						currentProgress: dto.steps.currentCount || 0,
+						label: dto.steps.rate || null
+					}
+				: null,
 		category: dto.category as BalanceCategory,
 		weight: dto.weight ?? 1
 	};

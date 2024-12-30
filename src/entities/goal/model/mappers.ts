@@ -11,12 +11,15 @@ export function mapDtoToGoal(dto: GoalDTO): Goal {
 		completedAt: dto.goal.completedAt || null,
 		description: dto.goal.description || null,
 		emoji: dto.goal.emoji || null,
-		progress: {
-			targetProgress: dto.goal.steps.count || 1,
-			currentProgress: dto.goal.steps.currentCount || 0,
-			label: dto.goal.steps.rate || null
-		},
+		progress:
+			dto.goal.steps.count > 1
+				? {
+						targetProgress: dto.goal.steps.count,
+						currentProgress: dto.goal.steps.currentCount || 0,
+						label: dto.goal.steps.rate || null
+					}
+				: null,
 		category: dto.goal.category as BalanceCategory,
-		weight: dto.goal.weight ?? 1
+		weight: dto.goal.weight || 1
 	};
 }

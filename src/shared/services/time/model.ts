@@ -1,14 +1,15 @@
 import { combine, createEvent } from 'effector';
 import { time } from 'patronum/time';
 import { interval } from 'patronum/interval';
-import { getCurrentTimestamp, getStartOfTheDay } from './lib';
+import { getCurrentTimestamp, getStartOfTheDay, lib } from './lib';
 import { routerService } from '../router';
 
 const init = createEvent();
 
 const { tick } = interval({
 	start: init,
-	timeout: 1000,
+	// Precision of 1 second is not important
+	timeout: lib.MINUTE,
 	leading: true
 });
 

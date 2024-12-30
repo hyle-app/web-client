@@ -1,15 +1,24 @@
-import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { useUnit } from 'effector-react';
 import { Props } from './types';
 import { cn } from '&shared/utils';
 import { goalEntity, GoalCard } from '&entities/goal';
+import { inputs, outputs } from './model';
+import React from 'react';
+import { EditGoalFormSidebar } from '&features/edit-goal';
 
-export function AchievementsListWidget({ className, ...attributes }: Props) {
-	const { achievements } = useUnit({
-		achievements: goalEntity.outputs.$achievements
+export const AchievementsListWidget = React.memo(({ className, ...attributes }: Props) => {
+	const { achievements, setSelectedGoalIdEvent, selectedGoalId, resetSelectedGoalIdEvent } = useUnit({
+		achievements: goalEntity.outputs.$achievements,
+		selectedGoalId: outputs.$selectedGoalId,
+		setSelectedGoalIdEvent: inputs.setSelectedGoalId,
+		resetSelectedGoalIdEvent: inputs.resetSelectedGoalId
 	});
+
+	const handleCloseEditForm = React.useCallback(() => {
+		resetSelectedGoalIdEvent();
+	}, []);
 
 	if (achievements.length === 0) {
 		return null;
@@ -25,9 +34,6 @@ export function AchievementsListWidget({ className, ...attributes }: Props) {
 							Достижения
 						</Typography>
 					</div>
-					<Button variant="icon" appearance="primary" className="w-8 h-8">
-						<Icon name="plus" className="w-4 h-4 text-color-white" />
-					</Button>
 				</div>
 				<div className="flex flex-col gap-4 mt-6">
 					{achievements.map((achievement) => {
@@ -36,16 +42,17 @@ export function AchievementsListWidget({ className, ...attributes }: Props) {
 								key={achievement.id}
 								title={achievement.title}
 								emoji={achievement.emoji}
-								progress={{
-									current: achievement.progress.currentProgress,
-									target: achievement.progress.targetProgress,
-									label: achievement.progress.label
-								}}
+								onClick={() => setSelectedGoalIdEvent(achievement.id)}
+								progress={goalEntity.lib.getGoalProgress(achievement)}
 							/>
 						);
 					})}
 				</div>
 			</div>
+
+			{selectedGoalId && (
+				<EditGoalFormSidebar isOpen={Boolean(selectedGoalId)} onClose={handleCloseEditForm} goalId={selectedGoalId} />
+			)}
 		</section>
 	);
-}
+});

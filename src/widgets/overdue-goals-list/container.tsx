@@ -38,11 +38,7 @@ export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 								key={goal.id}
 								title={goal.title}
 								emoji={goal.emoji}
-								progress={{
-									current: goal.progress.currentProgress,
-									target: goal.progress.targetProgress,
-									label: goal.progress.label || undefined
-								}}
+								progress={goalEntity.lib.getGoalProgress(goal)}
 								timeLeft={timeService.lib.getDiffInTimeUnits(realTimestamp, goal.targetDate)}
 								overdueDetails={
 									realTimestamp > goal.targetDate

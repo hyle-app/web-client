@@ -12,6 +12,7 @@ const deleteHabit = createEvent<DeleteHabitPayload>();
 const updateHabit = createEvent<UpdateHabitPayload>();
 
 const fetchHabitsOfDayFx = createEffect(habitApi.fetchHabitsOfDay);
+const deleteHabitFx = createEffect(habitApi.deleteHabit);
 
 const $currentAppDateHabits = combine(
 	{ habitsList: $habitsList, currentAppDateStart: timeService.outputs.$currentAppDateStart },
@@ -32,4 +33,4 @@ export const inputs = {
 };
 export const outputs = { $currentAppDateHabits, $habitsList, getHabitById, initialHabitsFetched };
 
-export const internals = { fetchHabitsOfDayFx };
+export const internals = { fetchHabitsOfDayFx, deleteHabitFx };

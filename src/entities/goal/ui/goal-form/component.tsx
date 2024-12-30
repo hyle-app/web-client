@@ -29,7 +29,7 @@ const CATEGORY_OPTIONS = Object.values(BalanceCategory).map((value) => ({
 
 const WEIGHT_OPTIONS = ALLOWED_GOAL_WEIGHTS.map((weight) => ({ value: weight.toString(), label: weight.toString() }));
 
-export function GoalForm({ withCalendarShortcuts }: Props) {
+export function GoalForm({ withCalendarShortcuts, disabled }: Props) {
 	const {
 		control,
 		formState: { errors }
@@ -59,6 +59,7 @@ export function GoalForm({ withCalendarShortcuts }: Props) {
 					inputClassName="text-heading-3 h-full"
 					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
+					disabled={disabled}
 				/>
 			</FormSection>
 			<FormSection>
@@ -70,6 +71,7 @@ export function GoalForm({ withCalendarShortcuts }: Props) {
 					error={plainErrors[categoryField.name]}
 					label="Категория"
 					clearable={false}
+					disabled={disabled}
 				/>
 			</FormSection>
 			<FormSection>
@@ -81,23 +83,20 @@ export function GoalForm({ withCalendarShortcuts }: Props) {
 					options={WEIGHT_OPTIONS}
 					error={plainErrors[weightField.name]}
 					clearable={false}
+					disabled={disabled}
 				/>
 			</FormSection>
 			<FormSection className="flex flex-col gap-4">
 				{withCalendarShortcuts && (
 					<CalendarFieldShortcuts
 						onTomorrowPress={() =>
-							targetDateField.onChange(timeService.lib.getStartOfTheDay(timeService.lib.getTomorrow()))
+							targetDateField.onChange(timeService.lib.getEndOfTheDay(timeService.lib.getTomorrow()))
 						}
 						onTodayPress={() =>
-							targetDateField.onChange(
-								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()))
-							)
+							targetDateField.onChange(new Date(timeService.lib.getEndOfTheDay(timeService.lib.getCurrentTimestamp())))
 						}
 						onCalendarPress={() => {
-							targetDateField.onChange(
-								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getDayAfterTomorrow()))
-							);
+							targetDateField.onChange(new Date(timeService.lib.getEndOfTheDay(timeService.lib.getDayAfterTomorrow())));
 						}}
 						value={targetDateField.value}
 					/>
@@ -105,10 +104,11 @@ export function GoalForm({ withCalendarShortcuts }: Props) {
 				<CalendarField
 					value={targetDateField.value ? new Date(targetDateField.value) : null}
 					mode="single"
-					onChange={(date) => targetDateField.onChange(date.getTime())}
+					onChange={(date) => targetDateField.onChange(timeService.lib.getEndOfTheDay(date.getTime()))}
 					label="Дата завершения"
 					leftSlot={<CalendarField.Icon name="calendar" />}
 					error={plainErrors[targetDateField.name]}
+					disabled={disabled}
 				/>
 			</FormSection>
 			<FormSection>
@@ -119,6 +119,7 @@ export function GoalForm({ withCalendarShortcuts }: Props) {
 					onChange={descriptionField.onChange}
 					multiline
 					error={plainErrors[descriptionField.name]}
+					disabled={disabled}
 				/>
 			</FormSection>
 			<FormSection className="flex gap-4">
@@ -128,12 +129,14 @@ export function GoalForm({ withCalendarShortcuts }: Props) {
 					onChange={progressDetailsCountField.onChange}
 					leftSlot={<SeamlessSelect.Icon name="ruler" />}
 					error={plainErrors[progressDetailsCountField.name]}
+					disabled={disabled}
 				/>
 				<SeamlessInput
 					label="Чего"
 					value={progressDetailsLabelField.value ?? ''}
 					onChange={progressDetailsLabelField.onChange}
 					error={plainErrors[progressDetailsLabelField.name]}
+					disabled={disabled}
 				/>
 			</FormSection>
 		</div>

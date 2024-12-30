@@ -10,4 +10,5 @@ export type Props<Mode extends 'range' | 'single' = 'single'> = {
 	isForceOpen?: boolean;
 	onClose?(): void;
 	error?: string | null;
+	disabled?: boolean | undefined;
 };

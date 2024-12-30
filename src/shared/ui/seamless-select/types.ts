@@ -22,6 +22,7 @@ export type Props<Value, Options extends Option<Value>> = {
 	leftSlot?: React.ReactNode;
 	error?: string | null | undefined;
 	clearable?: boolean;
+	disabled?: boolean | undefined;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> &
 	(
 		| {

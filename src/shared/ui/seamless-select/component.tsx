@@ -21,6 +21,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 	contentWrapperClassName,
 	error,
 	clearable = true,
+	disabled,
 	...attributes
 }: Props<Value, Options>) {
 	const isLeftSlotVisible = hideLeftSlotWhenHasContnent ? !value : true;
@@ -65,6 +66,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 			if (!value || !renderOption || !options.find((option) => option.value === value)) {
 				return (
 					<Select.Trigger
+						disabled={disabled}
 						className={cn(
 							'w-full text-start outline-none border-0 !border-b border-transparent border-solid focus:border-b-color-brand-primary-50 relative pl-4 !m-0',
 							inputClassName
@@ -83,7 +85,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 
 			const option = options.find((option) => option.value === value)!;
 			return (
-				<Select.Trigger className={cn('relative', inputClassName)} ref={rootElementRef}>
+				<Select.Trigger className={cn('relative', inputClassName)} ref={rootElementRef} disabled={disabled}>
 					{renderSelected!(option)}
 					{error && <ErrorMessage className="absolute -bottom-1 translate-y-full">{error}</ErrorMessage>}
 				</Select.Trigger>

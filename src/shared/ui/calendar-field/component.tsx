@@ -27,6 +27,7 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	isForceOpen,
 	onClose,
 	error,
+	disabled,
 	...props
 }: Props<Mode>) {
 	type Value = Mode extends 'single' ? Date | null : [Date | null, Date | null];
@@ -34,7 +35,7 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	const [isPickerVisible, setIsPickerVisible] = React.useState(false);
 	const [localValue, setLocalValue] = React.useState(value);
 
-	const isPickerVisibleOrForcedVisible = isForceOpen || isPickerVisible;
+	const isPickerVisibleOrForcedVisible = (isForceOpen || isPickerVisible) && !disabled;
 
 	const isValueSelected = Array.isArray(value) ? value[0] !== null : value !== null;
 	const pickerRef = React.useRef<HTMLDivElement>(null);
