@@ -84,19 +84,19 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					<CalendarFieldShortcuts
 						onTomorrowPress={() =>
 							expirationDateRangeField.onChange([
-								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getTomorrow())),
+								new Date(timeService.lib.getEndOfTheDay(timeService.lib.getTomorrow())),
 								null
 							])
 						}
 						onTodayPress={() =>
 							expirationDateRangeField.onChange([
-								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp())),
+								new Date(timeService.lib.getEndOfTheDay(timeService.lib.getCurrentTimestamp())),
 								null
 							])
 						}
 						onCalendarPress={() => {
 							expirationDateRangeField.onChange([
-								new Date(timeService.lib.getStartOfTheDay(timeService.lib.getDayAfterTomorrow())),
+								new Date(timeService.lib.getEndOfTheDay(timeService.lib.getDayAfterTomorrow())),
 								null
 							]);
 						}}
@@ -106,7 +106,12 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 				<CalendarField
 					value={expirationDateRangeField.value}
 					mode="range"
-					onChange={expirationDateRangeField.onChange}
+					onChange={(value) =>
+						expirationDateRangeField.onChange([
+							new Date(timeService.lib.getEndOfTheDay(value[0].getTime())),
+							value[1]?.getTime() ? new Date(timeService.lib.getEndOfTheDay(value[1].getTime())) : null
+						])
+					}
 					label="Срок выполнения"
 					leftSlot={<CalendarField.Icon name="calendar" />}
 					error={plainErrors[expirationDateRangeField.name]}

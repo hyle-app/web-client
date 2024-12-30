@@ -10,14 +10,17 @@ import { CreateGoalFormSidebar } from '&features/create-goal';
 import React from 'react';
 import { EditGoalFormSidebar } from '&features/edit-goal';
 import { inputs, outputs } from './model';
+import { completeGoalFeature } from '&features/complete-goal';
 
-export function GoalListWidget({ className, ...attributes }: Props) {
+export const GoalListWidget = React.memo(({ className, ...attributes }: Props) => {
 	const {
 		goals,
 		realTimestamp,
 
 		setSelectedGoalIdEvent,
 		resetSelectedGoalIdEvent,
+		completeSimpleGoalEvent,
+		fillComplexGoalProgressEvent,
 		selectedGoalId
 	} = useUnit({
 		goals: goalEntity.outputs.$goals,
@@ -25,7 +28,9 @@ export function GoalListWidget({ className, ...attributes }: Props) {
 		realTimestamp: timeService.outputs.$realTimestamp,
 		selectedGoalId: outputs.$selectedGoalId,
 		setSelectedGoalIdEvent: inputs.setSelectedGoalId,
-		resetSelectedGoalIdEvent: inputs.resetSelectedGoalId
+		resetSelectedGoalIdEvent: inputs.resetSelectedGoalId,
+		fillComplexGoalProgressEvent: completeGoalFeature.inputs.fillComplexGoalProgress,
+		completeSimpleGoalEvent: completeGoalFeature.inputs.completeSimpleGoal
 	});
 
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
@@ -59,11 +64,7 @@ export function GoalListWidget({ className, ...attributes }: Props) {
 								key={goal.id}
 								title={goal.title}
 								emoji={goal.emoji}
-								progress={{
-									current: goal.progress.currentProgress,
-									target: goal.progress.targetProgress,
-									label: goal.progress.label || undefined
-								}}
+								progress={goalEntity.lib.getGoalProgress(goal)}
 								onClick={() => setSelectedGoalIdEvent(goal.id)}
 								timeLeft={timeService.lib.getDiffInTimeUnits(realTimestamp, goal.targetDate)}
 								overdueDetails={
@@ -78,8 +79,19 @@ export function GoalListWidget({ className, ...attributes }: Props) {
 			</div>
 			<CreateGoalFormSidebar isOpen={isCreateFormVisible} onClose={handleCloseCreateForm} />
 			{selectedGoalId && (
-				<EditGoalFormSidebar isOpen={Boolean(selectedGoalId)} onClose={handleCloseEditForm} goalId={selectedGoalId} />
+				<EditGoalFormSidebar
+					isOpen={Boolean(selectedGoalId)}
+					onClose={handleCloseEditForm}
+					goalId={selectedGoalId}
+					onFillComplexGoalProgress={(delta) =>
+						fillComplexGoalProgressEvent({
+							goalId: selectedGoalId,
+							progressDelta: delta
+						})
+					}
+					onCompleteSimpleGoal={() => completeSimpleGoalEvent({ goalId: selectedGoalId })}
+				/>
 			)}
 		</section>
 	);
-}
+});

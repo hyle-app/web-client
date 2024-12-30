@@ -17,7 +17,7 @@ export type Goal = {
 	completedAt: number | null;
 	description: string | null;
 	emoji: string | null;
-	progress: GoalProgress;
+	progress: GoalProgress | null;
 	category: BalanceCategory;
 	weight: number;
 };

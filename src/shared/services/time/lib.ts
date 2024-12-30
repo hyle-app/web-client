@@ -14,6 +14,10 @@ export function getStartOfTheDay(time: number): number {
 	return new Date(time).setHours(0, 0, 0, 0);
 }
 
+export function getEndOfTheDay(time: number): number {
+	return new Date(time).setHours(23, 59, 59);
+}
+
 export function getDiffInTimeUnits(
 	start: number,
 	end: number,
@@ -111,5 +115,6 @@ export const lib = {
 	isToday,
 	isTomorrow,
 	getTomorrow,
-	getDayAfterTomorrow
+	getDayAfterTomorrow,
+	getEndOfTheDay
 };

@@ -1,12 +1,13 @@
 import { TaskFormValues } from '&entities/task';
 import { TaskFormFieldName } from '&entities/task/model/constants';
+import { timeService } from '&shared/services/time';
 import { z } from 'zod';
 
 export function getDefaultFormValues(currentAppDateTimestamp: number): TaskFormValues {
 	return {
 		[TaskFormFieldName.Title]: '',
 		[TaskFormFieldName.Description]: null,
-		[TaskFormFieldName.ExpirationDateRange]: [new Date(currentAppDateTimestamp), null],
+		[TaskFormFieldName.ExpirationDateRange]: [new Date(timeService.lib.getEndOfTheDay(currentAppDateTimestamp)), null],
 		[TaskFormFieldName.ReminderTime]: null,
 		[TaskFormFieldName.Subtasks]: [],
 		[TaskFormFieldName.LinkedGoalId]: null

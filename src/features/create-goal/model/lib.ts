@@ -1,5 +1,6 @@
 import { GoalFormFieldName, GoalFormValues } from '&entities/goal';
 import { BalanceCategory } from '&shared/constants';
+import { timeService } from '&shared/services/time';
 import { z } from 'zod';
 
 export function getDefaultFormValues(minDate: Date): GoalFormValues {
@@ -7,7 +8,7 @@ export function getDefaultFormValues(minDate: Date): GoalFormValues {
 		[GoalFormFieldName.Title]: '',
 		[GoalFormFieldName.Description]: null,
 		[GoalFormFieldName.Category]: BalanceCategory.Career,
-		[GoalFormFieldName.TargetDate]: minDate.getTime(),
+		[GoalFormFieldName.TargetDate]: timeService.lib.getEndOfTheDay(minDate.getTime()),
 		[GoalFormFieldName.Emoji]: null,
 		[GoalFormFieldName.Weight]: 1,
 		[GoalFormFieldName.ProgressDetailsCount]: null,
