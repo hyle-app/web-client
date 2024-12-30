@@ -79,7 +79,7 @@ export function GoalForm({ withCalendarShortcuts, disabled }: Props) {
 					label="Вес цели"
 					value={weightField.value.toString()}
 					onChange={(value) => weightField.onChange(Number(value))}
-					leftSlot={<SeamlessSelect.Icon name="balance" />}
+					leftSlot={<SeamlessSelect.Icon name="scale" />}
 					options={WEIGHT_OPTIONS}
 					error={plainErrors[weightField.name]}
 					clearable={false}
@@ -93,10 +93,10 @@ export function GoalForm({ withCalendarShortcuts, disabled }: Props) {
 							targetDateField.onChange(timeService.lib.getEndOfTheDay(timeService.lib.getTomorrow()))
 						}
 						onTodayPress={() =>
-							targetDateField.onChange(new Date(timeService.lib.getEndOfTheDay(timeService.lib.getCurrentTimestamp())))
+							targetDateField.onChange(timeService.lib.getEndOfTheDay(timeService.lib.getCurrentTimestamp()))
 						}
 						onCalendarPress={() => {
-							targetDateField.onChange(new Date(timeService.lib.getEndOfTheDay(timeService.lib.getDayAfterTomorrow())));
+							targetDateField.onChange(timeService.lib.getEndOfTheDay(timeService.lib.getDayAfterTomorrow()));
 						}}
 						value={targetDateField.value}
 					/>
