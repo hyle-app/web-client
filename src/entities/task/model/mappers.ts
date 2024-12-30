@@ -31,11 +31,12 @@ export function mapDtoToTask(dto: TaskDTO): Task {
 		completedAt: dto.completedAt,
 		targetCompletionDateRange,
 		description: dto.description ?? null,
-		subtasks: dto.subtasks.map((subtask, id) => ({
-			id: String(subtask.id || id),
-			title: subtask.title,
-			isCompleted: subtask.completed
-		})),
+		subtasks:
+			dto.subtasks?.map((subtask, id) => ({
+				id: String(subtask.id || id),
+				title: subtask.title,
+				isCompleted: subtask.completed
+			})) ?? [],
 		remindAt: dto.remindAt ?? null,
 		linkedGoalId: String(dto.linkedGoal?.id) ?? null
 	};
