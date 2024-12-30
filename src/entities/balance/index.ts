@@ -1,5 +1,6 @@
-import { outputs } from './model';
+import { inputs, outputs } from './model';
 
 export const balanceEntity = {
-	outputs
+	outputs,
+	inputs
 };

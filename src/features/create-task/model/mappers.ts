@@ -54,11 +54,12 @@ export function mapDtoToTask(dto: CreateTaskResponse): Task {
 		completedAt: dto.completedAt,
 		targetCompletionDateRange: targetCompletionDateRange,
 		description: dto.description ?? null,
-		subtasks: dto.subtasks.map((subtask) => ({
-			id: String(subtask.id),
-			title: subtask.title,
-			isCompleted: subtask.completed
-		})),
+		subtasks:
+			dto.subtasks?.map((subtask) => ({
+				id: String(subtask.id),
+				title: subtask.title,
+				isCompleted: subtask.completed
+			})) ?? [],
 		remindAt: dto.remindAt ?? null,
 		linkedGoalId: String(dto.linkedGoal?.id) ?? null
 	};

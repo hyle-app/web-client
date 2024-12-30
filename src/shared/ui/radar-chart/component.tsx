@@ -70,15 +70,23 @@ export function RadarChart<T extends string | symbol | number>({ data, getLabel,
 		<svg {...attributes} viewBox={`0 0 ${CANVAS_SIZE} ${CANVAS_SIZE}`}>
 			<defs>
 				<linearGradient id="weights-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-					<stop offset="0%" stop-color="#9F3FFF"></stop>
-					<stop offset="100%" stop-color="#3F69FF"></stop>
+					<stop offset="0%" stopColor="#9F3FFF"></stop>
+					<stop offset="100%" stopColor="#3F69FF"></stop>
 				</linearGradient>
 			</defs>
-			{scalesData.map(({ r }) => (
-				<circle cx={center.x} cy={center.y} r={r} fill="transparent" stroke="var(--color-gray-10)" stroke-width="2" />
+			{scalesData.map(({ r }, index) => (
+				<circle
+					cx={center.x}
+					cy={center.y}
+					r={r}
+					fill="transparent"
+					stroke="var(--color-gray-10)"
+					strokeWidth="2"
+					key={index}
+				/>
 			))}
-			{axesPaths.map((path) => (
-				<path d={path} fill="transparent" stroke="var(--color-gray-10)" strokeWidth="2" />
+			{axesPaths.map((path, index) => (
+				<path d={path} fill="transparent" stroke="var(--color-gray-10)" strokeWidth="2" key={index} />
 			))}
 			<path
 				d={weightsPath}
@@ -86,10 +94,10 @@ export function RadarChart<T extends string | symbol | number>({ data, getLabel,
 				stroke="url(#weights-gradient)"
 				strokeWidth={4}
 				strokeLinejoin="round"
-				fill-opacity="0.2"
+				fillOpacity="0.2"
 			></path>
 			{titles.map(({ x, y, label }) => (
-				<text x={x} y={y} font-size="16" fill="var(--text-and-icon-80)" text-anchor="middle">
+				<text x={x} y={y} fontSize="16" fill="var(--text-and-icon-80)" textAnchor="middle" key={label}>
 					{label}
 				</text>
 			))}
