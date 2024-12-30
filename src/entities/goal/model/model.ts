@@ -1,8 +1,9 @@
 import { createStore, combine, createEvent, createEffect } from 'effector';
 import { timeService } from '&shared/services/time';
 
-import type { DeleteGoalPayload, Goal, UpdateGoalPayload } from './types';
+import type { DeleteGoalPayload, Goal, GoalId, UpdateGoalPayload } from './types';
 import { goalApi } from '../api';
+import { once } from 'patronum';
 
 const $goalsAndAchievements = createStore<Goal[]>([]);
 const fetchGoalsAndAchievements = createEvent();
@@ -29,6 +30,11 @@ export const $overdueGoals = combine(
 	({ goals, realTimestamp }) => goals.filter((goal) => goal.targetDate < realTimestamp)
 );
 
+const getGoalOrAchievementById = (goalId: GoalId) =>
+	$goalsAndAchievements.map((goalsAndAchievements) => goalsAndAchievements.find((goal) => goal.id === goalId) ?? null);
+
+const initialGoalFetched = once(fetchGoalsAndAchievementsFx.done);
+
 export const inputs = {
 	fetchGoalsAndAchievements,
 	updateGoal,
@@ -39,7 +45,9 @@ export const outputs = {
 	$goals,
 	$achievements,
 	$goalsAndAchievements,
-	$overdueGoals
+	$overdueGoals,
+	getGoalOrAchievementById,
+	initialGoalFetched
 };
 
 export const internals = { fetchGoalsAndAchievementsFx, deleteGoalFx };

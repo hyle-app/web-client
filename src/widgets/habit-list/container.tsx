@@ -32,6 +32,7 @@ export function HabitListWidget({ className, ...attributes }: Props) {
 	});
 
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
+
 	const closeCreateHabitForm = React.useCallback(() => {
 		setIsCreateFormVisible(false);
 	}, []);
