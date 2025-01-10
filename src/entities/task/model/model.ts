@@ -11,6 +11,7 @@ const fetchTasksOfDay = createEvent<number>();
 const addTask = createEvent<AddTaskParams>();
 const updateTask = createEvent<UpdateTaskParams>();
 const deleteTask = createEvent<DeleteTaskParams>();
+const resetTasksList = createEvent();
 
 const fetchTasksOfDayFx = createEffect(taskApi.fetchTasksOfDay);
 const deleteTaskFx = createEffect(taskApi.deleteTask);
@@ -40,6 +41,6 @@ const $currentAppDateTasks = combine(
 	}
 );
 
-export const inputs = { fetchTasksOfDay, addTask, updateTask, deleteTask };
+export const inputs = { fetchTasksOfDay, addTask, updateTask, deleteTask, resetTasksList };
 export const outputs = { $tasksByDays, $currentAppDateTasks, $isFetchingTasks, $tasksList, getTaskById };
 export const internals = { fetchTasksOfDayFx, $datedTasksList, deleteTaskFx };

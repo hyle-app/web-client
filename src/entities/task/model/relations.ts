@@ -4,6 +4,7 @@ import { authService } from '&shared/services/auth';
 import { mapDtoToTask } from './mappers';
 import { isTaskAttachedToDay } from './lib';
 import { timeService } from '&shared/services/time';
+import { reset } from 'patronum';
 
 sample({
 	clock: inputs.fetchTasksOfDay,
@@ -75,4 +76,9 @@ sample({
 	filter: authService.outputs.$isLoggedIn,
 	fn: ({ user }, { taskId }) => ({ taskId, customerId: user!.uid }),
 	target: internals.deleteTaskFx
+});
+
+reset({
+	clock: inputs.resetTasksList,
+	target: internals.$datedTasksList
 });

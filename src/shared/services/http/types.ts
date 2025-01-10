@@ -6,3 +6,9 @@ export type SetHeaderPayload = {
 };
 
 export type HttpResponse<Data> = AxiosResponse<Data>;
+
+export type HttpConfig = {
+	protocol?: 'http' | 'https';
+	host: string;
+	port?: number;
+};

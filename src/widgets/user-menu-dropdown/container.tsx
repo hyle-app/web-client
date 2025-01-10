@@ -1,4 +1,3 @@
-import { useAuth } from '&shared/services/auth/hooks';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -18,6 +17,7 @@ import { cn } from '&shared/utils';
 import { Link, useRouter } from '@tanstack/react-router';
 import { useUnit } from 'effector-react';
 import { useState } from 'react';
+import { HttpModeToggle } from '&features/toggle-http-mode';
 
 export function UserMenuDropdownWidget() {
 	const router = useRouter();
@@ -27,7 +27,6 @@ export function UserMenuDropdownWidget() {
 		user: authService.outputs.$user,
 		isLoggedIn: authService.outputs.$isLoggedIn
 	});
-
 
 	const onlogout = () => {
 		logout();
@@ -117,8 +116,10 @@ export function UserMenuDropdownWidget() {
 									</a>
 								</div>
 							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<HttpModeToggle />
+							</DropdownMenuItem>
 						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={onlogout}>
 							<div className="flex items-center gap-2 flex-row">

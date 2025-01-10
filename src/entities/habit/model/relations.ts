@@ -2,6 +2,7 @@ import { sample } from 'effector';
 import { inputs, internals, outputs } from './model';
 import { authService } from '&shared/services/auth';
 import { mapDtoToHabit } from './mappers';
+import { reset } from 'patronum';
 
 sample({
 	clock: inputs.fetchHabitsOfDay,
@@ -62,4 +63,9 @@ sample({
 	filter: authService.outputs.$isLoggedIn,
 	fn: ({ user }, { habitId }) => ({ habitId, customerId: user!.uid }),
 	target: internals.deleteHabitFx
+});
+
+reset({
+	clock: inputs.resetHabitsList,
+	target: outputs.$habitsList
 });

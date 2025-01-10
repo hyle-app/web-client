@@ -10,16 +10,17 @@ import { reminderEntity } from '&entities/reminder';
 import { routerService } from '&shared/services/router';
 import { goalEntity } from '&entities/goal';
 import { balanceEntity } from '&entities/balance';
+import { httpService } from '&shared/services/http';
 
 sample({
 	clock: inputs.startApplication,
-	target: [routerService.inputs.init, timeService.inputs.init]
+	target: [routerService.inputs.init, timeService.inputs.init, httpService.inputs.init]
 });
 
 sample({
 	clock: combineEvents([
 		// TODO: Add condition to wait for all services to initialize if required
-		inputs.startApplication
+		httpService.outputs.inited
 	]),
 	target: internals.applicatonServicesInitialized
 });
@@ -88,6 +89,17 @@ sample({
 		taskEntity.inputs.fetchTasksOfDay,
 		habitEntity.inputs.fetchHabitsOfDay,
 		reminderEntity.inputs.fetchRemindersOfDay
+	]
+});
+
+sample({
+	clock: httpService.outputs.$httpConfigKind.updates,
+	target: [
+		taskEntity.inputs.resetTasksList,
+		reminderEntity.inputs.resetReminderList,
+		habitEntity.inputs.resetHabitsList,
+		goalEntity.inputs.resetGoalsList,
+		inputs.startApplication
 	]
 });
 // #endregion

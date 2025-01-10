@@ -2,6 +2,7 @@ import { sample } from 'effector';
 import { inputs, internals, outputs } from './model';
 import { authService } from '&shared/services/auth';
 import { mapDtoToReminder } from './mappers';
+import { reset } from 'patronum';
 
 sample({
 	clock: inputs.fetchRemindersOfDay,
@@ -57,5 +58,10 @@ sample({
 	fn: ({ remindersList }, { reminderId, reminder }) => {
 		return remindersList.map((r) => (r.id === reminderId ? reminder : r));
 	},
+	target: outputs.$remindersList
+});
+
+reset({
+	clock: inputs.resetReminderList,
 	target: outputs.$remindersList
 });

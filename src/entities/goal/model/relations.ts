@@ -2,6 +2,7 @@ import { sample } from 'effector';
 import { inputs, internals, outputs } from './model';
 import { mapDtoToGoal } from './mappers';
 import { authService } from '&shared/services/auth';
+import { reset } from 'patronum';
 
 sample({
 	clock: inputs.fetchGoalsAndAchievements,
@@ -45,4 +46,9 @@ sample({
 	filter: authService.outputs.$isLoggedIn,
 	fn: ({ user }, { goalId }) => ({ goalId, customerId: user!.uid }),
 	target: internals.deleteGoalFx
+});
+
+reset({
+	clock: inputs.resetGoalsList,
+	target: outputs.$goalsAndAchievements
 });
