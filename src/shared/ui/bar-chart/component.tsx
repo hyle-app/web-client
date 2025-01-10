@@ -12,7 +12,7 @@ export function BarChart<T extends string | symbol | number>({ data, getLabel, c
 	return (
 		<div
 			className={cn(
-				'grid grid-cols-6 gap-3 w-full h-full items-center justify-center max-w-[522px] w-full mx-auto',
+				'grid grid-cols-6 gap-3 w-full h-full items-center justify-center max-w-[522px] mx-auto',
 				className
 			)}
 			{...attributes}
