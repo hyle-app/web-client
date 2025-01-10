@@ -10,6 +10,7 @@ const fetchGoalsAndAchievements = createEvent();
 const addGoal = createEvent<Goal>();
 const deleteGoal = createEvent<DeleteGoalPayload>();
 const updateGoal = createEvent<UpdateGoalPayload>();
+const resetGoalsList = createEvent();
 
 const fetchGoalsAndAchievementsFx = createEffect(goalApi.fetchGoals);
 const deleteGoalFx = createEffect(goalApi.deleteGoal);
@@ -39,7 +40,8 @@ export const inputs = {
 	fetchGoalsAndAchievements,
 	updateGoal,
 	addGoal,
-	deleteGoal
+	deleteGoal,
+	resetGoalsList
 };
 export const outputs = {
 	$goals,

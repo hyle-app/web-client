@@ -1,3 +1,4 @@
+import { HttpModeToggle } from '&features/toggle-http-mode';
 import { authService } from '&shared/services/auth';
 import {
 	DropdownMenu,
@@ -115,8 +116,10 @@ export function UserMenuDropdownWidget() {
 									</a>
 								</div>
 							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<HttpModeToggle />
+							</DropdownMenuItem>
 						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={onlogout}>
 							<div className="flex flex-row items-center gap-2">

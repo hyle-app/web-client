@@ -10,6 +10,7 @@ const fetchRemindersOfDay = createEvent<number>();
 const addReminder = createEvent<Reminder>();
 const deleteReminder = createEvent<DeleteReminderParams>();
 const updateReminder = createEvent<UpdateReminderPayload>();
+const resetReminderList = createEvent();
 
 const $remindersList = createStore<Reminder[]>([]);
 
@@ -32,7 +33,8 @@ export const inputs = {
 	addReminder,
 	deleteReminder,
 	updateReminder,
-	fetchRemindersOfDay
+	fetchRemindersOfDay,
+	resetReminderList
 };
 export const outputs = { $remindersList, $currentAppDateReminders, getReminderById };
 export const internals = { fetchRemindersOfDayFx, deleteReminderFx };
