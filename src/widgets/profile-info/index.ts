@@ -1,0 +1,1 @@
+export { ProfileInfoWidget } from './container';

@@ -37,7 +37,8 @@ function AuthLayout() {
 				'/home': 'Главная',
 				'/goals': 'Цели',
 				'/balance': 'Баланс',
-				'/about': 'О нас'
+				'/about': 'О нас',
+				'/profile': 'Личный кабинет'
 			}[router.state.resolvedLocation.pathname] ?? ''
 		);
 	}, [routerState.resolvedLocation.pathname]);

@@ -19,6 +19,7 @@ import { Route as IndexImport } from './pages/index'
 // Create Virtual Routes
 
 const AuthIndexLazyImport = createFileRoute('/auth/')()
+const AuthProfileIndexLazyImport = createFileRoute('/_auth/profile/')()
 const AuthHomeIndexLazyImport = createFileRoute('/_auth/home/')()
 const AuthGoalsIndexLazyImport = createFileRoute('/_auth/goals/')()
 const AuthBalanceIndexLazyImport = createFileRoute('/_auth/balance/')()
@@ -42,6 +43,14 @@ const AuthIndexLazyRoute = AuthIndexLazyImport.update({
   path: '/auth/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./pages/auth/index.lazy').then((d) => d.Route))
+
+const AuthProfileIndexLazyRoute = AuthProfileIndexLazyImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./pages/_auth/profile/index.lazy').then((d) => d.Route),
+)
 
 const AuthHomeIndexLazyRoute = AuthHomeIndexLazyImport.update({
   id: '/home/',
@@ -128,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthHomeIndexLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/profile/': {
+      id: '/_auth/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthProfileIndexLazyImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -138,6 +154,7 @@ interface AuthRouteChildren {
   AuthBalanceIndexLazyRoute: typeof AuthBalanceIndexLazyRoute
   AuthGoalsIndexLazyRoute: typeof AuthGoalsIndexLazyRoute
   AuthHomeIndexLazyRoute: typeof AuthHomeIndexLazyRoute
+  AuthProfileIndexLazyRoute: typeof AuthProfileIndexLazyRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -145,6 +162,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthBalanceIndexLazyRoute: AuthBalanceIndexLazyRoute,
   AuthGoalsIndexLazyRoute: AuthGoalsIndexLazyRoute,
   AuthHomeIndexLazyRoute: AuthHomeIndexLazyRoute,
+  AuthProfileIndexLazyRoute: AuthProfileIndexLazyRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -157,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/balance': typeof AuthBalanceIndexLazyRoute
   '/goals': typeof AuthGoalsIndexLazyRoute
   '/home': typeof AuthHomeIndexLazyRoute
+  '/profile': typeof AuthProfileIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -167,6 +186,7 @@ export interface FileRoutesByTo {
   '/balance': typeof AuthBalanceIndexLazyRoute
   '/goals': typeof AuthGoalsIndexLazyRoute
   '/home': typeof AuthHomeIndexLazyRoute
+  '/profile': typeof AuthProfileIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -178,13 +198,30 @@ export interface FileRoutesById {
   '/_auth/balance/': typeof AuthBalanceIndexLazyRoute
   '/_auth/goals/': typeof AuthGoalsIndexLazyRoute
   '/_auth/home/': typeof AuthHomeIndexLazyRoute
+  '/_auth/profile/': typeof AuthProfileIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/auth' | '/about' | '/balance' | '/goals' | '/home'
+  fullPaths:
+    | '/'
+    | ''
+    | '/auth'
+    | '/about'
+    | '/balance'
+    | '/goals'
+    | '/home'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/auth' | '/about' | '/balance' | '/goals' | '/home'
+  to:
+    | '/'
+    | ''
+    | '/auth'
+    | '/about'
+    | '/balance'
+    | '/goals'
+    | '/home'
+    | '/profile'
   id:
     | '__root__'
     | '/'
@@ -194,6 +231,7 @@ export interface FileRouteTypes {
     | '/_auth/balance/'
     | '/_auth/goals/'
     | '/_auth/home/'
+    | '/_auth/profile/'
   fileRoutesById: FileRoutesById
 }
 
@@ -233,7 +271,8 @@ export const routeTree = rootRoute
         "/_auth/about/",
         "/_auth/balance/",
         "/_auth/goals/",
-        "/_auth/home/"
+        "/_auth/home/",
+        "/_auth/profile/"
       ]
     },
     "/auth/": {
@@ -253,6 +292,10 @@ export const routeTree = rootRoute
     },
     "/_auth/home/": {
       "filePath": "_auth/home/index.lazy.ts",
+      "parent": "/_auth"
+    },
+    "/_auth/profile/": {
+      "filePath": "_auth/profile/index.lazy.ts",
       "parent": "/_auth"
     }
   }

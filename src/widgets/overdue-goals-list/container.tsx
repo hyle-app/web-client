@@ -1,11 +1,11 @@
+import { GoalCard, goalEntity } from '&entities/goal';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
+import { cn } from '&shared/utils';
 import { useUnit } from 'effector-react';
 import { Props } from './types';
-import { cn } from '&shared/utils';
-import { goalEntity, GoalCard } from '&entities/goal';
 
 export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 	const { overdueGoals, realTimestamp } = useUnit({

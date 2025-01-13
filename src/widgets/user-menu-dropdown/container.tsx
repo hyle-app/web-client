@@ -59,7 +59,7 @@ export function UserMenuDropdownWidget() {
 							<DropdownMenuItem>
 								<div className="flex items-center gap-2 flex-row">
 									<Icon name="home" />
-									<span>Личный кабинет</span>
+									<a href="/profile">Личный кабинет</a>
 								</div>
 							</DropdownMenuItem>
 							<DropdownMenuSub>
