@@ -75,7 +75,6 @@ onIdTokenChanged(auth, async (user) => {
 	const idTokenResult = await user.getIdTokenResult();
 	const idToken = idTokenResult.token ?? null;
 	const expiresIn = new Date(idTokenResult.expirationTime).getTime() - Date.now();
-	console.log('idToken', idToken);
 	setTimeout(
 		() => {
 			// Force update token on expiration
