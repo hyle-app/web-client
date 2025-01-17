@@ -5,6 +5,7 @@ export type CreateSubtaskDTO = {
 
 export type CreateTaskDTO = {
 	title: string;
+	customerId: string;
 	taskCompletionDateRange: [number, null | number];
 	description: string | undefined;
 	subtasks: CreateSubtaskDTO[];

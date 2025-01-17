@@ -2,11 +2,13 @@ import { sample } from 'effector';
 import { inputs, internals, outputs } from './model';
 import { mapDtoToReminder, mapFormValuesToDTO } from './mappers';
 import { reminderEntity } from '&entities/reminder';
+import { authService } from '&shared/services/auth';
 
 sample({
 	clock: inputs.createNewReminder,
-	fn: (formValues) => {
-		return { reminder: mapFormValuesToDTO(formValues) };
+	source: { user: authService.outputs.$user },
+	fn: ({ user }, formValues) => {
+		return { reminder: mapFormValuesToDTO(formValues, user!.uid) };
 	},
 	target: internals.createReminderFx
 });

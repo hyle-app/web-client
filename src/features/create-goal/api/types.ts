@@ -5,6 +5,7 @@ export type GoalSteps = {
 };
 
 export type CreateGoalDTO = {
+	customerId: string;
 	title: string;
 	expiredAt: number;
 	description: string;

@@ -5,6 +5,7 @@ export type ReminderLinkedGoal = {
 
 export type CreateReminderDTO = {
 	title: string;
+	customerId: string;
 	expiresAt: number;
 	description: string;
 	linkedGoal: { id: string; title: string } | null;

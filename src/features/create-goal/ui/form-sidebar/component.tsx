@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import type { Props } from './types';
+import type { LinkedEntities, Props } from './types';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -12,7 +12,13 @@ import { useEventEffect } from '&shared/utils';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
-export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose }: Props) => {
+export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose, DecomposeImplementation }: Props) => {
+	const [isDecomposeOpen, setIsDecomposeOpen] = React.useState(false);
+	const [linkedEntities, setLinkedEntities] = React.useState<LinkedEntities>({
+		linkedReminderIds: [],
+		linkedTasksIds: [],
+		linkedHabitIds: []
+	});
 	const { createNewGoalEvent, isCreatingGoal } = useUnit({
 		createNewGoalEvent: inputs.createNewGoal,
 		isCreatingGoal: outputs.isGoalCreating
@@ -40,6 +46,11 @@ export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose }: Props) => 
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full">
 					<GoalForm withCalendarShortcuts />
+					<DecomposeImplementation
+						isOpen={isDecomposeOpen}
+						onClose={() => setIsDecomposeOpen(false)}
+						onApplyEntities={setLinkedEntities}
+					/>
 
 					<Button
 						variant="button"

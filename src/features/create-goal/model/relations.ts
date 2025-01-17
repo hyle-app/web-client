@@ -6,8 +6,9 @@ import { goalEntity } from '&entities/goal';
 
 sample({
 	clock: inputs.createNewGoal,
+	source: { user: authService.outputs.$user },
 	filter: authService.outputs.$isLoggedIn,
-	fn: (values) => ({ goal: mapFormValuesToDTO(values) }),
+	fn: ({ user }, values) => ({ goal: mapFormValuesToDTO(values, user!.uid) }),
 	target: internals.createGoalFx
 });
 

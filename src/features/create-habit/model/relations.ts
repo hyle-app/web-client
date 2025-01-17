@@ -8,7 +8,7 @@ sample({
 	clock: inputs.createNewHabit,
 	source: { user: authService.outputs.$user },
 	filter: authService.outputs.$isLoggedIn,
-	fn: ({ user }, habit) => ({ habit: mapFormValuesToDTO(habit), customerId: user!.uid }),
+	fn: ({ user }, habit) => ({ habit: mapFormValuesToDTO(habit, user!.uid), customerId: user!.uid }),
 	target: internals.createNewHabitFx
 });
 

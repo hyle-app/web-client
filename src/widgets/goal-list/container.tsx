@@ -11,6 +11,7 @@ import React from 'react';
 import { EditGoalFormSidebar } from '&features/edit-goal';
 import { inputs, outputs } from './model';
 import { completeGoalFeature } from '&features/complete-goal';
+import { DecomposeGoalSidebar } from '&features/decompose-goal';
 
 export const GoalListWidget = React.memo(({ className, ...attributes }: Props) => {
 	const {
@@ -77,7 +78,11 @@ export const GoalListWidget = React.memo(({ className, ...attributes }: Props) =
 					})}
 				</div>
 			</div>
-			<CreateGoalFormSidebar isOpen={isCreateFormVisible} onClose={handleCloseCreateForm} />
+			<CreateGoalFormSidebar
+				isOpen={isCreateFormVisible}
+				onClose={handleCloseCreateForm}
+				DecomposeImplementation={DecomposeGoalSidebar}
+			/>
 			{selectedGoalId && (
 				<EditGoalFormSidebar
 					isOpen={Boolean(selectedGoalId)}
