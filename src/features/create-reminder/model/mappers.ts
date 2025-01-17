@@ -2,8 +2,9 @@ import { Reminder, ReminderFormFieldName, ReminderFormValues } from '&entities/r
 import { ReminderRepeatRule } from '&entities/reminder/model/constants';
 import { CreateReminderDTO, ReminderDTO } from '../api';
 
-export function mapFormValuesToDTO(form: ReminderFormValues): CreateReminderDTO {
+export function mapFormValuesToDTO(form: ReminderFormValues, customerId: string): CreateReminderDTO {
 	return {
+		customerId,
 		title: form[ReminderFormFieldName.Title],
 		expiresAt: new Date(form[ReminderFormFieldName.TargetDate]).setMilliseconds(form[ReminderFormFieldName.TargetTime]),
 		description: form[ReminderFormFieldName.Description] ?? '',

@@ -2,8 +2,9 @@ import { Habit, HabitFormFieldName, HabitFormValues } from '&entities/habit';
 import { HabitRepeatRule } from '&entities/habit/model/constants';
 import { CreateHabitResponse, HabitDTO } from '../api';
 
-export function mapFormValuesToDTO(formValues: HabitFormValues): HabitDTO {
+export function mapFormValuesToDTO(formValues: HabitFormValues, customerId: string): HabitDTO {
 	return {
+		customerId,
 		title: formValues[HabitFormFieldName.Title],
 		completedAt: null,
 		description: formValues[HabitFormFieldName.Description] ?? undefined,
@@ -36,7 +37,7 @@ export function mapDtoToHabit(dto: CreateHabitResponse): Habit {
 		remindAt: dto.remindAt ?? null,
 		currentProgress: dto.progress,
 		targetProgress: dto.progressMax,
-		dailyProgressSnaphots: dto.progressedSteps,
+		dailyProgressSnaphots: dto.progressedSteps ?? {},
 		dailyTargetProgressDetails:
 			dto.steps?.count && parseInt(dto.steps.count) > 1
 				? { targetProgress: parseInt(dto.steps.count), label: dto.steps.rate ?? null }

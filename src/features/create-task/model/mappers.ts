@@ -2,8 +2,9 @@ import { Task, TaskFormValues } from '&entities/task';
 import { TaskFormFieldName } from '&entities/task/model/constants';
 import { CreateTaskDTO, CreateTaskResponse } from '../api/types';
 
-export function mapFormValueToDto(formValues: TaskFormValues): CreateTaskDTO {
+export function mapFormValueToDto(formValues: TaskFormValues, customerId: string): CreateTaskDTO {
 	return {
+		customerId,
 		title: formValues[TaskFormFieldName.Title],
 		taskCompletionDateRange: [
 			formValues[TaskFormFieldName.ExpirationDateRange].at(0)!.getTime(),

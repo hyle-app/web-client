@@ -1,0 +1,1 @@
+export { DecomposeGoalSidebar } from './component';

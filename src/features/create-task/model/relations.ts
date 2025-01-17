@@ -13,7 +13,7 @@ sample({
 	filter: authService.outputs.$isLoggedIn,
 	fn: ({ user }, formValues) => {
 		return {
-			task: mapFormValueToDto(formValues),
+			task: mapFormValueToDto(formValues, user!.uid),
 			customerId: user!.uid
 		};
 	},
