@@ -72,7 +72,17 @@ onIdTokenChanged(auth, async (user) => {
 		return;
 	}
 
-	const idToken = (await user.getIdToken()) ?? null;
+	const idTokenResult = await user.getIdTokenResult();
+	const idToken = idTokenResult.token ?? null;
+	const expiresIn = new Date(idTokenResult.expirationTime).getTime() - Date.now();
+	console.log('idToken', idToken);
+	setTimeout(
+		() => {
+			// Force update token on expiration
+			user.getIdTokenResult(true);
+		},
+		expiresIn - 1000 * 60
+	);
 	dispatchEvent(httpService.inputs.setHeader, { key: 'Authorization', value: `Bearer ${idToken}` });
 });
 
