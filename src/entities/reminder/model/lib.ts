@@ -222,12 +222,7 @@ function isReminderAttachedToDay(reminder: Reminder, realTimestamp: number, time
 
 	// Show overdue reminders on TODAY view
 	const lastCompletion = reminder.completions?.[reminder.completions.length - 1] ?? null;
-	if (
-		lastCompletion === null &&
-		startOfTargetDate === startOfCheckedTimestamp &&
-		startOfRealTimestamp === startOfCheckedTimestamp
-	)
-		return true;
+	if (lastCompletion === null && startOfRealTimestamp === startOfCheckedTimestamp) return true;
 
 	if (reminder.rule === ReminderRepeatRule.EveryWeek) {
 		return timeService.lib.getDayOfWeek(startOfTargetDate) === timeService.lib.getDayOfWeek(startOfCheckedTimestamp);
