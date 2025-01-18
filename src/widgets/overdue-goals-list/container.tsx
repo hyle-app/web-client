@@ -1,17 +1,39 @@
 import { timeService } from '&shared/services/time';
-import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { useUnit } from 'effector-react';
 import { Props } from './types';
 import { cn } from '&shared/utils';
 import { goalEntity, GoalCard } from '&entities/goal';
+import { inputs, outputs } from './model';
+import { EditGoalFormSidebar } from '&features/edit-goal';
+import React from 'react';
+import { completeGoalFeature } from '&features/complete-goal';
 
 export function OverdueGoalListWidget({ className, ...attributes }: Props) {
-	const { overdueGoals, realTimestamp } = useUnit({
+	const {
+		overdueGoals,
+		realTimestamp,
+		setSelectedGoalIdEvent,
+		resetSelectedGoalIdEvent,
+		selectedGoalId,
+
+		fillComplexGoalProgressEvent,
+		completeSimpleGoalEvent
+	} = useUnit({
 		overdueGoals: goalEntity.outputs.$overdueGoals,
-		realTimestamp: timeService.outputs.$realTimestamp
+		realTimestamp: timeService.outputs.$realTimestamp,
+		selectedGoalId: outputs.$selectedGoalId,
+		setSelectedGoalIdEvent: inputs.setSelectedGoalId,
+		resetSelectedGoalIdEvent: inputs.resetSelectedGoalId,
+
+		fillComplexGoalProgressEvent: completeGoalFeature.inputs.fillComplexGoalProgress,
+		completeSimpleGoalEvent: completeGoalFeature.inputs.completeSimpleGoal
 	});
+
+	const handleCloseEditForm = React.useCallback(() => {
+		resetSelectedGoalIdEvent();
+	}, []);
 
 	if (overdueGoals.length === 0) {
 		return null;
@@ -27,9 +49,6 @@ export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 							Просроченные
 						</Typography>
 					</div>
-					<Button variant="icon" appearance="primary" className="w-8 h-8">
-						<Icon name="plus" className="w-4 h-4 text-color-white" />
-					</Button>
 				</div>
 				<div className="flex flex-col gap-4 mt-6">
 					{overdueGoals.map((goal) => {
@@ -45,11 +64,27 @@ export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 										? timeService.lib.getDiffInTimeUnits(goal.targetDate, realTimestamp)
 										: null
 								}
+								onClick={() => setSelectedGoalIdEvent(goal.id)}
 							/>
 						);
 					})}
 				</div>
 			</div>
+
+			{selectedGoalId && (
+				<EditGoalFormSidebar
+					isOpen={Boolean(selectedGoalId)}
+					onClose={handleCloseEditForm}
+					goalId={selectedGoalId}
+					onFillComplexGoalProgress={(delta) =>
+						fillComplexGoalProgressEvent({
+							goalId: selectedGoalId,
+							progressDelta: delta
+						})
+					}
+					onCompleteSimpleGoal={() => completeSimpleGoalEvent({ goalId: selectedGoalId })}
+				/>
+			)}
 		</section>
 	);
 }

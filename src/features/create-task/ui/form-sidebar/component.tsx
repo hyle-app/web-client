@@ -37,9 +37,9 @@ export const CreateTaskFormSidebar = React.memo(({ isOpen, onClose }: Props) => 
 	};
 
 	React.useEffect(() => {
-		if (isOpen) return;
+		if (!isOpen) return;
 
-		form.reset();
+		form.reset(getDefaultFormValues(currentAppDateStart));
 	}, [isOpen]);
 
 	return (

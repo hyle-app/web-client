@@ -2,8 +2,9 @@ import { Goal, GoalFormFieldName, GoalFormValues } from '&entities/goal';
 import { BalanceCategory } from '&shared/constants';
 import { CreateGoalDTO, GoalDTO } from '../api';
 
-export function mapFormValuesToDTO(formValues: GoalFormValues): CreateGoalDTO {
+export function mapFormValuesToDTO(formValues: GoalFormValues, customerId: string): CreateGoalDTO {
 	return {
+		customerId,
 		title: formValues[GoalFormFieldName.Title],
 		expiredAt: formValues[GoalFormFieldName.TargetDate],
 		description: formValues[GoalFormFieldName.Description] ?? '',

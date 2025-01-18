@@ -29,9 +29,9 @@ export function CreateHabitFormSidebar({ isOpen, onClose }: Props) {
 	});
 
 	React.useEffect(() => {
-		if (isOpen) return;
+		if (!isOpen) return;
 
-		form.reset();
+		form.reset(getDefaultFormValues());
 	}, [isOpen]);
 
 	return (

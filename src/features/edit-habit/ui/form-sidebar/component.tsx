@@ -14,6 +14,7 @@ import { Input } from '&shared/ui/input';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
+import { ProgressLine } from '&shared/ui/progress-line';
 
 export function EditHabitFormSidebar({
 	isOpen,
@@ -129,42 +130,65 @@ export function EditHabitFormSidebar({
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full">
 					<HabitForm goalsToLinkTo={goals} />
-					{isDirty && (
-						<Button
-							variant="button"
-							appearance="primary"
-							onClick={form.handleSubmit(handleSubmit)}
-							className="mx-8 self-stretch"
-						>
-							Сохранить изменения
-						</Button>
-					)}
-					{isCompleteSimpleHabitButtonVisible && (
-						<Button variant="button" appearance="primary" onClick={onCompleteSimpleHabit} className="mx-8 self-stretch">
-							Отметить выполнено
-						</Button>
-					)}
-					{isFillComplexHabitDayProgressButtonVisible && (
-						<div className={cn('flex justify-end items-center mx-8 relative gap-4')}>
-							<Input
-								ref={deltaFieldInputRef}
-								value={complexDeltaFieldValue ?? ''}
-								onChange={handleDeltaFieldChange}
-								className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
-								label="Введите количество "
+					<div className="px-8 w-full flex flex-col gap-8">
+						<div className="gap-1 flex flex-col">
+							{habitEntity.lib.isComplexHabit(habit) && (
+								<ProgressLine
+									customLabel={habit.dailyTargetProgressDetails?.label || undefined}
+									value={habit.dailyProgressSnaphots[currentAppDateStart] ?? 0}
+									maxValue={habit.dailyTargetProgressDetails!.targetProgress}
+								/>
+							)}
+							<ProgressLine
+								value={habit.currentProgress}
+								maxValue={habit.targetProgress}
+								direction="inverse"
+								withDayLabel
+								variant="secondary"
+								labelRowEndSlot={
+									habit.penalty && (
+										<Typography className="text-color-gray-30 font-semibold">Штраф: {habit.penalty}</Typography>
+									)
+								}
 							/>
+						</div>
+						{isDirty && (
 							<Button
 								variant="button"
 								appearance="primary"
-								onClick={handleFillComplexHabitDayProgressButtonClick}
-								className={cn('will-change-auto transition-all z-[1] w-full', {
-									'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
-								})}
+								onClick={form.handleSubmit(handleSubmit)}
+								className="w-full"
 							>
-								Ввести прогресс
+								Сохранить изменения
 							</Button>
-						</div>
-					)}
+						)}
+						{isCompleteSimpleHabitButtonVisible && (
+							<Button variant="button" appearance="primary" onClick={onCompleteSimpleHabit} className="w-full">
+								Отметить выполнено
+							</Button>
+						)}
+						{isFillComplexHabitDayProgressButtonVisible && (
+							<div className={cn('flex justify-end items-center relative gap-4 w-full')}>
+								<Input
+									ref={deltaFieldInputRef}
+									value={complexDeltaFieldValue ?? ''}
+									onChange={handleDeltaFieldChange}
+									className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
+									label="Введите количество "
+								/>
+								<Button
+									variant="button"
+									appearance="primary"
+									onClick={handleFillComplexHabitDayProgressButtonClick}
+									className={cn('will-change-auto transition-all z-[1] w-full', {
+										'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
+									})}
+								>
+									Ввести прогресс
+								</Button>
+							</div>
+						)}
+					</div>
 				</div>
 			</FormProvider>
 		</Sidebar>

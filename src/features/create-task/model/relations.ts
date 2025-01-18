@@ -1,7 +1,6 @@
 import { sample } from 'effector';
 import { inputs, internals } from './model';
 import { taskEntity } from '&entities/task';
-import { timeService } from '&shared/services/time';
 import { mapDtoToTask, mapFormValueToDto } from './mappers';
 import { authService } from '&shared/services/auth';
 
@@ -13,7 +12,7 @@ sample({
 	filter: authService.outputs.$isLoggedIn,
 	fn: ({ user }, formValues) => {
 		return {
-			task: mapFormValueToDto(formValues),
+			task: mapFormValueToDto({ ...formValues }, user!.uid),
 			customerId: user!.uid
 		};
 	},
@@ -22,13 +21,10 @@ sample({
 
 sample({
 	clock: internals.createNewTaskFx.done,
-	source: {
-		selectedDateStartTimestamp: timeService.outputs.$currentAppDateStart
-	},
-	fn: ({ selectedDateStartTimestamp }, { result }) => {
+	fn: ({ result, params }) => {
 		return {
 			task: mapDtoToTask(result),
-			targetDateStartTimestamp: selectedDateStartTimestamp
+			targetDateStartTimestamp: params.task.taskCompletionDateRange.at(0)!
 		};
 	},
 	target: taskEntity.inputs.addTask

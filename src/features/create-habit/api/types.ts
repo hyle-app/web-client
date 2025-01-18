@@ -13,6 +13,7 @@ export type CreateHabitParams = {
 };
 
 export type HabitDTO = {
+	customerId: string;
 	title: string;
 	completedAt: number | null;
 	description: string | undefined;

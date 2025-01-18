@@ -11,10 +11,11 @@ import React from 'react';
 import { EditGoalFormSidebar } from '&features/edit-goal';
 import { inputs, outputs } from './model';
 import { completeGoalFeature } from '&features/complete-goal';
+import { DecomposeGoalSidebar } from '&features/decompose-goal';
 
 export const GoalListWidget = React.memo(({ className, ...attributes }: Props) => {
 	const {
-		goals,
+		nonOverdueGoals,
 		realTimestamp,
 
 		setSelectedGoalIdEvent,
@@ -23,7 +24,7 @@ export const GoalListWidget = React.memo(({ className, ...attributes }: Props) =
 		fillComplexGoalProgressEvent,
 		selectedGoalId
 	} = useUnit({
-		goals: goalEntity.outputs.$goals,
+		nonOverdueGoals: goalEntity.outputs.$nonOverdueGoals,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
 		realTimestamp: timeService.outputs.$realTimestamp,
 		selectedGoalId: outputs.$selectedGoalId,
@@ -58,7 +59,7 @@ export const GoalListWidget = React.memo(({ className, ...attributes }: Props) =
 					</Button>
 				</div>
 				<div className="flex flex-col gap-4 mt-6">
-					{goals.map((goal) => {
+					{nonOverdueGoals.map((goal) => {
 						return (
 							<GoalCard
 								key={goal.id}
@@ -77,7 +78,11 @@ export const GoalListWidget = React.memo(({ className, ...attributes }: Props) =
 					})}
 				</div>
 			</div>
-			<CreateGoalFormSidebar isOpen={isCreateFormVisible} onClose={handleCloseCreateForm} />
+			<CreateGoalFormSidebar
+				isOpen={isCreateFormVisible}
+				onClose={handleCloseCreateForm}
+				DecomposeImplementation={DecomposeGoalSidebar}
+			/>
 			{selectedGoalId && (
 				<EditGoalFormSidebar
 					isOpen={Boolean(selectedGoalId)}

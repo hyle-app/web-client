@@ -31,6 +31,14 @@ export const $overdueGoals = combine(
 	({ goals, realTimestamp }) => goals.filter((goal) => goal.targetDate < realTimestamp)
 );
 
+export const $nonOverdueGoals = combine(
+	{
+		goals: $goals,
+		realTimestamp: timeService.outputs.$realTimestamp
+	},
+	({ goals, realTimestamp }) => goals.filter((goal) => goal.targetDate >= realTimestamp)
+);
+
 const getGoalOrAchievementById = (goalId: GoalId) =>
 	$goalsAndAchievements.map((goalsAndAchievements) => goalsAndAchievements.find((goal) => goal.id === goalId) ?? null);
 
@@ -49,7 +57,8 @@ export const outputs = {
 	$goalsAndAchievements,
 	$overdueGoals,
 	getGoalOrAchievementById,
-	initialGoalFetched
+	initialGoalFetched,
+	$nonOverdueGoals
 };
 
 export const internals = { fetchGoalsAndAchievementsFx, deleteGoalFx };

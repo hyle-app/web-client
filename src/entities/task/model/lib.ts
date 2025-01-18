@@ -9,7 +9,7 @@ import { SubtaskId, Task, TaskFormValues } from './types';
  */
 export function getTaskTargetDate(task: Task, checkoutTimestamp: number): number {
 	if (task.targetCompletionDateRange[1] === null) {
-		return task.targetCompletionDateRange[0];
+		return timeService.lib.getStartOfTheDay(task.targetCompletionDateRange[0]);
 	}
 
 	const isViewDateBeyondTargetRange =
@@ -17,10 +17,10 @@ export function getTaskTargetDate(task: Task, checkoutTimestamp: number): number
 		timeService.lib.getStartOfTheDay(checkoutTimestamp);
 
 	if (isViewDateBeyondTargetRange) {
-		return task.targetCompletionDateRange[1];
+		return timeService.lib.getStartOfTheDay(task.targetCompletionDateRange[1]);
 	}
 
-	return checkoutTimestamp;
+	return timeService.lib.getStartOfTheDay(checkoutTimestamp);
 }
 
 export function getOverdueDetails(
@@ -112,7 +112,8 @@ export function isTaskAttachedToDay(task: Task, dayTimestamp: number, realTimest
 		return true;
 	}
 
-	if (!isTaskCompleted(task) && realTimestampStart === timeService.lib.getStartOfTheDay(dayTimestamp)) {
+	const isOverdue = getOverdueDetails(task, realTimestamp) !== null;
+	if (!isTaskCompleted(task) && realTimestampStart === timeService.lib.getStartOfTheDay(dayTimestamp) && isOverdue) {
 		return true;
 	}
 

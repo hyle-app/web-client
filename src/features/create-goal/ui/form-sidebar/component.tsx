@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import type { Props } from './types';
+import type { LinkedEntities, Props } from './types';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -12,14 +12,21 @@ import { useEventEffect } from '&shared/utils';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
-export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose }: Props) => {
-	const { createNewGoalEvent, isCreatingGoal } = useUnit({
+export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose, DecomposeImplementation }: Props) => {
+	const [isDecomposeOpen, setIsDecomposeOpen] = React.useState(false);
+	const [_linkedEntities, setLinkedEntities] = React.useState<LinkedEntities>({
+		linkedReminderIds: [],
+		linkedTasksIds: [],
+		linkedHabitIds: []
+	});
+	const { createNewGoalEvent, isCreatingGoal, currentApDateStart } = useUnit({
 		createNewGoalEvent: inputs.createNewGoal,
-		isCreatingGoal: outputs.isGoalCreating
+		isCreatingGoal: outputs.isGoalCreating,
+		currentApDateStart: timeService.outputs.$currentAppDateStart
 	});
 
 	const form = useForm<GoalFormValues>({
-		defaultValues: getDefaultFormValues(MIN_DATE),
+		defaultValues: getDefaultFormValues(new Date(currentApDateStart)),
 		resolver: zodResolver(getFormValidator(MIN_DATE))
 	});
 
@@ -30,9 +37,9 @@ export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose }: Props) => 
 	useEventEffect(outputs.goalCreated, onClose);
 
 	React.useEffect(() => {
-		if (isOpen) return;
+		if (!isOpen) return;
 
-		form.reset();
+		form.reset(getDefaultFormValues(new Date(currentApDateStart)));
 	}, [isOpen]);
 
 	return (
@@ -40,6 +47,11 @@ export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose }: Props) => 
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full">
 					<GoalForm withCalendarShortcuts />
+					<DecomposeImplementation
+						isOpen={isDecomposeOpen}
+						onClose={() => setIsDecomposeOpen(false)}
+						onApplyEntities={setLinkedEntities}
+					/>
 
 					<Button
 						variant="button"
