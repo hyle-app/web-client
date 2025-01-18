@@ -36,7 +36,7 @@ sample({
 	source: { datedTasksList: internals.$datedTasksList },
 	fn: ({ datedTasksList }, { task, targetDateStartTimestamp }) => {
 		const newTask = { ...task, __DATE_TIMESTAMP__: targetDateStartTimestamp };
-		return [...datedTasksList, newTask];
+		return datedTasksList.concat(newTask);
 	},
 	target: internals.$datedTasksList
 });
