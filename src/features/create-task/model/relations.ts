@@ -3,6 +3,7 @@ import { inputs, internals } from './model';
 import { taskEntity } from '&entities/task';
 import { mapDtoToTask, mapFormValueToDto } from './mappers';
 import { authService } from '&shared/services/auth';
+import { timeService } from '&shared/services/time';
 
 sample({
 	clock: inputs.createNewTask,
@@ -24,7 +25,7 @@ sample({
 	fn: ({ result, params }) => {
 		return {
 			task: mapDtoToTask(result),
-			targetDateStartTimestamp: params.task.taskCompletionDateRange.at(0)!
+			targetDateStartTimestamp: timeService.lib.getStartOfTheDay(params.task.taskCompletionDateRange.at(0)!)
 		};
 	},
 	target: taskEntity.inputs.addTask
