@@ -31,7 +31,7 @@ sample({
 
 		return {
 			remote: {
-				habit: mapHabitToDTO(updatedHabitState),
+				habit: mapHabitToDTO(updatedHabitState, user!.uid),
 				customerId: user!.uid
 			},
 			local: { habit: updatedHabitState }
@@ -68,7 +68,7 @@ sample({
 
 		return {
 			remote: {
-				habit: mapHabitToDTO(updatedHabitState),
+				habit: mapHabitToDTO(updatedHabitState, user!.uid),
 				customerId: user!.uid
 			},
 			local: { habit: updatedHabitState }

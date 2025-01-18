@@ -14,18 +14,19 @@ const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCu
 
 export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose, DecomposeImplementation }: Props) => {
 	const [isDecomposeOpen, setIsDecomposeOpen] = React.useState(false);
-	const [linkedEntities, setLinkedEntities] = React.useState<LinkedEntities>({
+	const [_linkedEntities, setLinkedEntities] = React.useState<LinkedEntities>({
 		linkedReminderIds: [],
 		linkedTasksIds: [],
 		linkedHabitIds: []
 	});
-	const { createNewGoalEvent, isCreatingGoal } = useUnit({
+	const { createNewGoalEvent, isCreatingGoal, currentApDateStart } = useUnit({
 		createNewGoalEvent: inputs.createNewGoal,
-		isCreatingGoal: outputs.isGoalCreating
+		isCreatingGoal: outputs.isGoalCreating,
+		currentApDateStart: timeService.outputs.$currentAppDateStart
 	});
 
 	const form = useForm<GoalFormValues>({
-		defaultValues: getDefaultFormValues(MIN_DATE),
+		defaultValues: getDefaultFormValues(new Date(currentApDateStart)),
 		resolver: zodResolver(getFormValidator(MIN_DATE))
 	});
 
@@ -36,9 +37,9 @@ export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose, DecomposeImp
 	useEventEffect(outputs.goalCreated, onClose);
 
 	React.useEffect(() => {
-		if (isOpen) return;
+		if (!isOpen) return;
 
-		form.reset();
+		form.reset(getDefaultFormValues(new Date(currentApDateStart)));
 	}, [isOpen]);
 
 	return (

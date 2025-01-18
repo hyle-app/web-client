@@ -13,6 +13,7 @@ import { ConfirmPopover } from '&shared/ui/confirm-popover';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { Input } from '&shared/ui/input';
+import { ProgressLine } from '&shared/ui/progress-line';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -129,49 +130,58 @@ export const EditGoalFormSidebar = React.memo(
 					<div className="flex flex-col justify-between pb-8 h-full">
 						<GoalForm withCalendarShortcuts={!disabled} disabled={disabled} />
 
-						{isSaveChangesButtonVisible && (
-							<Button
-								variant="button"
-								appearance="primary"
-								onClick={form.handleSubmit(handleSubmit)}
-								className="mx-8 self-stretch"
-								disabled={isEditingGoal}
-							>
-								Сохранить изменения
-							</Button>
-						)}
-						{isComplexCompleteButtonVisible && (
-							<div className={cn('flex justify-end items-center mx-8 relative gap-4')}>
-								<Input
-									ref={deltaFieldInputRef}
-									value={complexDeltaFieldValue ?? ''}
-									onChange={handleDeltaFieldChange}
-									className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
-									label="Введите количество "
+						<div className="w-full px-8 flex flex-col gap-8">
+							{goalEntity.lib.isComplexGoal(goal!) && (
+								<ProgressLine
+									customLabel={goal?.progress?.label || undefined}
+									value={goal?.progress?.currentProgress || 0}
+									maxValue={goal?.progress?.targetProgress || 0}
 								/>
+							)}
+							{isSaveChangesButtonVisible && (
 								<Button
 									variant="button"
 									appearance="primary"
-									onClick={handleFillComplexHabitDayProgressButtonClick}
-									className={cn('will-change-auto transition-all z-[1] w-full', {
-										'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
-									})}
+									onClick={form.handleSubmit(handleSubmit)}
+									className="mx-8 self-stretch"
+									disabled={isEditingGoal}
 								>
-									Ввести прогресс
+									Сохранить изменения
 								</Button>
-							</div>
-						)}
-						{isSimpleCompleteButtonVisible && (
-							<Button
-								variant="button"
-								appearance="primary"
-								onClick={onCompleteSimpleGoal}
-								className="mx-8 self-stretch"
-								disabled={isEditingGoal}
-							>
-								Отметить выполнение
-							</Button>
-						)}
+							)}
+							{isComplexCompleteButtonVisible && (
+								<div className={cn('flex justify-end items-center 8 relative gap-4 w-full')}>
+									<Input
+										ref={deltaFieldInputRef}
+										value={complexDeltaFieldValue ?? ''}
+										onChange={handleDeltaFieldChange}
+										className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
+										label="Введите количество "
+									/>
+									<Button
+										variant="button"
+										appearance="primary"
+										onClick={handleFillComplexHabitDayProgressButtonClick}
+										className={cn('will-change-auto transition-all z-[1] w-full', {
+											'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
+										})}
+									>
+										Ввести прогресс
+									</Button>
+								</div>
+							)}
+							{isSimpleCompleteButtonVisible && (
+								<Button
+									variant="button"
+									appearance="primary"
+									onClick={onCompleteSimpleGoal}
+									className="w-full"
+									disabled={isEditingGoal}
+								>
+									Отметить выполнение
+								</Button>
+							)}
+						</div>
 					</div>
 				</FormProvider>
 			</Sidebar>

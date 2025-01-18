@@ -16,9 +16,10 @@ import { timeService } from '&shared/services/time';
 const minDateTime = new Date(timeService.lib.getCurrentTimestamp());
 
 export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props) => {
-	const { goals, createNewReminderEvent } = useUnit({
+	const { goals, createNewReminderEvent, currentAppDateStart } = useUnit({
 		goals: goalEntity.outputs.$goals,
-		createNewReminderEvent: inputs.createNewReminder
+		createNewReminderEvent: inputs.createNewReminder,
+		currentAppDateStart: timeService.outputs.$currentAppDateStart
 	});
 
 	const handleSubmit = (formValues: ReminderFormValues) => {
@@ -30,14 +31,14 @@ export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props)
 	});
 
 	const form = useForm({
-		defaultValues: getDefaultFormValues(timeService.lib.getCurrentTimestamp()),
+		defaultValues: getDefaultFormValues(currentAppDateStart),
 		resolver: zodResolver(getFormValidatorScheme(minDateTime))
 	});
 
 	React.useEffect(() => {
-		if (isOpen) return;
+		if (!isOpen) return;
 
-		form.reset();
+		form.reset(getDefaultFormValues(currentAppDateStart));
 	}, [isOpen]);
 
 	return (
