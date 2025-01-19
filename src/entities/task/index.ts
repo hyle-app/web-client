@@ -14,7 +14,7 @@ import {
 
 export type { TaskId, SubtaskId, Subtask, Task, TaskFormValues } from './model';
 
-export { TaskCard, CompletableSubtaskCard, SubtaskCard, TaskForm } from './ui';
+export { TaskCard, CompletableSubtaskCard, SubtaskCard, TaskForm, CompletableTaskCard } from './ui';
 
 export const taskEntity = {
 	inputs,

@@ -46,3 +46,9 @@ export type UpdateGoalPayload = {
 	goalId: GoalId;
 	goal: Goal;
 };
+
+export type LinkedEntities = {
+	taskIds: string[];
+	reminderIds: string[];
+	habitIds: string[];
+};

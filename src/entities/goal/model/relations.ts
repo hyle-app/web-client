@@ -1,8 +1,9 @@
 import { sample } from 'effector';
 import { inputs, internals, outputs } from './model';
-import { mapDtoToGoal } from './mappers';
+import { mapDtoToGoal, mapLinkedEntitiesDtoToLinkedEntities } from './mappers';
 import { authService } from '&shared/services/auth';
 import { reset } from 'patronum';
+import { GoalId, LinkedEntities } from './types';
 
 sample({
 	clock: inputs.fetchGoalsAndAchievements,
@@ -51,4 +52,25 @@ sample({
 reset({
 	clock: inputs.resetGoalsList,
 	target: outputs.$goalsAndAchievements
+});
+
+sample({
+	clock: internals.$goalsAndAchiementsIds.updates,
+	source: { user: authService.outputs.$user },
+	filter: authService.outputs.$isLoggedIn,
+	fn: ({ user }, goalIds) => ({ goalIds, customerId: user!.uid }),
+	target: internals.fetchGoalsLinkedEntitiesFx
+});
+
+sample({
+	clock: internals.fetchGoalsLinkedEntitiesFx.doneData,
+	fn: (linkedEntities) =>
+		linkedEntities.reduce(
+			(acc, linkedEntity) => {
+				acc[String(linkedEntity.goal.goalId)] = mapLinkedEntitiesDtoToLinkedEntities(linkedEntity);
+				return acc;
+			},
+			{} as Record<GoalId, LinkedEntities>
+		),
+	target: outputs.$linkedEntities
 });

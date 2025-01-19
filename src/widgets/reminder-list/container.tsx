@@ -1,4 +1,4 @@
-import { ReminderCard, reminderEntity, ReminderId } from '&entities/reminder';
+import { CompletableReminderCard, reminderEntity, ReminderId } from '&entities/reminder';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
@@ -48,7 +48,7 @@ export function ReminderListWidget({ className, ...attributes }: Props) {
 				<div className="flex flex-col gap-4 mt-6">
 					{reminders.map((reminder) => {
 						return (
-							<ReminderCard
+							<CompletableReminderCard
 								key={reminder.id}
 								title={reminder.title}
 								isCompleted={reminder.completedAt !== null}

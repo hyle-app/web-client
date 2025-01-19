@@ -65,15 +65,15 @@ export function Sidebar({
 			})}
 		>
 			<div
-				className={cn('absolute top-0 left-0 right-0 bottom-0 bg-color-overlay-bg duration-150', {
+				className={cn('absolute top-0 left-0 right-0 bottom-0 bg-color-overlay-bg duration-150 z-10', {
 					'opacity-1 touch-all': isBackdropVisible,
 					'touch-none opacity-0': !isBackdropVisible
 				})}
-				onClick={closeOnOverlayClick ? handleClose : undefined}
+				onClick={() => closeOnOverlayClick && handleClose()}
 			></div>
 			<div
 				className={cn(
-					'absolute right-0 top-0 bottom-0 w-[590px] max-w-full transition-transform bg-color-bg-95 duration-300',
+					'absolute right-0 top-0 bottom-0 w-[590px] max-w-full transition-transform bg-color-bg-95 duration-300 z-20',
 					{
 						'translate-x-full': !isSidebarVisible,
 						'translate-x-0': isSidebarVisible
@@ -101,7 +101,7 @@ export function Sidebar({
 					)}
 					<CloseButton onClick={handleClose} />
 				</div>
-				{children}
+				<div className="h-full overflow-y-auto flex flex-col">{children}</div>
 			</div>
 		</div>
 	);

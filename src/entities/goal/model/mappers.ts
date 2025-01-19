@@ -1,6 +1,6 @@
 import { BalanceCategory } from '&shared/constants';
-import { GoalDTO } from '../api';
-import { Goal } from './types';
+import { GoalDTO, FetchGoalsLinkedEntitiesDTO } from '../api';
+import { Goal, LinkedEntities } from './types';
 
 export function mapDtoToGoal(dto: GoalDTO): Goal {
 	return {
@@ -21,5 +21,13 @@ export function mapDtoToGoal(dto: GoalDTO): Goal {
 				: null,
 		category: dto.goal.category as BalanceCategory,
 		weight: dto.goal.weight || 1
+	};
+}
+
+export function mapLinkedEntitiesDtoToLinkedEntities(dto: FetchGoalsLinkedEntitiesDTO): LinkedEntities {
+	return {
+		taskIds: dto.tasks.map((task) => String(task.taskId)),
+		reminderIds: dto.reminders.map((reminder) => String(reminder.reminderId)),
+		habitIds: dto.habits.map((habit) => String(habit.habitId))
 	};
 }

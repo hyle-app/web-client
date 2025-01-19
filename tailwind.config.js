@@ -66,7 +66,8 @@ export default {
 
 				'color-brand-solid-gradient': 'var(--color-brand-solid-gradient)',
 
-				'color-overlay-bg': 'var(--color-overlay-bg)'
+				'color-overlay-bg': 'var(--color-overlay-bg)',
+				'color-select-card-bg': '#dde5ff'
 			},
 			boxShadow: {
 				card: 'var(--card-shadow)',
@@ -89,7 +90,7 @@ export default {
 			zIndex: {
 				sidebar: 50,
 				'sidebar-overlay': 49,
-				'select-dropdown': 51
+				'select-dropdown': 100
 			}
 		}
 	},

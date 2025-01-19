@@ -1,14 +1,14 @@
 import { TimeUnit } from '&shared/services/time';
-import type { Subtask } from '../../model';
 
 export type Props = {
+	className?: string;
 	title: string;
 	isCompleted?: boolean;
-	targetDate?: number;
+	relatedGoalName?: string;
 	overdueDetails?: {
 		unit: TimeUnit;
 		value: number;
 	} | null;
-	relatedGoalName?: string;
-	subtasks?: Subtask[];
-} & React.HTMLAttributes<HTMLButtonElement>;
+	targetDateTime: number;
+	onToggleCompletion?(): void;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;

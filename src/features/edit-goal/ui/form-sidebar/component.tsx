@@ -2,8 +2,8 @@ import { useUnit } from 'effector-react';
 import type { Props } from './types';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { goalEntity, GoalForm, GoalFormValues } from '&entities/goal';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { goalEntity, GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { timeService } from '&shared/services/time';
 import { Sidebar } from '&shared/ui/sidebar';
@@ -18,14 +18,25 @@ import { ProgressLine } from '&shared/ui/progress-line';
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
 export const EditGoalFormSidebar = React.memo(
-	({ isOpen, onClose, goalId, disabled, onFillComplexGoalProgress, onCompleteSimpleGoal }: Props) => {
-		const { editGoalEvent, isEditingGoal, goal, deleteGoalEvent } = useUnit({
+	({
+		isOpen,
+		onClose,
+		goalId,
+		disabled,
+		onFillComplexGoalProgress,
+		onCompleteSimpleGoal,
+		DecomposePreviewImplementation,
+		DecomposeImplementation
+	}: Props) => {
+		const { editGoalEvent, isEditingGoal, goal, deleteGoalEvent, linkedEntities } = useUnit({
 			editGoalEvent: inputs.editGoal,
 			isEditingGoal: outputs.isGoalEditing,
 			goal: goalEntity.outputs.getGoalOrAchievementById(goalId),
-			deleteGoalEvent: goalEntity.inputs.deleteGoal
+			deleteGoalEvent: goalEntity.inputs.deleteGoal,
+			linkedEntities: goalEntity.outputs.getLinkedEntitiesOfGoal(goalId)
 		});
 
+		const [isDecomposeOpen, setIsDecomposeOpen] = React.useState(false);
 		const [isConfirmDeletePopoverOpen, setIsConfirmDeletePopoverOpen] = React.useState(false);
 		const sidebarActionMenuRef = React.useRef<HTMLDivElement>(null);
 		const [isComplexDeltaFieldVisible, setIsComplexDeltaFieldVisible] = React.useState(false);
@@ -33,7 +44,7 @@ export const EditGoalFormSidebar = React.memo(
 		const deltaFieldInputRef = React.useRef<HTMLInputElement>(null);
 
 		const form = useForm<GoalFormValues>({
-			defaultValues: getDefaultFormValues(goal!),
+			defaultValues: getDefaultFormValues(goal!, linkedEntities),
 			resolver: zodResolver(getFormValidator(goal!, MIN_DATE))
 		});
 
@@ -46,7 +57,7 @@ export const EditGoalFormSidebar = React.memo(
 		} = form;
 
 		useEventEffect(outputs.goalEdited, () => {
-			form.reset(getDefaultFormValues(goal!));
+			form.reset(getDefaultFormValues(goal!, linkedEntities));
 		});
 
 		React.useEffect(() => {
@@ -54,6 +65,15 @@ export const EditGoalFormSidebar = React.memo(
 
 			form.reset();
 		}, [isOpen]);
+
+		// NOTE: This is a workaround for the case when linkedEntities are not loaded yet
+		const linkedEntitiesRef = React.useRef(linkedEntities);
+		React.useEffect(() => {
+			if (linkedEntitiesRef.current === null && linkedEntities !== null) {
+				form.setValue(GoalFormFieldName.LinkedEntities, getDefaultFormValues(goal!, linkedEntities).linkedEntities);
+				linkedEntitiesRef.current = linkedEntities;
+			}
+		}, [linkedEntities]);
 
 		const handleClose = () => {
 			setIsConfirmDeletePopoverOpen(false);
@@ -76,6 +96,10 @@ export const EditGoalFormSidebar = React.memo(
 
 		const handleDeltaFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 			setComplexDeltaFieldValue(event.target.value ?? null);
+		};
+
+		const handleSetLinkedEntities = (linkedEntities: LinkedEntities) => {
+			form.setValue(GoalFormFieldName.LinkedEntities, linkedEntities);
 		};
 
 		const handleFillComplexHabitDayProgressButtonClick = () => {
@@ -103,6 +127,8 @@ export const EditGoalFormSidebar = React.memo(
 			!goalEntity.lib.isComplexGoal(goal!) &&
 			!goalEntity.lib.isGoalCompleted(goal!);
 
+		const linkedEntitiesIds = useWatch({ control: form.control, name: GoalFormFieldName.LinkedEntities });
+
 		return (
 			<Sidebar
 				isOpen={isOpen}
@@ -128,7 +154,23 @@ export const EditGoalFormSidebar = React.memo(
 			>
 				<FormProvider {...form}>
 					<div className="flex flex-col justify-between pb-8 h-full">
-						<GoalForm withCalendarShortcuts={!disabled} disabled={disabled} />
+						<GoalForm
+							withCalendarShortcuts={!disabled}
+							disabled={disabled}
+							onDecomposeClick={() => setIsDecomposeOpen(true)}
+							linkedEntitiesPreviewImpl={
+								<DecomposePreviewImplementation
+									linkedEntities={linkedEntitiesIds}
+									onEditClick={() => setIsDecomposeOpen(true)}
+								/>
+							}
+						/>
+						<DecomposeImplementation
+							value={form.watch(GoalFormFieldName.LinkedEntities)}
+							isOpen={isDecomposeOpen}
+							onClose={() => setIsDecomposeOpen(false)}
+							onApplyEntities={handleSetLinkedEntities}
+						/>
 
 						<div className="w-full px-8 flex flex-col gap-8">
 							{goalEntity.lib.isComplexGoal(goal!) && (
@@ -143,7 +185,7 @@ export const EditGoalFormSidebar = React.memo(
 									variant="button"
 									appearance="primary"
 									onClick={form.handleSubmit(handleSubmit)}
-									className="mx-8 self-stretch"
+									className="self-stretch"
 									disabled={isEditingGoal}
 								>
 									Сохранить изменения

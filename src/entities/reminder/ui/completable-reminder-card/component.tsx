@@ -1,3 +1,4 @@
+import { Checkbox } from '&shared/ui/checkbox';
 import { EntityCard } from '&shared/ui/entity-card';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
@@ -5,7 +6,7 @@ import React from 'react';
 import { Props } from './types';
 import { timeService } from '&shared/services/time';
 
-export function ReminderCard({
+export function CompletableReminderCard({
 	className,
 	isCompleted,
 	title,
@@ -49,6 +50,16 @@ export function ReminderCard({
 		<EntityCard
 			className={className}
 			titleSlot={<Typography>{title}</Typography>}
+			leftSlot={
+				<div
+					className="w-6 h-10 flex items-center justify-center shrink-0"
+					onClick={(event) => {
+						if (onToggleCompletion) event.stopPropagation();
+					}}
+				>
+					<Checkbox checked={isCompleted} onClick={onToggleCompletion} />
+				</div>
+			}
 			relationSlot={
 				relatedGoalName && (
 					<div className="flex gap-0.5 items-center">

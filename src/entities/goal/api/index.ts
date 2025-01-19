@@ -1,2 +1,2 @@
 export { goalApi } from './api';
-export type { GoalDTO } from './types';
+export type { GoalDTO, FetchGoalsLinkedEntitiesDTO } from './types';
