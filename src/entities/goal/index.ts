@@ -8,4 +8,4 @@ export const goalEntity = {
 
 export { GoalCard, GoalForm } from './ui';
 export { GoalFormFieldName } from './model';
-export type { GoalFormValues, Goal } from './model';
+export type { GoalFormValues, Goal, GoalId, LinkedEntities } from './model';

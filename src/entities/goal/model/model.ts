@@ -1,7 +1,7 @@
 import { createStore, combine, createEvent, createEffect } from 'effector';
 import { timeService } from '&shared/services/time';
 
-import type { DeleteGoalPayload, Goal, GoalId, UpdateGoalPayload } from './types';
+import type { DeleteGoalPayload, Goal, GoalId, LinkedEntities, UpdateGoalPayload } from './types';
 import { goalApi } from '../api';
 import { once } from 'patronum';
 
@@ -44,6 +44,12 @@ const getGoalOrAchievementById = (goalId: GoalId) =>
 
 const initialGoalFetched = once(fetchGoalsAndAchievementsFx.done);
 
+const $goalsAndAchiementsIds = $goalsAndAchievements.map((goals) => goals.map((goal) => goal.id));
+const fetchGoalsLinkedEntitiesFx = createEffect(goalApi.fetchGoalsLinkedEntities);
+const $linkedEntities = createStore<Record<GoalId, LinkedEntities>>({});
+const getLinkedEntitiesOfGoal = (goalId: GoalId) =>
+	$linkedEntities.map((linkedEntities) => linkedEntities[goalId] ?? null);
+
 export const inputs = {
 	fetchGoalsAndAchievements,
 	updateGoal,
@@ -58,7 +64,14 @@ export const outputs = {
 	$overdueGoals,
 	getGoalOrAchievementById,
 	initialGoalFetched,
-	$nonOverdueGoals
+	$nonOverdueGoals,
+	getLinkedEntitiesOfGoal,
+	$linkedEntities
 };
 
-export const internals = { fetchGoalsAndAchievementsFx, deleteGoalFx };
+export const internals = {
+	fetchGoalsAndAchievementsFx,
+	deleteGoalFx,
+	fetchGoalsLinkedEntitiesFx,
+	$goalsAndAchiementsIds
+};

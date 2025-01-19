@@ -1,9 +1,9 @@
 import { useUnit } from 'effector-react';
-import type { LinkedEntities, Props } from './types';
+import type { Props } from './types';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { goalEntity, GoalForm, GoalFormFieldName, GoalFormValues } from '&entities/goal';
+import { goalEntity, GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { timeService } from '&shared/services/time';
 import { Sidebar } from '&shared/ui/sidebar';
@@ -28,11 +28,12 @@ export const EditGoalFormSidebar = React.memo(
 		DecomposePreviewImplementation,
 		DecomposeImplementation
 	}: Props) => {
-		const { editGoalEvent, isEditingGoal, goal, deleteGoalEvent } = useUnit({
+		const { editGoalEvent, isEditingGoal, goal, deleteGoalEvent, linkedEntities } = useUnit({
 			editGoalEvent: inputs.editGoal,
 			isEditingGoal: outputs.isGoalEditing,
 			goal: goalEntity.outputs.getGoalOrAchievementById(goalId),
-			deleteGoalEvent: goalEntity.inputs.deleteGoal
+			deleteGoalEvent: goalEntity.inputs.deleteGoal,
+			linkedEntities: goalEntity.outputs.getLinkedEntitiesOfGoal(goalId)
 		});
 
 		const [isDecomposeOpen, setIsDecomposeOpen] = React.useState(false);
@@ -43,7 +44,7 @@ export const EditGoalFormSidebar = React.memo(
 		const deltaFieldInputRef = React.useRef<HTMLInputElement>(null);
 
 		const form = useForm<GoalFormValues>({
-			defaultValues: getDefaultFormValues(goal!),
+			defaultValues: getDefaultFormValues(goal!, linkedEntities),
 			resolver: zodResolver(getFormValidator(goal!, MIN_DATE))
 		});
 
@@ -56,7 +57,7 @@ export const EditGoalFormSidebar = React.memo(
 		} = form;
 
 		useEventEffect(outputs.goalEdited, () => {
-			form.reset(getDefaultFormValues(goal!));
+			form.reset(getDefaultFormValues(goal!, linkedEntities));
 		});
 
 		React.useEffect(() => {
@@ -64,6 +65,15 @@ export const EditGoalFormSidebar = React.memo(
 
 			form.reset();
 		}, [isOpen]);
+
+		// NOTE: This is a workaround for the case when linkedEntities are not loaded yet
+		const linkedEntitiesRef = React.useRef(linkedEntities);
+		React.useEffect(() => {
+			if (linkedEntitiesRef.current === null && linkedEntities !== null) {
+				form.setValue(GoalFormFieldName.LinkedEntities, getDefaultFormValues(goal!, linkedEntities).linkedEntities);
+				linkedEntitiesRef.current = linkedEntities;
+			}
+		}, [linkedEntities]);
 
 		const handleClose = () => {
 			setIsConfirmDeletePopoverOpen(false);
@@ -117,7 +127,7 @@ export const EditGoalFormSidebar = React.memo(
 			!goalEntity.lib.isComplexGoal(goal!) &&
 			!goalEntity.lib.isGoalCompleted(goal!);
 
-		const linkedEntities = useWatch({ control: form.control, name: GoalFormFieldName.LinkedEntities });
+		const linkedEntitiesIds = useWatch({ control: form.control, name: GoalFormFieldName.LinkedEntities });
 
 		return (
 			<Sidebar
@@ -150,7 +160,7 @@ export const EditGoalFormSidebar = React.memo(
 							onDecomposeClick={() => setIsDecomposeOpen(true)}
 							linkedEntitiesPreviewImpl={
 								<DecomposePreviewImplementation
-									linkedEntities={linkedEntities}
+									linkedEntities={linkedEntitiesIds}
 									onEditClick={() => setIsDecomposeOpen(true)}
 								/>
 							}

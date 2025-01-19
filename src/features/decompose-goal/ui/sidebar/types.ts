@@ -1,12 +1,4 @@
-import { HabitId } from '&entities/habit';
-import { ReminderId } from '&entities/reminder';
-import { TaskId } from '&entities/task';
-
-type LinkedEntities = {
-	reminderIds: ReminderId[];
-	taskIds: TaskId[];
-	habitIds: HabitId[];
-};
+import { LinkedEntities } from '&entities/goal';
 
 export type Props = {
 	onApplyEntities(entities: LinkedEntities): void;
