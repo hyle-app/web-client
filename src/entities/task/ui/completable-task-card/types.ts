@@ -11,4 +11,6 @@ export type Props = {
 	} | null;
 	relatedGoalName?: string;
 	subtasks?: Subtask[];
+	onSubtaskCompletionToggle?(subtaskId: SubtaskId): void;
+	onCompletionToggle?(): void;
 } & React.HTMLAttributes<HTMLButtonElement>;

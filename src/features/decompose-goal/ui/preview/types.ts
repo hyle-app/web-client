@@ -2,16 +2,14 @@ import { HabitId } from '&entities/habit';
 import { ReminderId } from '&entities/reminder';
 import { TaskId } from '&entities/task';
 
-type LinkedEntities = {
+export type LinkedEntities = {
 	reminderIds: ReminderId[];
 	taskIds: TaskId[];
 	habitIds: HabitId[];
 };
 
 export type Props = {
-	onApplyEntities(entities: LinkedEntities): void;
-	value: LinkedEntities;
 	className?: string;
-	onClose(): void;
-	isOpen: boolean;
+	linkedEntities: LinkedEntities;
+	onEditClick(): void;
 };

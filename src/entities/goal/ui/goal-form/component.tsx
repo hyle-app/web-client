@@ -1,4 +1,4 @@
-import { useController, useFormContext } from 'react-hook-form';
+import { useController, useFormContext, useWatch } from 'react-hook-form';
 import { Props } from './types';
 import { GoalFormFieldName, type GoalFormValues } from '../../model';
 import React from 'react';
@@ -12,6 +12,7 @@ import { CalendarField } from '&shared/ui/calendar-field/component';
 import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
 import { timeService } from '&shared/services/time';
 import { ALLOWED_GOAL_WEIGHTS } from '&entities/goal/model/constants';
+import { Typography } from '&shared/ui/typography';
 
 const CATEGORY_LABEL_MAP: Record<BalanceCategory, string> = {
 	[BalanceCategory.Health]: 'Здоровье',
@@ -29,7 +30,7 @@ const CATEGORY_OPTIONS = Object.values(BalanceCategory).map((value) => ({
 
 const WEIGHT_OPTIONS = ALLOWED_GOAL_WEIGHTS.map((weight) => ({ value: weight.toString(), label: weight.toString() }));
 
-export function GoalForm({ withCalendarShortcuts, disabled }: Props) {
+export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, linkedEntitiesPreviewImpl }: Props) {
 	const {
 		control,
 		formState: { errors }
@@ -45,6 +46,25 @@ export function GoalForm({ withCalendarShortcuts, disabled }: Props) {
 	const { field: weightField } = useController({ control, name: GoalFormFieldName.Weight });
 	const { field: progressDetailsCountField } = useController({ control, name: GoalFormFieldName.ProgressDetailsCount });
 	const { field: progressDetailsLabelField } = useController({ control, name: GoalFormFieldName.ProgressDetailsLabel });
+
+	const linkedEntitiesIds = useWatch({ control, name: GoalFormFieldName.LinkedEntities });
+	const linkedEntitiesCount =
+		linkedEntitiesIds.taskIds.length + linkedEntitiesIds.reminderIds.length + linkedEntitiesIds.habitIds.length;
+
+	const emptyLinkedEntitiesSection =
+		linkedEntitiesCount === 0 ? (
+			<button className="py-4 flex gap-4" onClick={onDecomposeClick}>
+				<SeamlessInput.Icon name="templates" />
+				<Typography className="text-color-gray-80">Декомпозировать</Typography>
+			</button>
+		) : null;
+	const filledLinkedEntitiesSection =
+		linkedEntitiesCount > 0 ? (
+			<div className="py-4 flex gap-4">
+				<SeamlessInput.Icon name="templates" />
+				{linkedEntitiesPreviewImpl}
+			</div>
+		) : null;
 
 	return (
 		<div>
@@ -138,6 +158,10 @@ export function GoalForm({ withCalendarShortcuts, disabled }: Props) {
 					error={plainErrors[progressDetailsLabelField.name]}
 					disabled={disabled}
 				/>
+			</FormSection>
+			<FormSection>
+				{emptyLinkedEntitiesSection}
+				{filledLinkedEntitiesSection}
 			</FormSection>
 		</div>
 	);
