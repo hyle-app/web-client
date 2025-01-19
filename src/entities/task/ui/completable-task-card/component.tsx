@@ -1,13 +1,14 @@
 import { timeService } from '&shared/services/time';
+import { Checkbox } from '&shared/ui/checkbox';
 import { EntityCard } from '&shared/ui/entity-card';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
 
-import { SubtaskCard } from '../subtask-card';
+import { CompletableSubtaskCard } from '../completable-subtask-card';
 import { Props } from './types';
 
-export function TaskCard({
+export function CompletableTaskCard({
 	title,
 	isCompleted,
 	targetDate,
@@ -15,6 +16,8 @@ export function TaskCard({
 	relatedGoalName,
 	className,
 	subtasks,
+	onSubtaskCompletionToggle,
+	onCompletionToggle,
 	...attributes
 }: Props) {
 	return (
@@ -39,6 +42,16 @@ export function TaskCard({
 					</div>
 				)
 			}
+			leftSlot={
+				<div
+					className="w-6 h-10 flex items-center justify-center shrink-0"
+					onClick={(event) => {
+						if (onCompletionToggle) event.stopPropagation();
+					}}
+				>
+					<Checkbox checked={isCompleted} onChange={onCompletionToggle} />
+				</div>
+			}
 			rightSlot={
 				overdueDetails && (
 					<div className="flex flex-col items-end shrink-0">
@@ -60,9 +73,13 @@ export function TaskCard({
 				subtasks.length > 0 && (
 					<EntityCard.ChildrenIndent>
 						{subtasks.map((subtask) => (
-							<SubtaskCard key={subtask.id} isCompleted={subtask.isCompleted}>
+							<CompletableSubtaskCard
+								key={subtask.id}
+								isCompleted={subtask.isCompleted}
+								onCompletionToggle={() => onSubtaskCompletionToggle?.(subtask.id)}
+							>
 								{subtask.title}
-							</SubtaskCard>
+							</CompletableSubtaskCard>
 						))}
 					</EntityCard.ChildrenIndent>
 				)

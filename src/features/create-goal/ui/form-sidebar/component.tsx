@@ -2,8 +2,8 @@ import { useUnit } from 'effector-react';
 import type { LinkedEntities, Props } from './types';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { GoalForm, GoalFormValues } from '&entities/goal';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { GoalForm, GoalFormFieldName, GoalFormValues } from '&entities/goal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { timeService } from '&shared/services/time';
 import { Sidebar } from '&shared/ui/sidebar';
@@ -12,58 +12,71 @@ import { useEventEffect } from '&shared/utils';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
-export const CreateGoalFormSidebar = React.memo(({ isOpen, onClose, DecomposeImplementation }: Props) => {
-	const [isDecomposeOpen, setIsDecomposeOpen] = React.useState(false);
-	const [_linkedEntities, setLinkedEntities] = React.useState<LinkedEntities>({
-		linkedReminderIds: [],
-		linkedTasksIds: [],
-		linkedHabitIds: []
-	});
-	const { createNewGoalEvent, isCreatingGoal, currentApDateStart } = useUnit({
-		createNewGoalEvent: inputs.createNewGoal,
-		isCreatingGoal: outputs.isGoalCreating,
-		currentApDateStart: timeService.outputs.$currentAppDateStart
-	});
+export const CreateGoalFormSidebar = React.memo(
+	({ isOpen, onClose, DecomposeImplementation, DecomposePreviewImplementation }: Props) => {
+		const [isDecomposeOpen, setIsDecomposeOpen] = React.useState(false);
+		const { createNewGoalEvent, isCreatingGoal, currentApDateStart } = useUnit({
+			createNewGoalEvent: inputs.createNewGoal,
+			isCreatingGoal: outputs.isGoalCreating,
+			currentApDateStart: timeService.outputs.$currentAppDateStart
+		});
 
-	const form = useForm<GoalFormValues>({
-		defaultValues: getDefaultFormValues(new Date(currentApDateStart)),
-		resolver: zodResolver(getFormValidator(MIN_DATE))
-	});
+		const form = useForm<GoalFormValues>({
+			defaultValues: getDefaultFormValues(new Date(currentApDateStart)),
+			resolver: zodResolver(getFormValidator(MIN_DATE))
+		});
 
-	const handleSubmit = (formValues: GoalFormValues) => {
-		createNewGoalEvent(formValues);
-	};
+		const handleSubmit = (formValues: GoalFormValues) => {
+			createNewGoalEvent(formValues);
+		};
 
-	useEventEffect(outputs.goalCreated, onClose);
+		const handleSetLinkedEntities = (linkedEntities: LinkedEntities) => {
+			form.setValue(GoalFormFieldName.LinkedEntities, linkedEntities);
+		};
 
-	React.useEffect(() => {
-		if (!isOpen) return;
+		useEventEffect(outputs.goalCreated, onClose);
 
-		form.reset(getDefaultFormValues(new Date(currentApDateStart)));
-	}, [isOpen]);
+		React.useEffect(() => {
+			if (!isOpen) return;
 
-	return (
-		<Sidebar isOpen={isOpen} onClose={onClose}>
-			<FormProvider {...form}>
-				<div className="flex flex-col justify-between pb-8 h-full">
-					<GoalForm withCalendarShortcuts />
-					<DecomposeImplementation
-						isOpen={isDecomposeOpen}
-						onClose={() => setIsDecomposeOpen(false)}
-						onApplyEntities={setLinkedEntities}
-					/>
+			form.reset(getDefaultFormValues(new Date(currentApDateStart)));
+		}, [isOpen]);
 
-					<Button
-						variant="button"
-						appearance="primary"
-						onClick={form.handleSubmit(handleSubmit)}
-						className="mx-8 self-stretch"
-						disabled={isCreatingGoal}
-					>
-						Создать цель
-					</Button>
-				</div>
-			</FormProvider>
-		</Sidebar>
-	);
-});
+		const linkedEntities = useWatch({ control: form.control, name: GoalFormFieldName.LinkedEntities });
+
+		return (
+			<Sidebar isOpen={isOpen} onClose={onClose} closeOnOverlayClick={!isDecomposeOpen}>
+				<FormProvider {...form}>
+					<div className="flex flex-col justify-between pb-8 h-full">
+						<GoalForm
+							withCalendarShortcuts
+							onDecomposeClick={() => setIsDecomposeOpen(true)}
+							linkedEntitiesPreviewImpl={
+								<DecomposePreviewImplementation
+									linkedEntities={linkedEntities}
+									onEditClick={() => setIsDecomposeOpen(true)}
+								/>
+							}
+						/>
+						<DecomposeImplementation
+							value={form.watch(GoalFormFieldName.LinkedEntities)}
+							isOpen={isDecomposeOpen}
+							onClose={() => setIsDecomposeOpen(false)}
+							onApplyEntities={handleSetLinkedEntities}
+						/>
+
+						<Button
+							variant="button"
+							appearance="primary"
+							onClick={form.handleSubmit(handleSubmit)}
+							className="mx-8 self-stretch"
+							disabled={isCreatingGoal}
+						>
+							Создать цель
+						</Button>
+					</div>
+				</FormProvider>
+			</Sidebar>
+		);
+	}
+);

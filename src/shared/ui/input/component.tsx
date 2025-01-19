@@ -26,11 +26,11 @@ function InputWithRef(
 	const isLabelMinified = isFocused || (props.value && props.value?.toString().length > 0);
 
 	return (
-		<label className={cn('relative ', className)}>
+		<label className={cn('relative block', className)}>
 			{leftSlot ?? null}
 			<p
 				className={cn(
-					'normal-case  text-color-gray-80 transition-all absolute top-1/2 -translate-y-1/2 left-6',
+					'normal-case text-color-gray-80 transition-all absolute top-1/2 -translate-y-1/2 left-6',
 					{
 						'top-2 -translate-y-0 font-paragraph  text-caption-1 ': isLabelMinified,
 						'text-paragraph font-medium': !isLabelMinified

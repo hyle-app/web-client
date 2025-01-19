@@ -1,4 +1,4 @@
-import { taskEntity, TaskCard } from '&entities/task';
+import { taskEntity, CompletableTaskCard } from '&entities/task';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
@@ -50,7 +50,7 @@ export function TaskListWidget({ className, ...attributes }: Props) {
 				<div className="flex flex-col gap-4 mt-6">
 					{tasks.map((task) => {
 						return (
-							<TaskCard
+							<CompletableTaskCard
 								key={task.id}
 								title={task.title}
 								isCompleted={task.completedAt !== null}

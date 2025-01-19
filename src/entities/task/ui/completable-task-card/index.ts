@@ -1,0 +1,1 @@
+export { CompletableTaskCard } from './component';

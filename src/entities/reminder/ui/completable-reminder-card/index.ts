@@ -1,0 +1,1 @@
+export { CompletableReminderCard } from './component';
