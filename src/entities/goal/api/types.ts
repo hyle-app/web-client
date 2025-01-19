@@ -1,3 +1,5 @@
+import { GoalId } from '../model/types';
+
 export type GoalSteps = {
 	count: number;
 	currentCount: number;
@@ -28,4 +30,24 @@ export type FetchGoalsParams = {
 export type DeleteGoalParams = {
 	goalId: string;
 	customerId: string;
+};
+
+export type FetchGoalsLinkedEntitiesParams = {
+	customerId: string;
+	goalIds: GoalId[];
+};
+
+export type FetchGoalsLinkedEntitiesDTO = {
+	goal: {
+		goalId: GoalId;
+	};
+	tasks: {
+		taskId: string;
+	}[];
+	reminders: {
+		reminderId: string;
+	}[];
+	habits: {
+		habitId: string;
+	}[];
 };

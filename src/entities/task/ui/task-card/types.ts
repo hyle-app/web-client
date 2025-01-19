@@ -1,5 +1,5 @@
 import { TimeUnit } from '&shared/services/time';
-import type { Subtask, SubtaskId } from '../../model';
+import type { Subtask } from '../../model';
 
 export type Props = {
 	title: string;

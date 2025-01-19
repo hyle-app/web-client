@@ -1,8 +1,8 @@
-import { Goal, GoalFormFieldName, GoalFormValues } from '&entities/goal';
+import { Goal, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
 import { BalanceCategory } from '&shared/constants';
 import { z } from 'zod';
 
-export function getDefaultFormValues(initialGoal: Goal): GoalFormValues {
+export function getDefaultFormValues(initialGoal: Goal, linkedEntities: LinkedEntities | null): GoalFormValues {
 	return {
 		[GoalFormFieldName.Title]: initialGoal.title,
 		[GoalFormFieldName.Description]: initialGoal.description,
@@ -12,7 +12,7 @@ export function getDefaultFormValues(initialGoal: Goal): GoalFormValues {
 		[GoalFormFieldName.Weight]: initialGoal.weight,
 		[GoalFormFieldName.ProgressDetailsCount]: initialGoal.progress?.targetProgress || null,
 		[GoalFormFieldName.ProgressDetailsLabel]: initialGoal.progress?.label || null,
-		[GoalFormFieldName.LinkedEntities]: {
+		[GoalFormFieldName.LinkedEntities]: linkedEntities ?? {
 			taskIds: [],
 			reminderIds: [],
 			habitIds: []
