@@ -11,7 +11,7 @@ import { Props } from './types';
 import React from 'react';
 import { timeService } from '&shared/services/time';
 
-export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick }: Props) => {
+export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick, interactive = true }: Props) => {
 	const linkedHabitsCount = linkedEntities.habitIds.length;
 	const linkedTasksCount = linkedEntities.taskIds.length;
 	const linkedRemindersCount = linkedEntities.reminderIds.length;
@@ -109,15 +109,17 @@ export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick }
 					</CollapsibleContent>
 				</Collapsible>
 			)}
-			<Button
-				variant="text"
-				appearance="ghost"
-				iconSlot={<Icon name="refresh" className="text-color-gray-80 w-4 h-4" />}
-				className="mt-2"
-				onClick={onEditClick}
-			>
-				Редактировать
-			</Button>
+			{interactive && (
+				<Button
+					variant="text"
+					appearance="ghost"
+					iconSlot={<Icon name="refresh" className="text-color-gray-80 w-4 h-4" />}
+					className="mt-2"
+					onClick={onEditClick}
+				>
+					Редактировать
+				</Button>
+			)}
 		</div>
 	);
 };

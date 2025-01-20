@@ -9,6 +9,7 @@ import { inputs, outputs } from './model';
 import { EditGoalFormSidebar } from '&features/edit-goal';
 import React from 'react';
 import { completeGoalFeature } from '&features/complete-goal';
+import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose-goal';
 
 export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 	const {
@@ -83,6 +84,8 @@ export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 						})
 					}
 					onCompleteSimpleGoal={() => completeSimpleGoalEvent({ goalId: selectedGoalId })}
+					DecomposeImplementation={DecomposeGoalSidebar}
+					DecomposePreviewImplementation={LinkedEntitiesPreview}
 				/>
 			)}
 		</section>

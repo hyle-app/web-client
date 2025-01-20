@@ -8,6 +8,8 @@ const applicatonServicesInitialized = createEvent();
 const verifyAuthentication = createEvent();
 const authenticationVerificationFinished = createEvent();
 const fetchCustomerData = createEvent();
+const fetchFeatureFlags = createEvent();
+const featureFlagsFetched = createEvent();
 const applicationReady = createEvent();
 
 export const inputs = { startApplication };
@@ -17,6 +19,8 @@ export const internals = {
 	verifyAuthentication,
 	authenticationVerificationFinished,
 	fetchCustomerData,
+	fetchFeatureFlags,
+	featureFlagsFetched,
 	applicationReady
 };
 

@@ -16,7 +16,7 @@ const CATEGORIES: CategoriesConfig = [
 	{ category: Categories.FLAGS, name: 'Флаги' }
 ];
 
-export function EmojiPickerField({ value, onChange }: Props) {
+export function EmojiPickerField({ value, onChange, disabled }: Props) {
 	const [isOpen, setIsOpen] = React.useState(false);
 
 	const rootElementRef = React.useRef<HTMLDivElement>(null);
@@ -72,7 +72,7 @@ export function EmojiPickerField({ value, onChange }: Props) {
 
 	return (
 		<div className="w-8 h-8 relative" ref={rootElementRef}>
-			<button onClick={() => setIsOpen((isOpen) => !isOpen)} className="w-8 h-8 ">
+			<button onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)} className="w-8 h-8 ">
 				<p className="w-8 h-8 flex justify-centery items-center relative text-[26px]">
 					{value ? unicodeToEmoji(value) : <Icon name="smiley" />}
 				</p>
