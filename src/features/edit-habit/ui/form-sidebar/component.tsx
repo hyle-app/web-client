@@ -128,9 +128,9 @@ export function EditHabitFormSidebar({
 			]}
 		>
 			<FormProvider {...form}>
-				<div className="flex flex-col justify-between pb-8 h-full">
+				<div className="flex flex-col justify-between h-full relative">
 					<HabitForm goalsToLinkTo={goals} />
-					<div className="px-8 w-full flex flex-col gap-8">
+					<div className="px-8 w-full flex flex-col gap-8 sticky bottom-0 bg-color-bg-95 pt-4 pb-8 ">
 						<div className="gap-1 flex flex-col">
 							{habitEntity.lib.isComplexHabit(habit) && (
 								<ProgressLine

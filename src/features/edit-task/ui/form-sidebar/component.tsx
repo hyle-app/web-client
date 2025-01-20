@@ -90,14 +90,14 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 			]}
 		>
 			<FormProvider {...form}>
-				<div className="flex flex-col justify-between pb-8 h-full">
+				<div className="flex flex-col justify-between pb-8 h-full relative">
 					<TaskForm goalsToLinkTo={goals} />
 					{isDirty && (
 						<Button
 							variant="button"
 							appearance="primary"
 							onClick={form.handleSubmit(handleSubmit)}
-							className="mx-8 self-stretch"
+							className="mx-8 self-stretch bottom-8 sticky"
 							disabled={isEditingTask}
 						>
 							Сохранить изменения

@@ -37,13 +37,13 @@ export function CreateHabitFormSidebar({ isOpen, onClose }: Props) {
 	return (
 		<Sidebar isOpen={isOpen} onClose={onClose}>
 			<FormProvider {...form}>
-				<div className="flex flex-col justify-between pb-8 h-full">
+				<div className="flex flex-col justify-between pb-8 h-full relative">
 					<HabitForm goalsToLinkTo={goals} />
 					<Button
 						variant="button"
 						appearance="primary"
 						onClick={form.handleSubmit(handleSubmit)}
-						className="mx-8 self-stretch"
+						className="mx-8 self-stretch sticky bottom-8"
 						disabled={isCreatingTask}
 					>
 						Создать привычку
