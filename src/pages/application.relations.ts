@@ -1,4 +1,4 @@
-import { sample } from 'effector';
+import { EventPayload, sample } from 'effector';
 import { inputs, internals, outputs } from './application.model';
 import { timeService } from '&shared/services/time';
 import { ApplicationState } from './application.constants';
@@ -102,10 +102,11 @@ sample({
 	clock: combineEvents([internals.featureFlagsFetched, featureFlagsService.outputs.$featureFlags.updates]),
 	source: { flags: featureFlagsService.outputs.$featureFlags },
 	filter: ({ flags }) => !flags[FeatureFlag.WebVersion].enabled,
-	fn: () => ({
-		to: '/web-version-teaser',
-		search: new URLSearchParams()
-	}),
+	fn: () =>
+		({
+			to: '/web-version-teaser',
+			search: new URLSearchParams()
+		}) as EventPayload<typeof routerService.inputs.replaceRoute>,
 	target: routerService.inputs.replaceRoute
 });
 // #endregion
