@@ -43,7 +43,7 @@ export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props)
 
 	return (
 		<Sidebar isOpen={isOpen} onClose={onClose}>
-			<div className="flex flex-col justify-between pb-8 h-full">
+			<div className="flex flex-col justify-between pb-8 h-full relative">
 				<FormProvider {...form}>
 					<ReminderForm goalsToLinkTo={goals} withCalendarShortcuts />
 				</FormProvider>
@@ -51,7 +51,7 @@ export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props)
 					variant="button"
 					appearance="primary"
 					onClick={form.handleSubmit(handleSubmit)}
-					className="mx-8 self-stretch "
+					className="mx-8 self-stretch bottom-8 sticky"
 				>
 					Создать напоминание
 				</Button>

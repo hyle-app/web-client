@@ -51,7 +51,7 @@ export const CreateTaskFormSidebar = React.memo(({ isOpen, onClose }: Props) => 
 						variant="button"
 						appearance="primary"
 						onClick={form.handleSubmit(handleSubmit)}
-						className="mx-8 self-stretch"
+						className="mx-8 self-stretch bottom-8 sticky"
 						disabled={isCreatingTask}
 					>
 						Создать задачу

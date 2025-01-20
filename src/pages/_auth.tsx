@@ -12,10 +12,10 @@ export const Route = createFileRoute('/_auth')({
 });
 
 const LINKS = [
-	{ label: 'Home', to: '/home', icon: <Icon name="home" /> },
-	{ label: 'Goals', to: '/goals', icon: <Icon name="goal" /> },
-	{ label: 'Balance', to: '/balance', icon: <Icon name="balance" /> },
-	{ label: 'About', to: '/about', icon: <Icon name="templates" /> }
+	{ label: 'Главная', to: '/home', icon: <Icon name="home" /> },
+	{ label: 'Цели', to: '/goals', icon: <Icon name="goal" /> },
+	{ label: 'Баланс', to: '/balance', icon: <Icon name="balance" /> },
+	{ label: 'О приложении', to: '/about', icon: <Icon name="templates" /> }
 ];
 
 function AuthLayout() {

@@ -1,9 +1,9 @@
 import { useUnit } from 'effector-react';
-import type { LinkedEntities, Props } from './types';
+import type { Props } from './types';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { GoalForm, GoalFormFieldName, GoalFormValues } from '&entities/goal';
+import { GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { timeService } from '&shared/services/time';
 import { Sidebar } from '&shared/ui/sidebar';
@@ -47,7 +47,7 @@ export const CreateGoalFormSidebar = React.memo(
 		return (
 			<Sidebar isOpen={isOpen} onClose={onClose} closeOnOverlayClick={!isDecomposeOpen}>
 				<FormProvider {...form}>
-					<div className="flex flex-col justify-between pb-8 h-full">
+					<div className="flex flex-col justify-between pb-8 h-full relative">
 						<GoalForm
 							withCalendarShortcuts
 							onDecomposeClick={() => setIsDecomposeOpen(true)}
@@ -69,7 +69,7 @@ export const CreateGoalFormSidebar = React.memo(
 							variant="button"
 							appearance="primary"
 							onClick={form.handleSubmit(handleSubmit)}
-							className="mx-8 self-stretch"
+							className="mx-8 self-stretch sticky bottom-8"
 							disabled={isCreatingGoal}
 						>
 							Создать цель

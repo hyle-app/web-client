@@ -99,7 +99,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 				</ConfirmPopover>
 			]}
 		>
-			<div className="flex flex-col justify-between pb-8 h-full">
+			<div className="flex flex-col justify-between pb-8 h-full relative">
 				<FormProvider {...form}>
 					<ReminderForm goalsToLinkTo={goals} />
 				</FormProvider>
@@ -108,7 +108,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 						variant="button"
 						appearance="primary"
 						onClick={form.handleSubmit(handleSubmit)}
-						className="mx-8 self-stretch "
+						className="mx-8 self-stretch bottom-8 sticky"
 						disabled={isEditingReminder || !isFormValid}
 					>
 						Сохранить изменения напоминание
@@ -119,7 +119,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 						variant="button"
 						appearance="primary"
 						onClick={() => completeReminderEvent({ reminderId })}
-						className="mx-8 self-stretch"
+						className="mx-8 self-stretch bottom-8 sticky"
 					>
 						Отметить выполнение
 					</Button>
