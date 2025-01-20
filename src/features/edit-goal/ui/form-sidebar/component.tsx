@@ -153,7 +153,7 @@ export const EditGoalFormSidebar = React.memo(
 				]}
 			>
 				<FormProvider {...form}>
-					<div className="flex flex-col justify-between pb-8 h-full">
+					<div className="flex flex-col justify-between pb-8 h-full relative ">
 						<GoalForm
 							withCalendarShortcuts={!disabled}
 							disabled={disabled}
@@ -173,7 +173,7 @@ export const EditGoalFormSidebar = React.memo(
 							onApplyEntities={handleSetLinkedEntities}
 						/>
 
-						<div className="w-full px-8 flex flex-col gap-8">
+						<div className="w-full px-8 flex flex-col gap-8 pt-4 pb-8 bottom-0 sticky bg-color-bg-95">
 							{goalEntity.lib.isComplexGoal(goal!) && (
 								<ProgressLine
 									customLabel={goal?.progress?.label || undefined}

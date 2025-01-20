@@ -11,7 +11,7 @@ import { routerService } from '&shared/services/router';
 import { goalEntity } from '&entities/goal';
 import { balanceEntity } from '&entities/balance';
 import { httpService } from '&shared/services/http';
-import { featureFlagsService, FeatureFlag } from '&shared/services/feature-flags';
+import { FeatureFlag, featureFlagsService } from '&shared/services/feature-flags';
 
 sample({
 	clock: inputs.startApplication,
@@ -109,6 +109,19 @@ sample({
 		}) as EventPayload<typeof routerService.inputs.replaceRoute>,
 	target: routerService.inputs.replaceRoute
 });
+
+sample({
+	clock: combineEvents([internals.featureFlagsFetched, featureFlagsService.outputs.$featureFlags.updates]),
+	source: { flags: featureFlagsService.outputs.$featureFlags, currentRoute: routerService.outputs.$currentPath },
+	filter: ({ flags, currentRoute }) => flags[FeatureFlag.WebVersion].enabled && currentRoute === '/web-version-teaser',
+	fn: () =>
+		({
+			to: '/home',
+			search: new URLSearchParams()
+		}) as EventPayload<typeof routerService.inputs.replaceRoute>,
+	target: routerService.inputs.replaceRoute
+});
+
 // #endregion
 
 // #region runtime data fetching section
