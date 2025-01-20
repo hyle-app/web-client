@@ -18,6 +18,9 @@ import { Route as IndexImport } from './pages/index'
 
 // Create Virtual Routes
 
+const WebVersionTeaserIndexLazyImport = createFileRoute(
+  '/web-version-teaser/',
+)()
 const AuthIndexLazyImport = createFileRoute('/auth/')()
 const AuthProfileIndexLazyImport = createFileRoute('/_auth/profile/')()
 const AuthHomeIndexLazyImport = createFileRoute('/_auth/home/')()
@@ -37,6 +40,14 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const WebVersionTeaserIndexLazyRoute = WebVersionTeaserIndexLazyImport.update({
+  id: '/web-version-teaser/',
+  path: '/web-version-teaser/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/web-version-teaser/index.lazy').then((d) => d.Route),
+)
 
 const AuthIndexLazyRoute = AuthIndexLazyImport.update({
   id: '/auth/',
@@ -109,6 +120,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/web-version-teaser/': {
+      id: '/web-version-teaser/'
+      path: '/web-version-teaser'
+      fullPath: '/web-version-teaser'
+      preLoaderRoute: typeof WebVersionTeaserIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/about/': {
       id: '/_auth/about/'
       path: '/about'
@@ -171,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/auth': typeof AuthIndexLazyRoute
+  '/web-version-teaser': typeof WebVersionTeaserIndexLazyRoute
   '/about': typeof AuthAboutIndexLazyRoute
   '/balance': typeof AuthBalanceIndexLazyRoute
   '/goals': typeof AuthGoalsIndexLazyRoute
@@ -182,6 +201,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/auth': typeof AuthIndexLazyRoute
+  '/web-version-teaser': typeof WebVersionTeaserIndexLazyRoute
   '/about': typeof AuthAboutIndexLazyRoute
   '/balance': typeof AuthBalanceIndexLazyRoute
   '/goals': typeof AuthGoalsIndexLazyRoute
@@ -194,6 +214,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/auth/': typeof AuthIndexLazyRoute
+  '/web-version-teaser/': typeof WebVersionTeaserIndexLazyRoute
   '/_auth/about/': typeof AuthAboutIndexLazyRoute
   '/_auth/balance/': typeof AuthBalanceIndexLazyRoute
   '/_auth/goals/': typeof AuthGoalsIndexLazyRoute
@@ -207,6 +228,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/auth'
+    | '/web-version-teaser'
     | '/about'
     | '/balance'
     | '/goals'
@@ -217,6 +239,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/auth'
+    | '/web-version-teaser'
     | '/about'
     | '/balance'
     | '/goals'
@@ -227,6 +250,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/auth/'
+    | '/web-version-teaser/'
     | '/_auth/about/'
     | '/_auth/balance/'
     | '/_auth/goals/'
@@ -239,12 +263,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   AuthIndexLazyRoute: typeof AuthIndexLazyRoute
+  WebVersionTeaserIndexLazyRoute: typeof WebVersionTeaserIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   AuthIndexLazyRoute: AuthIndexLazyRoute,
+  WebVersionTeaserIndexLazyRoute: WebVersionTeaserIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -259,7 +285,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_auth",
-        "/auth/"
+        "/auth/",
+        "/web-version-teaser/"
       ]
     },
     "/": {
@@ -277,6 +304,9 @@ export const routeTree = rootRoute
     },
     "/auth/": {
       "filePath": "auth/index.lazy.ts"
+    },
+    "/web-version-teaser/": {
+      "filePath": "web-version-teaser/index.lazy.tsx"
     },
     "/_auth/about/": {
       "filePath": "_auth/about/index.lazy.ts",

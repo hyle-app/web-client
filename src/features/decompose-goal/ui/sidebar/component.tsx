@@ -4,7 +4,6 @@ import React from 'react';
 import { Props } from './types';
 import { Icon } from '&shared/ui/icon';
 import { Input } from '&shared/ui/input';
-import { LinkedEntities } from '&features/create-goal/ui/form-sidebar/types';
 import { TaskCard, taskEntity } from '&entities/task';
 import { ReminderCard, reminderEntity } from '&entities/reminder';
 import { HabitCard, habitEntity } from '&entities/habit';
@@ -13,6 +12,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '&shared/ui/
 import { timeService } from '&shared/services/time';
 import { cn } from '&shared/utils';
 import { Button } from '&shared/ui/button';
+import { LinkedEntities } from '&entities/goal';
 
 export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, className, value }: Props) => {
 	const { tasksList, remindersList, habitsList, selectedAppDateStart } = useUnit({

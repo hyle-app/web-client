@@ -11,6 +11,7 @@ import { routerService } from '&shared/services/router';
 import { goalEntity } from '&entities/goal';
 import { balanceEntity } from '&entities/balance';
 import { httpService } from '&shared/services/http';
+import { featureFlagsService, FeatureFlag } from '&shared/services/feature-flags';
 
 sample({
 	clock: inputs.startApplication,
@@ -43,7 +44,22 @@ sample({
 
 sample({
 	clock: internals.authenticationVerificationFinished,
-	target: [internals.fetchCustomerData, internals.applicationReady]
+	target: [internals.fetchCustomerData, internals.fetchFeatureFlags]
+});
+
+sample({
+	clock: internals.fetchFeatureFlags,
+	target: featureFlagsService.inputs.fetchFeatureFlags
+});
+
+sample({
+	clock: featureFlagsService.outputs.featureFlagsFetched,
+	target: internals.featureFlagsFetched
+});
+
+sample({
+	clock: internals.featureFlagsFetched,
+	target: internals.applicationReady
 });
 
 sample({
@@ -78,6 +94,19 @@ sample({
 	clock: internals.authenticationVerificationFinished,
 	fn: () => ApplicationState.Running,
 	target: outputs.$state
+});
+// #endregion
+
+// #region WEB Version preview
+sample({
+	clock: combineEvents([internals.featureFlagsFetched, featureFlagsService.outputs.$featureFlags.updates]),
+	source: { flags: featureFlagsService.outputs.$featureFlags },
+	filter: ({ flags }) => !flags[FeatureFlag.WebVersion].enabled,
+	fn: () => ({
+		to: '/web-version-teaser',
+		search: new URLSearchParams()
+	}),
+	target: routerService.inputs.replaceRoute
 });
 // #endregion
 

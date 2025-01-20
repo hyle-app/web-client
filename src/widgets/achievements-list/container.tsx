@@ -7,6 +7,7 @@ import { goalEntity, GoalCard } from '&entities/goal';
 import { inputs, outputs } from './model';
 import React from 'react';
 import { EditGoalFormSidebar } from '&features/edit-goal';
+import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose-goal';
 
 export const AchievementsListWidget = React.memo(({ className, ...attributes }: Props) => {
 	const { achievements, setSelectedGoalIdEvent, selectedGoalId, resetSelectedGoalIdEvent } = useUnit({
@@ -51,7 +52,14 @@ export const AchievementsListWidget = React.memo(({ className, ...attributes }: 
 			</div>
 
 			{selectedGoalId && (
-				<EditGoalFormSidebar isOpen={Boolean(selectedGoalId)} onClose={handleCloseEditForm} goalId={selectedGoalId} />
+				<EditGoalFormSidebar
+					isOpen={Boolean(selectedGoalId)}
+					onClose={handleCloseEditForm}
+					goalId={selectedGoalId}
+					DecomposeImplementation={DecomposeGoalSidebar}
+					DecomposePreviewImplementation={LinkedEntitiesPreview}
+					disabled
+				/>
 			)}
 		</section>
 	);

@@ -23,7 +23,7 @@
 	/* Colors section end */
 
 	/* Typography section start */
-	--font-size-h1: vaar(--todo, 33px);
+	--font-size-h1: 48px;
 	--font-size-h2: 33px;
 	--font-size-h3: 28px;
 	--font-size-h4: 23px;
@@ -73,6 +73,7 @@
 }
 
 @layer utilities {
+
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;

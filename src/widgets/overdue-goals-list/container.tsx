@@ -1,5 +1,6 @@
 import { GoalCard, goalEntity } from '&entities/goal';
 import { completeGoalFeature } from '&features/complete-goal';
+import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose-goal';
 import { EditGoalFormSidebar } from '&features/edit-goal';
 import { timeService } from '&shared/services/time';
 import { Icon } from '&shared/ui/icon';
@@ -83,6 +84,8 @@ export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 						})
 					}
 					onCompleteSimpleGoal={() => completeSimpleGoalEvent({ goalId: selectedGoalId })}
+					DecomposeImplementation={DecomposeGoalSidebar}
+					DecomposePreviewImplementation={LinkedEntitiesPreview}
 				/>
 			)}
 		</section>
