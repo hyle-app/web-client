@@ -12,7 +12,6 @@ import { getCurrentPathname, getCurrentQueryParams } from './lib';
 import { reset, spread } from 'patronum';
 import { dispatchEvent } from '&shared/utils';
 import { postpone } from '&shared/utils/effector';
-import internal from 'stream';
 
 const $routerInstance = createStore<null | RegisteredRouter>(null);
 const setInstance = createEvent<RegisteredRouter>();
