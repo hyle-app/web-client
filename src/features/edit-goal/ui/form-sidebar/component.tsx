@@ -162,6 +162,7 @@ export const EditGoalFormSidebar = React.memo(
 								<DecomposePreviewImplementation
 									linkedEntities={linkedEntitiesIds}
 									onEditClick={() => setIsDecomposeOpen(true)}
+									interactive={!disabled}
 								/>
 							}
 						/>

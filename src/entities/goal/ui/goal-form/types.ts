@@ -3,4 +3,5 @@ export type Props = {
 	disabled?: boolean | undefined;
 	onDecomposeClick(): void;
 	linkedEntitiesPreviewImpl: React.ReactNode;
+	interactive?: boolean | undefined;
 };
