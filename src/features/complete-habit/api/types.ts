@@ -6,7 +6,10 @@ export type HabitDTO = {
 	completions: number[];
 	completedAt: number | undefined;
 	progress: number;
-	progressedSteps: Record<number, number>;
+	progressedSteps: {
+		performed: number;
+		currentCount: string;
+	}[];
 };
 
 export type CompleteHabitParams = {
