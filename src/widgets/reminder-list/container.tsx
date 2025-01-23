@@ -51,7 +51,7 @@ export function ReminderListWidget({ className, ...attributes }: Props) {
 							<CompletableReminderCard
 								key={reminder.id}
 								title={reminder.title}
-								isCompleted={reminder.completedAt !== null}
+								isCompleted={reminderEntity.lib.isReminderCompletedOnDay(reminder, selectedAppDateStart)}
 								onClick={() => setSelectedReminderId(reminder.id)}
 								onToggleCompletion={() => toggleCompletionEvent({ reminderId: reminder.id })}
 								targetDateTime={reminder.targetDateTime}
