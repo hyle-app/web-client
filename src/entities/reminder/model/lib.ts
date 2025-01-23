@@ -220,15 +220,27 @@ function isReminderAttachedToDay(reminder: Reminder, realTimestamp: number, time
 	// Planned on checked day
 	if (startOfCheckedTimestamp === startOfTargetDate) return true;
 
+	if (isReminderCompletedOnDay(reminder, timestamp)) return true;
+
 	// Show overdue reminders on TODAY view
 	const lastCompletion = reminder.completions?.[reminder.completions.length - 1] ?? null;
-	const lastTriggerDate = getPreviousTriggerDate(reminder.targetDateTime, reminder.rule);
-	const shouldHaveBeenCompleted = lastTriggerDate < startOfCheckedTimestamp;
+	const lastTriggerDate = getLastReminderTriggerDate(reminder.targetDateTime, reminder.rule, timestamp);
+	const shouldHaveBeenCompleted =
+		lastTriggerDate < startOfCheckedTimestamp && (!lastCompletion || lastTriggerDate >= lastCompletion);
 
-	if (shouldHaveBeenCompleted && lastCompletion === null && startOfRealTimestamp === startOfCheckedTimestamp)
-		return true;
+	if (shouldHaveBeenCompleted && startOfRealTimestamp === startOfCheckedTimestamp) return true;
 
 	if (reminder.rule === ReminderRepeatRule.EveryWeek) {
+		const lastCompletion = reminder.completions?.[reminder.completions.length - 1] ?? null;
+		const lastTriggerDate = getPreviousTriggerDate(reminder.targetDateTime, reminder.rule);
+		const shouldHaveBeenCompleted =
+			lastTriggerDate < startOfCheckedTimestamp && (!lastCompletion || lastTriggerDate >= lastCompletion);
+		console.log({
+			title: reminder.title,
+			shouldHaveBeenCompleted,
+			lastCompletion,
+			lastTriggerDate
+		});
 		return timeService.lib.getDayOfWeek(startOfTargetDate) === timeService.lib.getDayOfWeek(startOfCheckedTimestamp);
 	}
 
@@ -244,6 +256,143 @@ function isReminderAttachedToDay(reminder: Reminder, realTimestamp: number, time
 	}
 
 	return false;
+}
+
+export function getLastReminderTriggerDate(
+	targetDateTime: number,
+	rule: ReminderRepeatRule,
+	viewTimestamp?: number
+): number {
+	const viewDate = viewTimestamp ? new Date(viewTimestamp) : new Date();
+	const expirationDate = new Date(targetDateTime);
+
+	if (rule === ReminderRepeatRule.Never) {
+		return targetDateTime;
+	}
+
+	// Do not show the reminders if the view date is before first notification trigger
+	if (viewDate.getTime() < targetDateTime) {
+		return targetDateTime;
+	}
+
+	if (rule === ReminderRepeatRule.EveryWeek) {
+		const f = (n: number) => {
+			if (n === 0) {
+				return 6;
+			} else {
+				return n - 1;
+			}
+		};
+		const expirationWeekday = f(expirationDate.getDay());
+		const currentWeekday = f(viewDate.getDay());
+
+		if (expirationWeekday === currentWeekday) {
+			return viewDate.setHours(
+				expirationDate.getHours(),
+				expirationDate.getMinutes(),
+				expirationDate.getSeconds(),
+				expirationDate.getMilliseconds()
+			);
+		}
+
+		const dt =
+			expirationWeekday > currentWeekday
+				? 7 - (expirationWeekday - currentWeekday)
+				: currentWeekday - expirationWeekday;
+
+		return dayjs(viewDate)
+			.subtract(dt, 'day')
+			.toDate()
+			.setHours(
+				expirationDate.getHours(),
+				expirationDate.getMinutes(),
+				expirationDate.getSeconds(),
+				expirationDate.getMilliseconds()
+			);
+	}
+
+	if (rule === ReminderRepeatRule.EveryMonth) {
+		const expirationDay = expirationDate.getDate();
+		const currentDay = viewDate.getDate();
+
+		if (currentDay === expirationDay) {
+			return viewDate.setHours(
+				expirationDate.getHours(),
+				expirationDate.getMinutes(),
+				expirationDate.getSeconds(),
+				expirationDate.getMilliseconds()
+			);
+		}
+
+		// trigger date has already passed on this month
+		if (currentDay > expirationDay) {
+			return dayjs(viewDate)
+				.set('date', expirationDay)
+				.toDate()
+				.setHours(
+					expirationDate.getHours(),
+					expirationDate.getMinutes(),
+					expirationDate.getSeconds(),
+					expirationDate.getMilliseconds()
+				);
+		}
+
+		// trigger date has not come yet on this month
+		return dayjs(viewDate)
+			.set('date', expirationDay)
+			.subtract(1, 'month')
+			.toDate()
+			.setHours(
+				expirationDate.getHours(),
+				expirationDate.getMinutes(),
+				expirationDate.getSeconds(),
+				expirationDate.getMilliseconds()
+			);
+	}
+
+	if (rule === ReminderRepeatRule.EveryYear) {
+		const expirationDay = expirationDate.getDate();
+		const currentDay = viewDate.getDate();
+		const expirationMonth = expirationDate.getMonth();
+		const currentMonth = viewDate.getMonth();
+
+		if (currentDay === expirationDay && expirationMonth === currentMonth) {
+			return viewDate.setHours(
+				expirationDate.getHours(),
+				expirationDate.getMinutes(),
+				expirationDate.getSeconds(),
+				expirationDate.getMilliseconds()
+			);
+		}
+
+		// trigger date has already passed on this month
+		if (currentMonth > expirationMonth) {
+			return dayjs(viewDate)
+				.set('month', expirationMonth)
+				.set('date', expirationDay)
+				.toDate()
+				.setHours(
+					expirationDate.getHours(),
+					expirationDate.getMinutes(),
+					expirationDate.getSeconds(),
+					expirationDate.getMilliseconds()
+				);
+		}
+
+		// trigger date has not come yet on this year
+		return dayjs(viewDate)
+			.set('month', expirationMonth)
+			.set('date', expirationDay)
+			.subtract(1, 'year')
+			.toDate()
+			.setHours(
+				expirationDate.getHours(),
+				expirationDate.getMinutes(),
+				expirationDate.getSeconds(),
+				expirationDate.getMilliseconds()
+			);
+	}
+	return targetDateTime;
 }
 
 function updateReminderWithFormValues(reminder: Reminder, formValues: ReminderFormValues): Reminder {
@@ -295,6 +444,7 @@ function uncompleteReminderOnDate(reminder: Reminder, timestamp: number): Remind
 
 export function isReminderCompletedOnDay(reminder: Reminder, timestamp: number): boolean {
 	const potentialCompletionDateStart = timeService.lib.getStartOfTheDay(timestamp);
+
 	return (
 		reminder.completions?.some(
 			(completion) => timeService.lib.getStartOfTheDay(completion) === potentialCompletionDateStart
