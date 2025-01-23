@@ -51,7 +51,12 @@ export function completeSimpleHabit(habit: Habit, timestamp: number): Habit {
 	return {
 		...habit,
 		currentProgress: habit.currentProgress + 1,
-		completions: [...habit.completions, timeService.lib.getStartOfTheDay(timestamp)]
+		completedAt: habit.currentProgress + 1 >= habit.targetProgress ? timestamp : null,
+		completions: [...habit.completions, timeService.lib.getStartOfTheDay(timestamp)],
+		dailyProgressSnaphots: {
+			...habit.dailyProgressSnaphots,
+			[timeService.lib.getStartOfTheDay(timestamp)]: 1
+		}
 	};
 }
 
