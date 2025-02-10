@@ -1,3 +1,4 @@
+import { DialogContainer } from '&shared/services/dialog';
 import { Icon } from '&shared/ui/icon';
 import { Logo } from '&shared/ui/logo';
 import { MenuNavItem } from '&shared/ui/menu-nav-item/component';
@@ -99,6 +100,7 @@ function AuthLayout() {
 			</aside>
 			<main className="col-start-2 col-end-3 row-start-2 row-end-3 bg-color-bg-95 flex">
 				<Outlet />
+				<DialogContainer />
 			</main>
 		</div>
 	);

@@ -78,6 +78,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 
 	return (
 		<Sidebar
+			confirmOverlayClose
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}

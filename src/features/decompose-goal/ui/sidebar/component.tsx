@@ -77,7 +77,7 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 	};
 
 	return (
-		<Sidebar isOpen={isOpen} onClose={onClose} className={className}>
+		<Sidebar isOpen={isOpen} onClose={onClose} className={className} confirmOverlayClose>
 			<div className="px-8 pt-4 flex flex-col gap-6 grow relative">
 				<div className="flex gap-4">
 					<button>

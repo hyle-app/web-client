@@ -107,6 +107,7 @@ export function EditHabitFormSidebar({
 
 	return (
 		<Sidebar
+			confirmOverlayClose
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}

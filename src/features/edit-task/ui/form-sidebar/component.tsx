@@ -68,6 +68,7 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 
 	return (
 		<Sidebar
+			confirmOverlayClose
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
