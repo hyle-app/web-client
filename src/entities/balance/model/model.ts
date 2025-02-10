@@ -3,7 +3,6 @@ import { BALANCE_MAX_VALUE } from './constants';
 import { BalanceCategory } from '&shared/constants';
 import { balanceApi } from '../api';
 import { getInitialBalance } from './lib';
-import { debug } from 'patronum';
 
 const $balance = createStore(getInitialBalance());
 
@@ -30,5 +29,3 @@ export const inputs = { fetchBalance };
 export const internals = {
 	fetchBalanceFx
 };
-
-debug($balance);

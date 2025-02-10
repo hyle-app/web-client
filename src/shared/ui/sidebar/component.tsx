@@ -1,4 +1,4 @@
-import { cn } from '&shared/utils';
+import { cn, useEventEffect } from '&shared/utils';
 import React from 'react';
 import { ActionButtonProps, ActionProps, CloseButtonProps, Props } from './types';
 import { Icon } from '../icon';
@@ -9,6 +9,8 @@ import {
 	DropdownMenuPortal,
 	DropdownMenuTrigger
 } from '../dropdown-menu';
+import { useUnit } from 'effector-react';
+import { internals } from './model';
 
 const SIDEBAR_ANIMATION_DURATION = 300;
 const BACKDROP_ANIMATION_DURATION = 100;
@@ -19,12 +21,20 @@ export function Sidebar({
 	onClose,
 	onCloseActionMenu,
 	closeOnOverlayClick = true,
+	confirmOverlayClose,
 	actions,
 	actionMenuContentRef
 }: React.PropsWithChildren<Props>) {
 	const [isActionsMenuOpen, setIsActionMenuOpen] = React.useState(false);
 	const [isSidebarVisible, setIsSidebarVisible] = React.useState(false);
 	const [isBackdropVisible, setIsBackdropVisible] = React.useState(false);
+	const { openConfirmDialog } = useUnit({
+		openConfirmDialog: internals.openConfirmDialog
+	});
+
+	useEventEffect(internals.confirmDialogConfirmed, () => {
+		handleClose();
+	});
 
 	const handleClose = React.useCallback(() => {
 		setIsSidebarVisible(false);
@@ -48,6 +58,14 @@ export function Sidebar({
 		return () => {};
 	}, [isOpen]);
 
+	const handleBackdropClick = () => {
+		if (confirmOverlayClose) {
+			openConfirmDialog();
+			return;
+		}
+		handleClose();
+	};
+
 	const handleCloseActionMenu = () => {
 		setIsActionMenuOpen(false);
 		onCloseActionMenu?.();
@@ -69,7 +87,7 @@ export function Sidebar({
 					'opacity-1 touch-all': isBackdropVisible,
 					'touch-none opacity-0': !isBackdropVisible
 				})}
-				onClick={() => closeOnOverlayClick && handleClose()}
+				onClick={() => closeOnOverlayClick && handleBackdropClick()}
 			></div>
 			<div
 				className={cn(

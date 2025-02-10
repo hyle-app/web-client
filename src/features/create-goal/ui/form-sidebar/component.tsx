@@ -45,7 +45,7 @@ export const CreateGoalFormSidebar = React.memo(
 		const linkedEntities = useWatch({ control: form.control, name: GoalFormFieldName.LinkedEntities });
 
 		return (
-			<Sidebar isOpen={isOpen} onClose={onClose} closeOnOverlayClick={!isDecomposeOpen}>
+			<Sidebar isOpen={isOpen} onClose={onClose} closeOnOverlayClick={!isDecomposeOpen} confirmOverlayClose>
 				<FormProvider {...form}>
 					<div className="flex flex-col justify-between pb-8 h-full relative">
 						<GoalForm

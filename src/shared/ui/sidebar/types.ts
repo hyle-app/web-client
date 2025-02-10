@@ -5,6 +5,7 @@ export type Props = {
 	onClose(): void;
 	onCloseActionMenu?(): void;
 	closeOnOverlayClick?: boolean;
+	confirmOverlayClose?: boolean;
 	actions?: React.ReactNode[];
 	actionMenuContentRef?: React.RefObject<HTMLDivElement>;
 } & React.HTMLAttributes<HTMLDivElement>;
