@@ -37,34 +37,34 @@ export function UserMenuDropdownWidget() {
 			{isLoggedIn && (
 				<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 					<DropdownMenuTrigger>
-						<span className="p-0 bg-transparent">
+						<span className="bg-transparent p-0">
 							<div className="flex items-center gap-2">
 								{user && user.email}
 								<Icon name={'chevron-down'} className={cn(isOpen && 'rotate-180', 'transition-transform')} />
 							</div>
 						</span>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className="w-80 bg-color-bg-100 rounded-2xl">
+					<DropdownMenuContent className="w-80 rounded-2xl bg-color-bg-100">
 						<DropdownMenuLabel>
-							<div className="w-full p-2 flex flex-col">
-								<span className="text-color-gray-80 text-default">Подписка</span>
-								<div className="flex flex-row gap-2 items-center text-default">
+							<div className="flex w-full flex-col p-2">
+								<span className="text-default text-color-gray-80">Подписка</span>
+								<div className="flex flex-row items-center gap-2 text-default">
 									<Icon name="subscriptionActive" />
-									<span className="text-default font-default"> Активна до 20.09.25</span>
+									<span className="font-default text-default"> Активна до 20.09.25</span>
 								</div>
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
 							<DropdownMenuItem>
-								<div className="flex items-center gap-2 flex-row">
+								<div className="flex flex-row items-center gap-2">
 									<Icon name="home" />
 									<a href="/profile">Личный кабинет</a>
 								</div>
 							</DropdownMenuItem>
 							<DropdownMenuSub>
 								<DropdownMenuSubTrigger>
-									<div className="flex items-center gap-2 flex-row">
+									<div className="flex flex-row items-center gap-2">
 										<Icon name="gear" />
 										<span>Настройки</span>
 									</div>
@@ -72,7 +72,7 @@ export function UserMenuDropdownWidget() {
 								<DropdownMenuPortal>
 									<DropdownMenuSubContent>
 										<DropdownMenuItem>
-											<div className="flex items-center gap-2 flex-row">
+											<div className="flex flex-row items-center gap-2">
 												<Icon name="trash" />
 												<span>Удалить аккаунт</span>
 											</div>
@@ -84,7 +84,7 @@ export function UserMenuDropdownWidget() {
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
 							<DropdownMenuItem>
-								<div className="flex items-center gap-2 flex-row">
+								<div className="flex flex-row items-center gap-2">
 									<Icon name="bug" />
 									<a target="_blank" href="https://t.me/Hyle_app_bot" className="text-default">
 										Связаться с разработчиками
@@ -93,7 +93,7 @@ export function UserMenuDropdownWidget() {
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<Link to="" className="text-default">
-									<div className="flex items-center gap-2 flex-row">
+									<div className="flex flex-row items-center gap-2">
 										<Icon name="help" className="text-color-text-and-icon-80" />
 										<span>Режим обучения</span>
 									</div>
@@ -101,14 +101,14 @@ export function UserMenuDropdownWidget() {
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<Link to="" className="text-default">
-									<div className="flex items-center gap-2 flex-row">
+									<div className="flex flex-row items-center gap-2">
 										<Icon name="about" />
-										<span>О приложении</span>
+										<Link href="/about">О приложении</Link>
 									</div>
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
-								<div className="flex items-center gap-2 flex-row">
+								<div className="flex flex-row items-center gap-2">
 									<Icon name="telegram" />
 									<a href="https://t.me/hyle_app" target="_blank" className="text-default">
 										Телеграмм канал
@@ -119,7 +119,7 @@ export function UserMenuDropdownWidget() {
 						<DropdownMenuSeparator />
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={onlogout}>
-							<div className="flex items-center gap-2 flex-row">
+							<div className="flex flex-row items-center gap-2">
 								<Icon name="logout" />
 								<span>Выйти из аккаунта</span>
 							</div>
