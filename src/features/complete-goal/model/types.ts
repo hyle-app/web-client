@@ -8,3 +8,13 @@ export type FillComplexGoalProgressPayload = {
 export type CompleteSimpleGoalPayload = {
 	goalId: GoalId;
 };
+
+export type GoalCompletionChangedPayload = {
+	goalId: GoalId;
+	progress: {
+		old: number;
+		new: number;
+		target: number;
+	};
+	label?: string | undefined;
+};

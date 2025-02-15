@@ -131,7 +131,7 @@ export const EditGoalFormSidebar = React.memo(
 
 		return (
 			<Sidebar
-				confirmOverlayClose
+				confirmOverlayClose={form.formState.isDirty}
 				isOpen={isOpen}
 				onClose={handleClose}
 				actionMenuContentRef={sidebarActionMenuRef}

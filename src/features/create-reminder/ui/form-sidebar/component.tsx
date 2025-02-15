@@ -42,7 +42,7 @@ export const CreateReminderFormSidebar = React.memo(({ isOpen, onClose }: Props)
 	}, [isOpen]);
 
 	return (
-		<Sidebar isOpen={isOpen} onClose={onClose} confirmOverlayClose>
+		<Sidebar isOpen={isOpen} onClose={onClose} confirmOverlayClose={form.formState.isDirty}>
 			<div className="flex flex-col justify-between pb-8 h-full relative">
 				<FormProvider {...form}>
 					<ReminderForm goalsToLinkTo={goals} withCalendarShortcuts />

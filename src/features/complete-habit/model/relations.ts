@@ -1,5 +1,5 @@
 import { sample } from 'effector';
-import { inputs, internals } from './model';
+import { inputs, internals, outputs } from './model';
 import { habitEntity } from '&entities/habit';
 import { authService } from '&shared/services/auth';
 import { spread } from 'patronum';
@@ -29,17 +29,30 @@ sample({
 
 		const updatedHabitState = habitEntity.lib.completeSimpleHabit(habit, timestamp);
 
+		const isCompleted = habitEntity.lib.isHabitCompletedOnDate(updatedHabitState, timestamp);
+
 		return {
 			remote: {
 				habit: mapHabitToDTO(updatedHabitState, user!.uid),
 				customerId: user!.uid
 			},
-			local: { habit: updatedHabitState }
+			local: { habit: updatedHabitState },
+			completedOnDay: isCompleted
+				? {
+						habitId,
+						totalProgress: {
+							old: habit.currentProgress,
+							new: updatedHabitState.currentProgress,
+							target: habit.targetProgress
+						}
+					}
+				: (undefined as any)
 		};
 	},
 	target: spread({
 		remote: internals.completeHabitFx,
-		local: habitEntity.inputs.updateHabit
+		local: habitEntity.inputs.updateHabit,
+		completedOnDay: outputs.habitCompletedOnDay
 	})
 });
 
@@ -66,16 +79,44 @@ sample({
 
 		const updatedHabitState = habitEntity.lib.fillComplexHabitDayProgress(habit, progressDelta, timestamp);
 
-		return {
+		const commonEvents = {
 			remote: {
 				habit: mapHabitToDTO(updatedHabitState, user!.uid),
 				customerId: user!.uid
 			},
 			local: { habit: updatedHabitState }
 		};
+
+		if (habitEntity.lib.isHabitCompletedOnDate(updatedHabitState, timestamp)) {
+			return {
+				...commonEvents,
+				completedOnDay: {
+					habitId,
+					totalProgress: {
+						old: habit.currentProgress,
+						new: updatedHabitState.currentProgress,
+						target: habit.targetProgress
+					}
+				}
+			};
+		}
+
+		return {
+			...commonEvents,
+			partiallyCompletedOnDay: {
+				habitId,
+				dailyProgress: {
+					old: habit.dailyProgressSnaphots[timeService.lib.getStartOfTheDay(timestamp)],
+					new: updatedHabitState.dailyProgressSnaphots[timeService.lib.getStartOfTheDay(timestamp)],
+					target: habit.dailyTargetProgressDetails?.targetProgress ?? 1
+				}
+			}
+		};
 	},
 	target: spread({
 		remote: internals.completeHabitFx,
-		local: habitEntity.inputs.updateHabit
+		local: habitEntity.inputs.updateHabit,
+		completedOnDay: outputs.habitCompletedOnDay,
+		partiallyCompletedOnDay: outputs.habitPartiallyCompletedOnDay
 	})
 });
