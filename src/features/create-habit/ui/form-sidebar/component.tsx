@@ -35,7 +35,7 @@ export function CreateHabitFormSidebar({ isOpen, onClose }: Props) {
 	}, [isOpen]);
 
 	return (
-		<Sidebar isOpen={isOpen} onClose={onClose}>
+		<Sidebar isOpen={isOpen} onClose={onClose} confirmOverlayClose={form.formState.isDirty}>
 			<FormProvider {...form}>
 				<div className="flex flex-col justify-between pb-8 h-full relative">
 					<HabitForm goalsToLinkTo={goals} />

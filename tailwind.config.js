@@ -90,7 +90,8 @@ export default {
 			zIndex: {
 				sidebar: 50,
 				'sidebar-overlay': 49,
-				'select-dropdown': 100
+				'select-dropdown': 100,
+				'dialog-container': 101
 			}
 		}
 	},

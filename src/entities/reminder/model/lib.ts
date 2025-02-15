@@ -235,12 +235,6 @@ function isReminderAttachedToDay(reminder: Reminder, realTimestamp: number, time
 		const lastTriggerDate = getPreviousTriggerDate(reminder.targetDateTime, reminder.rule);
 		const shouldHaveBeenCompleted =
 			lastTriggerDate < startOfCheckedTimestamp && (!lastCompletion || lastTriggerDate >= lastCompletion);
-		console.log({
-			title: reminder.title,
-			shouldHaveBeenCompleted,
-			lastCompletion,
-			lastTriggerDate
-		});
 		return timeService.lib.getDayOfWeek(startOfTargetDate) === timeService.lib.getDayOfWeek(startOfCheckedTimestamp);
 	}
 

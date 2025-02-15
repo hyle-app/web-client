@@ -1,5 +1,5 @@
 import { createEffect, createEvent } from 'effector';
-import { CompleteSimpleGoalPayload, FillComplexGoalProgressPayload } from './types';
+import { CompleteSimpleGoalPayload, FillComplexGoalProgressPayload, GoalCompletionChangedPayload } from './types';
 import { completeGoalApi } from '../api';
 
 const fillComplexGoalProgress = createEvent<FillComplexGoalProgressPayload>();
@@ -9,13 +9,16 @@ const updateGoalCompletionFx = createEffect(completeGoalApi.updateGoalCompletion
 
 const $isGoalCompletionInProgress = updateGoalCompletionFx.pending;
 
+const goalCompletionChanged = createEvent<GoalCompletionChangedPayload>();
+
 export const inputs = {
 	fillComplexGoalProgress,
 	completeSimpleGoal
 };
 export const outputs = {
 	updateGoalCompletionFx,
-	$isGoalCompletionInProgress
+	$isGoalCompletionInProgress,
+	goalCompletionChanged
 };
 export const internals = {
 	updateGoalCompletionFx

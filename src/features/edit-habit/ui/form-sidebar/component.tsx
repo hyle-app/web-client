@@ -107,6 +107,7 @@ export function EditHabitFormSidebar({
 
 	return (
 		<Sidebar
+			confirmOverlayClose={form.formState.isDirty}
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
