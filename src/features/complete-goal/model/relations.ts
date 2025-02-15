@@ -1,5 +1,5 @@
 import { sample } from 'effector';
-import { inputs, internals } from './model';
+import { inputs, internals, outputs } from './model';
 import { goalEntity } from '&entities/goal';
 import { spread } from 'patronum';
 import { mapGoalToDTO } from './mappers';
@@ -22,12 +22,22 @@ sample({
 			remote: {
 				goalId,
 				goal: mapGoalToDTO(newGoalState)
+			},
+			goalCompletionChanged: {
+				goalId,
+				label: newGoalState.progress?.label ?? undefined,
+				progress: {
+					old: goal.progress?.currentProgress ?? 0,
+					new: newGoalState.progress?.currentProgress ?? 0,
+					target: newGoalState.progress?.targetProgress ?? 1
+				}
 			}
 		};
 	},
 	target: spread({
 		local: goalEntity.inputs.updateGoal,
-		remote: internals.updateGoalCompletionFx
+		remote: internals.updateGoalCompletionFx,
+		goalCompletionChanged: outputs.goalCompletionChanged
 	})
 });
 
@@ -49,11 +59,21 @@ sample({
 			remote: {
 				goalId,
 				goal: mapGoalToDTO(newGoalState)
+			},
+			goalCompletionChanged: {
+				goalId,
+				label: newGoalState.progress?.label ?? undefined,
+				progress: {
+					old: 0,
+					new: 1,
+					target: 1
+				}
 			}
 		};
 	},
 	target: spread({
 		local: goalEntity.inputs.updateGoal,
-		remote: internals.updateGoalCompletionFx
+		remote: internals.updateGoalCompletionFx,
+		goalCompletionChanged: outputs.goalCompletionChanged
 	})
 });

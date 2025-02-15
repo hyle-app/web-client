@@ -1,3 +1,4 @@
+import { CheerUpSidebar } from '&features/cheer-up';
 import { DialogContainer } from '&shared/services/dialog';
 import { Icon } from '&shared/ui/icon';
 import { Logo } from '&shared/ui/logo';
@@ -100,6 +101,8 @@ function AuthLayout() {
 			<main className="col-start-2 col-end-3 row-start-2 row-end-3 bg-color-bg-95 flex">
 				<Outlet />
 				<DialogContainer />
+
+				<CheerUpSidebar />
 			</main>
 		</div>
 	);
