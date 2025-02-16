@@ -18,6 +18,7 @@ import { cn } from '&shared/utils';
 import { Link, useRouter } from '@tanstack/react-router';
 import { useUnit } from 'effector-react';
 import { useState } from 'react';
+import { HttpModeToggle } from '&features/toggle-http-mode';
 
 export function UserMenuDropdownWidget() {
 	const router = useRouter();
