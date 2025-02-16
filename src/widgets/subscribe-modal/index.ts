@@ -1,0 +1,1 @@
+export { SubscribeModalWidget } from './container';

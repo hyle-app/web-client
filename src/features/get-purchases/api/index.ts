@@ -1,0 +1,1 @@
+export { getPurchases } from './api';

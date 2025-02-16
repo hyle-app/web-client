@@ -19,6 +19,7 @@ export default {
 				'heading-5': 'var(--font-size-h5)',
 				'caption-1': 'var(--font-size-caption-1)',
 				'caption-2': 'var(--font-size-caption-2)',
+				'subheader-1' : 'var(--font-size-subheader-1)',
 				default: 'var(--font-size-default)',
 				paragraph: 'var(--font-size-default)'
 			},

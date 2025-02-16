@@ -1,15 +1,15 @@
+import { GoalCard, goalEntity } from '&entities/goal';
+import { completeGoalFeature } from '&features/complete-goal';
+import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose-goal';
+import { EditGoalFormSidebar } from '&features/edit-goal';
 import { timeService } from '&shared/services/time';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
-import { useUnit } from 'effector-react';
-import { Props } from './types';
 import { cn } from '&shared/utils';
-import { goalEntity, GoalCard } from '&entities/goal';
-import { inputs, outputs } from './model';
-import { EditGoalFormSidebar } from '&features/edit-goal';
+import { useUnit } from 'effector-react';
 import React from 'react';
-import { completeGoalFeature } from '&features/complete-goal';
-import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose-goal';
+import { inputs, outputs } from './model';
+import { Props } from './types';
 
 export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 	const {
@@ -41,17 +41,17 @@ export function OverdueGoalListWidget({ className, ...attributes }: Props) {
 	}
 
 	return (
-		<section className={cn('overflow-y-scroll no-scrollbar pb-6', className)} {...attributes}>
-			<div className="px-4 py-6 rounded-2xl border-1 border border-color-gray-10 grow-1 min-h-full">
+		<section className={cn('no-scrollbar overflow-y-scroll pb-6', className)} {...attributes}>
+			<div className="border-1 grow-1 min-h-full rounded-2xl border border-color-gray-10 px-4 py-6">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						<Icon name="triangle-danger" className="text-color-error w-6 h-6" />
+						<Icon name="triangle-danger" className="h-6 w-6 text-color-error" />
 						<Typography variant="heading-4" className="font-semibold">
 							Просроченные
 						</Typography>
 					</div>
 				</div>
-				<div className="flex flex-col gap-4 mt-6">
+				<div className="mt-6 flex flex-col gap-4">
 					{overdueGoals.map((goal) => {
 						return (
 							<GoalCard

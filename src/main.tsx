@@ -1,19 +1,19 @@
 import './index.css';
 
+import { dispatchEvent } from '&shared/utils';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import dayjsIsBetweenPlugin from 'dayjs/plugin/isBetween';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { dispatchEvent } from '&shared/utils';
-import 'dayjs/locale/ru';
-import dayjs from 'dayjs';
-import dayjsIsBetweenPlugin from 'dayjs/plugin/isBetween';
 
 dayjs.extend(dayjsIsBetweenPlugin);
 dayjs.locale('ru');
 
 // Import the generated route tree
-import { routeTree } from './routeTree.gen';
 import { applicationModel } from './pages/application.model';
+import { routeTree } from './routeTree.gen';
 
 // Create a new router instance
 const router = createRouter({

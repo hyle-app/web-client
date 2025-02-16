@@ -1,0 +1,1 @@
+export { getSubsription } from './api';
