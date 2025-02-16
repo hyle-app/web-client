@@ -8,13 +8,13 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from './pages/__root';
-import { Route as AuthImport } from './pages/_auth';
-import { Route as IndexImport } from './pages/index';
+import { Route as rootRoute } from './pages/__root'
+import { Route as AuthImport } from './pages/_auth'
+import { Route as IndexImport } from './pages/index'
 
 // Create Virtual Routes
 
@@ -31,9 +31,9 @@ const AuthAboutIndexLazyImport = createFileRoute('/_auth/about/')()
 // Create/Update Routes
 
 const AuthRoute = AuthImport.update({
-	id: '/_auth',
-	getParentRoute: () => rootRoute
-} as any);
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -68,32 +68,32 @@ const AuthHomeIndexLazyRoute = AuthHomeIndexLazyImport.update({
   path: '/home/',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
-  import('./pages/_auth/profile/index.lazy').then((d) => d.Route),
+  import('./pages/_auth/home/index.lazy').then((d) => d.Route),
 )
 
-const AuthHomeIndexLazyRoute = AuthHomeIndexLazyImport.update({
-	id: '/home/',
-	path: '/home/',
-	getParentRoute: () => AuthRoute
-} as any).lazy(() => import('./pages/_auth/home/index.lazy').then((d) => d.Route));
-
 const AuthGoalsIndexLazyRoute = AuthGoalsIndexLazyImport.update({
-	id: '/goals/',
-	path: '/goals/',
-	getParentRoute: () => AuthRoute
-} as any).lazy(() => import('./pages/_auth/goals/index.lazy').then((d) => d.Route));
+  id: '/goals/',
+  path: '/goals/',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./pages/_auth/goals/index.lazy').then((d) => d.Route),
+)
 
 const AuthBalanceIndexLazyRoute = AuthBalanceIndexLazyImport.update({
-	id: '/balance/',
-	path: '/balance/',
-	getParentRoute: () => AuthRoute
-} as any).lazy(() => import('./pages/_auth/balance/index.lazy').then((d) => d.Route));
+  id: '/balance/',
+  path: '/balance/',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./pages/_auth/balance/index.lazy').then((d) => d.Route),
+)
 
 const AuthAboutIndexLazyRoute = AuthAboutIndexLazyImport.update({
-	id: '/about/',
-	path: '/about/',
-	getParentRoute: () => AuthRoute
-} as any).lazy(() => import('./pages/_auth/about/index.lazy').then((d) => d.Route));
+  id: '/about/',
+  path: '/about/',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./pages/_auth/about/index.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -183,7 +183,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthProfileIndexLazyRoute: AuthProfileIndexLazyRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -236,31 +236,13 @@ export interface FileRouteTypes {
     | '/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
-  fullPaths:
     | '/'
     | ''
-    | '/auth'
-    | '/about'
-    | '/balance'
-    | '/goals'
-    | '/home'
-    | '/profile'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    |
-    | '/'
-   
-    | ''
-   
     | '/auth'
     | '/web-version-teaser'
-   
     | '/about'
-   
     | '/balance'
-   
     | '/goals'
-   
     | '/home'
     | '/profile'
   id:
@@ -291,7 +273,9 @@ const rootRouteChildren: RootRouteChildren = {
   WebVersionTeaserIndexLazyRoute: WebVersionTeaserIndexLazyRoute,
 }
 
-export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
