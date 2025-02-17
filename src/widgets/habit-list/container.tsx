@@ -11,7 +11,6 @@ import { CreateHabitFormSidebar } from '&features/create-habit';
 import { EditHabitFormSidebar } from '&features/edit-habit';
 import { completeHabitFeature } from '&features/complete-habit';
 import { inputs, outputs } from './model';
-import { CheerUpSidebar } from '&features/cheer-up';
 
 export function HabitListWidget({ className, ...attributes }: Props) {
 	const {

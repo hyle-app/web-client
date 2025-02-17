@@ -22,25 +22,23 @@ export function getOverdueDetailsOnDate(
 	const lastTriggerTimestamp = getLastTriggerDateBefore(reminder, selectedDateStart);
 	const lastTriggerDateStart = timeService.lib.getStartOfTheDay(lastTriggerTimestamp);
 
-	const isViewingTriggerDate = lastTriggerDateStart === selectedDateStart;
+	// const isViewingTriggerDate = lastTriggerDateStart === selectedDateStart;
 
-	if (isViewingTriggerDate) {
-		const viewDateCompletion =
-			reminder.completions?.find((completion) => timeService.lib.getStartOfTheDay(completion) === selectedDateStart) ??
-			null;
+	const viewDateCompletion =
+		reminder.completions?.find((completion) => timeService.lib.getStartOfTheDay(completion) === selectedDateStart) ??
+		null;
 
-		const isExpiredOnTriggerDate =
-			viewDateCompletion === null && reminder.targetDateTime < timeService.lib.getCurrentTimestamp();
+	const isExpiredOnTriggerDate =
+		viewDateCompletion === null && reminder.targetDateTime < timeService.lib.getCurrentTimestamp();
 
-		if (isExpiredOnTriggerDate) {
-			return timeService.lib.getDiffInTimeUnits(reminder.targetDateTime, timeService.lib.getCurrentTimestamp());
-		}
+	if (isExpiredOnTriggerDate) {
+		return timeService.lib.getDiffInTimeUnits(reminder.targetDateTime, timeService.lib.getCurrentTimestamp());
+	}
 
-		const isExpiredOnLastTriggerDate = viewDateCompletion !== null && viewDateCompletion > lastTriggerTimestamp;
+	const isExpiredOnLastTriggerDate = viewDateCompletion !== null && viewDateCompletion > lastTriggerTimestamp;
 
-		if (isExpiredOnLastTriggerDate) {
-			return timeService.lib.getDiffInTimeUnits(reminder.targetDateTime, lastTriggerTimestamp);
-		}
+	if (isExpiredOnLastTriggerDate) {
+		return timeService.lib.getDiffInTimeUnits(reminder.targetDateTime, lastTriggerTimestamp);
 	}
 
 	return null;
