@@ -11,22 +11,34 @@ import { goalEntity } from '&entities/goal';
 import { CreateTaskFormSidebar } from '&features/create-task';
 import { EditTaskFormSidebar } from '&features/edit-task';
 import { toggleTaskCompletionFeature } from '&features/toggle-task-completion';
+import { inputs, outputs } from './model';
 
 export function TaskListWidget({ className, ...attributes }: Props) {
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
-	const [selectedTaskId, setSelectedTaskId] = React.useState<string | null>(null);
 
-	const { tasks, selectedAppDateStart, realTimestamp, toggleTask, toggleSubtask } = useUnit({
+	const {
+		tasks,
+		selectedAppDateStart,
+		realTimestamp,
+		toggleTask,
+		toggleSubtask,
+		setSelectedTaskId,
+		selectedTaskId,
+		resetSelectedTaskId
+	} = useUnit({
 		tasks: taskEntity.outputs.$currentAppDateTasks,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
 		realTimestamp: timeService.outputs.$realTimestamp,
 		goals: goalEntity.outputs.$goals,
 		toggleSubtask: toggleTaskCompletionFeature.inputs.toggleSubtask,
-		toggleTask: toggleTaskCompletionFeature.inputs.toggleTask
+		toggleTask: toggleTaskCompletionFeature.inputs.toggleTask,
+		setSelectedTaskId: inputs.setSelectedTaskId,
+		selectedTaskId: outputs.$selectedTaskId,
+		resetSelectedTaskId: inputs.resetSelectedTaskId
 	});
 
 	const closeEditTaskForm = React.useCallback(() => {
-		setSelectedTaskId(null);
+		resetSelectedTaskId();
 	}, []);
 
 	const closeCreateTaskForm = React.useCallback(() => {

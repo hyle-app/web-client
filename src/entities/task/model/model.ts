@@ -2,6 +2,7 @@ import { combine, createEffect, createEvent, createStore } from 'effector';
 import type { AddTaskParams, DatedTask, DeleteTaskParams, Task, TaskId, UpdateTaskParams } from './types';
 import { timeService } from '&shared/services/time';
 import { taskApi } from '../api';
+import { once } from 'patronum';
 
 const $datedTasksList = createStore<DatedTask[]>([]);
 
@@ -41,6 +42,15 @@ const $currentAppDateTasks = combine(
 	}
 );
 
+const initialTasksFetched = once(fetchTasksOfDayFx.doneData);
+
 export const inputs = { fetchTasksOfDay, addTask, updateTask, deleteTask, resetTasksList };
-export const outputs = { $tasksByDays, $currentAppDateTasks, $isFetchingTasks, $tasksList, getTaskById };
+export const outputs = {
+	$tasksByDays,
+	$currentAppDateTasks,
+	$isFetchingTasks,
+	$tasksList,
+	getTaskById,
+	initialTasksFetched
+};
 export const internals = { fetchTasksOfDayFx, $datedTasksList, deleteTaskFx };

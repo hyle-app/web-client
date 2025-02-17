@@ -71,6 +71,7 @@ export default {
 				'color-select-card-bg': '#dde5ff'
 			},
 			boxShadow: {
+				search: '0px 8px 18px #4B60AB20',
 				card: 'var(--card-shadow)',
 				'balance-chart-col': 'var(--balance-chart-col-shadow)'
 			},

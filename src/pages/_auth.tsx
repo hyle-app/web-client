@@ -5,6 +5,7 @@ import { Logo } from '&shared/ui/logo';
 import { MenuNavItem } from '&shared/ui/menu-nav-item/component';
 import { cn } from '&shared/utils';
 import { LeftSideCalendarWidget } from '&widgets/left-side-calendar';
+import { SearchButtonWidget } from '&widgets/search';
 import { UserMenuDropdownWidget } from '&widgets/user-menu-dropdown';
 import { Outlet, createFileRoute, useMatchRoute, useRouter, useRouterState } from '@tanstack/react-router';
 import React from 'react';
@@ -52,6 +53,7 @@ function AuthLayout() {
 			<header className="col-start-2 col-end-3 row-start-1 row-end-1 flex justify-between px-6 py-6 items-center bg-color-bg-95">
 				<h1 className="text-color-text-and-icon-80 text-heading-2 font-heading-2">{title}</h1>
 				<span className="flex items-center ">
+					<SearchButtonWidget />
 					{/* TODO: Use notifications button widget here */}
 					<span className="w-14 h-14 flex items-center justify-center">
 						<Icon name="bell" className="w-6 h-6" />
@@ -60,11 +62,6 @@ function AuthLayout() {
 					<span className="w-14 h-14 flex items-center justify-center">
 						<Icon name="moon" className="w-6 h-6" />
 					</span>
-					{/* TODO: Use search button widget here */}
-					<span className="w-14 h-14 flex items-center justify-center">
-						<Icon name="search" className="w-6 h-6" />
-					</span>
-					{/* TODO: Use auth display widget here */}
 					<UserMenuDropdownWidget />
 				</span>
 			</header>

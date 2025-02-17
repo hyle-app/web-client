@@ -1,4 +1,4 @@
-import { CompletableReminderCard, reminderEntity, ReminderId } from '&entities/reminder';
+import { CompletableReminderCard, reminderEntity } from '&entities/reminder';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
@@ -11,16 +11,27 @@ import React from 'react';
 import { Props } from './types';
 import { EditReminderFormSidebar } from '&features/edit-reminder';
 import { toggleReminderCompletionFeature } from '&features/toggle-reminder-completion';
+import { inputs, outputs } from './model';
 
 export function ReminderListWidget({ className, ...attributes }: Props) {
 	const [isCreateFormVisible, setIsCreateFormVisible] = React.useState(false);
-	const [selectedReminderId, setSelectedReminderId] = React.useState<ReminderId | null>(null);
 
-	const { reminders, selectedAppDateStart, realTimestamp, toggleCompletionEvent } = useUnit({
+	const {
+		reminders,
+		selectedAppDateStart,
+		realTimestamp,
+		toggleCompletionEvent,
+		selectedReminderId,
+		setSelectedReminderId,
+		resetSelectedReminderId
+	} = useUnit({
 		reminders: reminderEntity.outputs.$currentAppDateReminders,
 		selectedAppDateStart: timeService.outputs.$currentAppDateStart,
 		realTimestamp: timeService.outputs.$realTimestamp,
-		toggleCompletionEvent: toggleReminderCompletionFeature.inputs.toggleReminderCompletion
+		toggleCompletionEvent: toggleReminderCompletionFeature.inputs.toggleReminderCompletion,
+		selectedReminderId: outputs.$selectedReminderId,
+		setSelectedReminderId: inputs.setSelectedReminderId,
+		resetSelectedReminderId: inputs.resetSelectedReminderId
 	});
 
 	const handleCloseCreateForm = React.useCallback(() => {
@@ -28,7 +39,7 @@ export function ReminderListWidget({ className, ...attributes }: Props) {
 	}, []);
 
 	const handleCloseEditForm = React.useCallback(() => {
-		setSelectedReminderId(null);
+		resetSelectedReminderId();
 	}, []);
 
 	return (
