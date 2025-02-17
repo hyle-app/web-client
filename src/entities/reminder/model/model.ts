@@ -4,6 +4,7 @@ import { timeService } from '&shared/services/time';
 import { DeleteReminderParams } from '../api/types';
 import { lib } from './lib';
 import { reminderApi } from '../api';
+import { once } from 'patronum';
 
 const fetchRemindersOfDay = createEvent<number>();
 
@@ -29,6 +30,8 @@ const getReminderById = (reminderId: ReminderId) =>
 const fetchRemindersOfDayFx = createEffect(reminderApi.fetchRemindersOfDay);
 const deleteReminderFx = createEffect(reminderApi.deleteReminder);
 
+export const initialRemindersFetched = once(fetchRemindersOfDayFx.doneData);
+
 export const inputs = {
 	addReminder,
 	deleteReminder,
@@ -36,5 +39,5 @@ export const inputs = {
 	fetchRemindersOfDay,
 	resetReminderList
 };
-export const outputs = { $remindersList, $currentAppDateReminders, getReminderById };
+export const outputs = { $remindersList, $currentAppDateReminders, getReminderById, initialRemindersFetched };
 export const internals = { fetchRemindersOfDayFx, deleteReminderFx };

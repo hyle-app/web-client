@@ -15,12 +15,24 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 export const SearchField = ({ className, onClose, inputClassName, inputRef, ...attrs }: Props) => {
-	const { changeQueryEvent, query, resetQueryEvent, searchResults, isLoading } = useUnit({
+	const {
+		setSelectedTaskIdEvent,
+		setSelectedHabitIdEvent,
+		setSelectedReminderIdEvent,
+		changeQueryEvent,
+		query,
+		resetQueryEvent,
+		searchResults,
+		isLoading
+	} = useUnit({
 		changeQueryEvent: inputs.changeQuery,
 		query: outputs.$query,
 		resetQueryEvent: inputs.resetQuery,
 		searchResults: outputs.$searchResults,
-		isLoading: outputs.$isSearchLoading
+		isLoading: outputs.$isSearchLoading,
+		setSelectedHabitIdEvent: inputs.setSelectedHabitId,
+		setSelectedTaskIdEvent: inputs.setSelectedTaskId,
+		setSelectedReminderIdEvent: inputs.setSelectedReminderId
 	});
 	const ref = React.useRef(null);
 
@@ -40,7 +52,7 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 					</div>
 					<div>
 						{searchResults.habits.map((task) => (
-							<button className="py-2 px-4" key={task.id}>
+							<button className="py-2 px-4" key={task.id} onClick={() => setSelectedHabitIdEvent({ value: task.id })}>
 								{task.title}
 							</button>
 						))}
@@ -58,7 +70,7 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 					</div>
 					<div>
 						{searchResults.tasks.map((task) => (
-							<button className="py-2 px-4" key={task.id}>
+							<button className="py-2 px-4" key={task.id} onClick={() => setSelectedTaskIdEvent({ value: task.id })}>
 								{task.title}
 							</button>
 						))}
@@ -76,7 +88,11 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 					</div>
 					<div>
 						{searchResults.reminders.map((task) => (
-							<button className="py-2 px-4" key={task.id}>
+							<button
+								className="py-2 px-4"
+								key={task.id}
+								onClick={() => setSelectedReminderIdEvent({ value: task.id })}
+							>
 								{task.title}
 							</button>
 						))}

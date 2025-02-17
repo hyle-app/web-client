@@ -2,11 +2,17 @@ import { Icon } from '&shared/ui/icon';
 import React from 'react';
 import { SearchField } from '../field';
 import { cn } from '&shared/utils';
+import { useUnit } from 'effector-react';
+import { inputs } from '../../model';
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const SearchButtonWidget = ({ ...attrs }: Props) => {
 	const [isVisible, setIsVisible] = React.useState(false);
+
+	const { clearQueryEvent } = useUnit({
+		clearQueryEvent: inputs.resetQuery
+	});
 
 	const ref = React.useRef<HTMLDivElement>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
@@ -20,6 +26,7 @@ export const SearchButtonWidget = ({ ...attrs }: Props) => {
 				(event) => {
 					if (!ref.current?.contains(event.target as Node)) {
 						setIsVisible(false);
+						clearQueryEvent();
 					}
 				},
 				{ signal: controller.signal }
