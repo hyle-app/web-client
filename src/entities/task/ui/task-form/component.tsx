@@ -4,7 +4,7 @@ import { SeamlessInput } from '&shared/ui/seamless-input';
 import { SeamlessSelect } from '&shared/ui/seamless-select';
 import { FormSection } from '&shared/ui/form-section';
 import { Subtask } from '&entities/task/model';
-import { generateTemporaryId, getPlainErrors, unicodeToEmoji } from '&shared/utils';
+import { cn, generateTemporaryId, getPlainErrors, unicodeToEmoji } from '&shared/utils';
 import { Icon } from '&shared/ui/icon';
 import { SeamlessArrayInput } from '&shared/ui/seamless-array-input';
 
@@ -153,13 +153,13 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					inputLeftSlot={<SeamlessInput.Icon name="subtask" />}
 					renderElement={(subtask, index) => (
 						<div className="flex flex-col gap-1" key={subtask.id}>
-							<div className="group flex gap-3 relative">
+							<div className="group relative flex gap-3">
 								<SubtaskCard isCompleted={subtask.isCompleted}>{subtask.title}</SubtaskCard>
 								<button
-									className="w-8 self-stretch flex justify-center items-center opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity"
+									className="flex w-8 items-center justify-center self-stretch opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
 									onClick={() => removeSubtask(index)}
 								>
-									<Icon name="plus" className="text-color-error rotate-45 h-5 w-5" />
+									<Icon name="plus" className="h-5 w-5 rotate-45 text-color-error" />
 								</button>
 							</div>
 							{plainErrors[`${TaskFormFieldName.Subtasks}.${index}.title` as keyof typeof plainErrors] && (
@@ -175,17 +175,21 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 				<SeamlessSelect
 					label="Прикрепить цель"
 					leftSlot={<SeamlessSelect.Icon name="goal" />}
-					className="w-full"
-					inputClassName="md:max-w-full w-full"
+					className={cn('h-16 w-full gap-4', { 'py-0': Boolean(linkedGoalIdField.value) })}
+					inputClassName="md:max-w-full w-full pl-0"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"
-					hideLeftSlotWhenHasContnent
 					value={linkedGoalIdField.value ?? ''}
 					options={goalsOptions}
+					emptyOptionsSlot={
+						<Typography className="text-center text-color-gray-80">
+							Нельзя просто так взять и прикрепить цель, если еще не создано ни одной цели 😉
+						</Typography>
+					}
 					onChange={(goalId) => linkedGoalIdField.onChange(goalId || null)}
 					renderOption={({ option }) => (
 						<div>
 							<EntityCard
-								className="w-full"
+								className="duratin-300 w-full transition-colors hover:bg-[#f9faff]"
 								titleSlot={
 									<Typography variant="paragraph" className="text-color-text-and-icon-80">
 										{option.label}

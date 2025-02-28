@@ -117,7 +117,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 
 	return (
 		<div className="">
-			<FormSection className="flex gap-2 items-center">
+			<FormSection className="flex items-center gap-2">
 				<EmojiPickerField value={emojiField.value ?? undefined} onChange={emojiField.onChange} />
 				<SeamlessInput
 					label="Название привычки"
@@ -150,11 +150,11 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					<SquareCheckbox checked={isRepeatEveryDayActive} onClick={toggleRepeatEveryDay} />
 					<Typography>Повторять каждый день</Typography>
 				</label>
-				<div className="flex gap-2 relative">
+				<div className="relative flex gap-2">
 					{REPEAT_RULE_OPTIONS.map((option) => (
 						<button
 							key={option.value}
-							className={cn('bg-color-bg-100 p-4 rounded-[15px] transition-colors', {
+							className={cn('rounded-[15px] bg-color-bg-100 p-4 transition-colors', {
 								'text-color-error':
 									option.value === HabitRepeatRule.Sunday || option.value === HabitRepeatRule.Saturday,
 								'bg-color-brand-primary-50 text-color-white': activeRepeatRules.includes(option.value)
@@ -212,11 +212,15 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 			<FormSection>
 				<SeamlessSelect
 					label="Прикрепить цель"
+					emptyOptionsSlot={
+						<Typography className="text-center text-color-gray-80">
+							Нельзя просто так взять и прикрепить цель, если еще не создано ни одной цели 😉
+						</Typography>
+					}
 					leftSlot={<SeamlessSelect.Icon name="goal" />}
-					className="w-full"
-					inputClassName="md:max-w-full w-full"
+					className={cn('h-16 w-full gap-4', { 'py-0': Boolean(linkedGoalIdField.value) })}
+					inputClassName="md:max-w-full w-full pl-0"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"
-					hideLeftSlotWhenHasContnent
 					value={linkedGoalIdField.value ?? ''}
 					options={goalsOptions}
 					onChange={(goalId) => linkedGoalIdField.onChange(goalId || null)}
@@ -224,7 +228,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					renderOption={({ option }) => (
 						<div>
 							<EntityCard
-								className="w-full"
+								className="duratin-300 w-full transition-colors hover:bg-[#f9faff]"
 								titleSlot={
 									<Typography variant="paragraph" className="text-color-text-and-icon-80">
 										{option.label}

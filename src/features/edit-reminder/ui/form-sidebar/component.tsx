@@ -42,10 +42,9 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 	});
 
 	const {
-		formState: { errors, isDirty }
+		formState: { isDirty }
 	} = form;
 
-	const isFormValid = React.useMemo(() => Object.keys(errors).length === 0, [errors]);
 	const showSaveChangesButton = isDirty;
 	const currentDayTimestamp = React.useMemo(() => timeService.lib.getCurrentTimestamp(), [isViewingToday]);
 	const showCompleteButton =
@@ -59,7 +58,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 	};
 
 	useEventEffect(outputs.reminderEdited, () => {
-		handleClose();
+		form.reset(getDefaultFormValues(reminder!));
 	});
 
 	const handleActionMenuClose = () => {
@@ -100,7 +99,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 				</ConfirmPopover>
 			]}
 		>
-			<div className="flex flex-col justify-between pb-8 h-full relative">
+			<div className="relative flex h-full flex-col justify-between pb-8">
 				<FormProvider {...form}>
 					<ReminderForm goalsToLinkTo={goals} />
 				</FormProvider>
@@ -109,10 +108,10 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 						variant="button"
 						appearance="primary"
 						onClick={form.handleSubmit(handleSubmit)}
-						className="mx-8 self-stretch bottom-8 sticky"
-						disabled={isEditingReminder || !isFormValid}
+						className="sticky bottom-8 mx-8 self-stretch"
+						disabled={isEditingReminder}
 					>
-						Сохранить изменения напоминание
+						Сохранить изменения
 					</Button>
 				)}
 				{showCompleteButton && (
@@ -120,9 +119,9 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 						variant="button"
 						appearance="primary"
 						onClick={() => completeReminderEvent({ reminderId })}
-						className="mx-8 self-stretch bottom-8 sticky"
+						className="sticky bottom-8 mx-8 self-stretch"
 					>
-						Отметить выполнение
+						Отметить выполнено
 					</Button>
 				)}
 			</div>

@@ -71,15 +71,18 @@ export function EmojiPickerField({ value, onChange, disabled }: Props) {
 	}, [isOpen]);
 
 	return (
-		<div className="w-8 h-8 relative" ref={rootElementRef}>
-			<button onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)} className="w-8 h-8 ">
-				<p className="w-8 h-8 flex justify-centery items-center relative text-[26px]">
+		<div className="relative h-8 w-8" ref={rootElementRef}>
+			<button
+				onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)}
+				className="h-8 w-8 text-[#b0b7ce] transition-colors hover:text-[#717da7]"
+			>
+				<p className="justify-centery relative flex h-8 w-8 items-center text-[26px]">
 					{value ? unicodeToEmoji(value) : <Icon name="smiley" />}
 				</p>
 			</button>
 
 			<EmojiPicker
-				className="w-full max-w-[600px] absolute z-50"
+				className="absolute z-50 w-full max-w-[600px]"
 				previewConfig={{ showPreview: false }}
 				onEmojiClick={(emojiData) => {
 					onChange(emojiToUnicode(emojiData.emoji));

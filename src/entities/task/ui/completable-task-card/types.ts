@@ -9,7 +9,7 @@ export type Props = {
 		unit: TimeUnit;
 		value: number;
 	} | null;
-	relatedGoalName?: string;
+	relatedGoalName?: string | null;
 	subtasks?: Subtask[];
 	onSubtaskCompletionToggle?(subtaskId: SubtaskId): void;
 	onCompletionToggle?(): void;

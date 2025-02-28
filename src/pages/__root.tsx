@@ -12,6 +12,7 @@ export const Route = createRootRoute({
 		React.useEffect(() => {
 			dispatchEvent(routerService.inputs.setInstance, router);
 		}, []);
+
 		return (
 			<Provider value={getApplicationScope()}>
 				<Outlet />

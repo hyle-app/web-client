@@ -47,15 +47,23 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 		return { selectedEntitiesCount, totalEntitiesCount };
 	}, [linkedEntities, habitsList, remindersList, tasksList]);
 
+	const [mode, setMode] = React.useState<'active' | 'all'>('all');
+
 	const { tasksListToRender, habitsListToRender, remindersListToRender } = React.useMemo(() => {
 		return {
-			tasksListToRender: tasksList.filter((task) => task.title.toLowerCase().includes(searchQuery.toLowerCase())),
-			habitsListToRender: habitsList.filter((habit) => habit.title.toLowerCase().includes(searchQuery.toLowerCase())),
-			remindersListToRender: remindersList.filter((reminder) =>
-				reminder.title.toLowerCase().includes(searchQuery.toLowerCase())
+			tasksListToRender: tasksList.filter(
+				(task) => task.title.toLowerCase().includes(searchQuery.toLowerCase()) && (mode === 'all' || !task.completedAt)
+			),
+			habitsListToRender: habitsList.filter(
+				(habit) =>
+					habit.title.toLowerCase().includes(searchQuery.toLowerCase()) && (mode === 'all' || !habit.completedAt)
+			),
+			remindersListToRender: remindersList.filter(
+				(reminder) =>
+					reminder.title.toLowerCase().includes(searchQuery.toLowerCase()) && (mode === 'all' || !reminder.completedAt)
 			)
 		};
-	}, [searchQuery, tasksList, habitsList, remindersList]);
+	}, [searchQuery, tasksList, habitsList, remindersList, mode]);
 
 	const handleSelectEntity = (kind: 'task' | 'habit' | 'reminder') => (entityId: string) => {
 		setLinkedEntities((prev) => {
@@ -76,12 +84,16 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 		});
 	};
 
+	const toggleMode = () => {
+		setMode((prev) => (prev === 'active' ? 'all' : 'active'));
+	};
+
 	return (
 		<Sidebar isOpen={isOpen} onClose={onClose} className={className} confirmOverlayClose>
-			<div className="px-8 pt-4 flex flex-col gap-6 grow relative">
+			<div className="relative flex grow flex-col gap-6 px-8 pt-4">
 				<div className="flex gap-4">
 					<button>
-						<Icon name="double-chevron-left" />
+						<Icon name="arrow-left" className="h-8 w-8" />
 					</button>
 					<Typography variant="heading-3" className="font-semibold">
 						Прикрепить к цели
@@ -93,12 +105,15 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 					<Typography className="text-color-gray-80">
 						Выбрано {selectedEntitiesCount}/{totalEntitiesCount}
 					</Typography>
+					<button onClick={toggleMode}>
+						<Typography className="text-color-brand-primary-50">{{ all: 'Все', active: 'Активные' }[mode]}</Typography>
+					</button>
 				</div>
 
 				<Collapsible className={cn({ hidden: habitsListToRender.length === 0 })}>
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
-						<div className="flex gap-4 items-center p-6">
-							<Icon name="habit" className="w-5 h-5" />
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
+						<div className="flex items-center gap-4 p-6">
+							<Icon name="habit" className="h-5 w-5" />
 							<Typography variant="heading-4" className="font-semibold">
 								Привычки
 							</Typography>
@@ -131,9 +146,9 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 				</Collapsible>
 
 				<Collapsible className={cn({ hidden: tasksListToRender.length === 0 })}>
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
-						<div className="flex gap-4 items-center p-6">
-							<Icon name="flag" className="w-5 h-5" />
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
+						<div className="flex items-center gap-4 p-6">
+							<Icon name="flag" className="h-5 w-5" />
 							<Typography variant="heading-4" className="font-semibold">
 								Задачи
 							</Typography>
@@ -158,9 +173,9 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 				</Collapsible>
 
 				<Collapsible className={cn({ hidden: remindersListToRender.length === 0 })}>
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
-						<div className="flex gap-4 items-center p-6">
-							<Icon name="alarm-clock" className="w-5 h-5" />
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
+						<div className="flex items-center gap-4 p-6">
+							<Icon name="alarm-clock" className="h-5 w-5" />
 							<Typography variant="heading-4" className="font-semibold">
 								Напоминания
 							</Typography>
@@ -183,9 +198,16 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 					</CollapsibleContent>
 				</Collapsible>
 				<div className="mt-4"></div>
-				<Button className="sticky bottom-8 justify-seld-end mt-auto" appearance="primary" onClick={handleApplyEntities}>
-					Прикрепить
-				</Button>
+
+				<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 pb-8 pt-4">
+					<Button
+						className="justify-seld-end sticky bottom-8 mt-auto"
+						appearance="primary"
+						onClick={handleApplyEntities}
+					>
+						Прикрепить
+					</Button>
+				</div>
 			</div>
 		</Sidebar>
 	);

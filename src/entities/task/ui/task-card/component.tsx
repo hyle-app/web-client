@@ -23,7 +23,7 @@ export function TaskCard({
 			titleSlot={
 				<Typography
 					className={cn({
-						'line-through text-color-gray-80 shrink-1': isCompleted
+						'shrink-1 text-color-gray-80 line-through': isCompleted
 					})}
 				>
 					{title}
@@ -31,9 +31,9 @@ export function TaskCard({
 			}
 			relationSlot={
 				relatedGoalName && (
-					<div className="flex gap-0.5 items-center">
-						<Icon name="goal" className="text-color-brand-secondary-80 w-[10px] h-[10px]" />
-						<Typography variant="caption-2" className="text-color-brand-secondary-80 ">
+					<div className="flex items-center gap-0.5">
+						<Icon name="goal" className="h-[10px] w-[10px] text-color-brand-secondary-80" />
+						<Typography variant="caption-2" className="text-color-brand-secondary-80">
 							{relatedGoalName}
 						</Typography>
 					</div>
@@ -41,15 +41,15 @@ export function TaskCard({
 			}
 			rightSlot={
 				overdueDetails && (
-					<div className="flex flex-col items-end shrink-0">
+					<div className="flex shrink-0 flex-col items-end">
 						<span className="flex items-center gap-1 text-color-gray-80">
 							<Typography variant="caption-1">
 								{targetDate && timeService.lib.format(targetDate, 'DD.MM.YY')}
 							</Typography>
-							<Icon name="calendar" className="w-4 h-4" />
+							<Icon name="calendar" className="h-4 w-4" />
 						</span>
-						<Typography variant="caption-1" className="text-color-gray-80">
-							<span className="text-color-error">{overdueDetails.value} </span>
+						<Typography variant="caption-1" className="text-color-error">
+							<span>{overdueDetails.value} </span>
 							<span>{timeService.lib.getUnitLabel(overdueDetails.unit, overdueDetails.value)}</span>
 						</Typography>
 					</div>

@@ -39,8 +39,11 @@ export const $nonOverdueGoals = combine(
 	({ goals, realTimestamp }) => goals.filter((goal) => goal.targetDate >= realTimestamp)
 );
 
-const getGoalOrAchievementById = (goalId: GoalId) =>
+const getGoalOrAchievementById = (goalId: GoalId | null) =>
 	$goalsAndAchievements.map((goalsAndAchievements) => goalsAndAchievements.find((goal) => goal.id === goalId) ?? null);
+const $getGoalOrAchievementById = $goalsAndAchievements.map(
+	(goalsAndAchievements) => (goalId: GoalId | null) => goalsAndAchievements.find((goal) => goal.id === goalId) ?? null
+);
 
 const initialGoalFetched = once(fetchGoalsAndAchievementsFx.done);
 
@@ -66,7 +69,8 @@ export const outputs = {
 	initialGoalFetched,
 	$nonOverdueGoals,
 	getLinkedEntitiesOfGoal,
-	$linkedEntities
+	$linkedEntities,
+	$getGoalOrAchievementById
 };
 
 export const internals = {

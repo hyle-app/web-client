@@ -13,8 +13,8 @@ export function BalancePage() {
 	});
 
 	return (
-		<div className="px-8 w-full h-full">
-			<div className="flex justify-end gap-4 mb-3">
+		<div className="flex h-full w-full grow flex-col px-8">
+			<div className="mb-3 flex justify-end gap-4">
 				<Button appearance="ghost" className="min-w-[227px]">
 					Обнулить
 				</Button>
@@ -22,10 +22,10 @@ export function BalancePage() {
 					Рассчитать баланс
 				</Button>
 				<button>
-					<Icon name="help" className="w-5 h-5 text-color-gray-50" />
+					<Icon name="help" className="h-5 w-5 text-color-gray-50" />
 				</button>
 			</div>
-			<div className="grid grid-cols-2 w-full h-full content-center justify-between">
+			<div className="grid grow grid-cols-2 content-center items-stretch">
 				<RadarChart<BalanceCategory> getLabel={goalEntity.lib.getCategoryLabel} data={balance} />
 				<BarChart<BalanceCategory> getLabel={goalEntity.lib.getCategoryLabel} data={balance} />
 			</div>

@@ -8,7 +8,7 @@ export function getDefaultFormValues(): HabitFormValues {
 		[HabitFormFieldName.Title]: '',
 		[HabitFormFieldName.Description]: null,
 		[HabitFormFieldName.TotalRepeatCount]: 21,
-		[HabitFormFieldName.Penalty]: null,
+		[HabitFormFieldName.Penalty]: 1,
 		[HabitFormFieldName.RepeatRule]: [],
 		[HabitFormFieldName.DailyTargetProgress]: null,
 		[HabitFormFieldName.DailyTargetProgressLabel]: null,

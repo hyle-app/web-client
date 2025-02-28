@@ -21,10 +21,7 @@ export function getFormValidatorScheme(reminder: Reminder, realTimestamp: number
 		.object({
 			[ReminderFormFieldName.Title]: z.string().min(1, 'Введи название напоминания'),
 			[ReminderFormFieldName.Description]: z.string().nullable(),
-			[ReminderFormFieldName.TargetDate]: z
-				.number()
-				.int()
-				.min(minDateStart, 'Дата напоминания не может быть раньше сегодняшнего дня'),
+			[ReminderFormFieldName.TargetDate]: z.number().int(),
 			[ReminderFormFieldName.TargetTime]: z
 				.number({
 					required_error: 'Обязательно укажи время напоминания',
@@ -51,6 +48,7 @@ export function getFormValidatorScheme(reminder: Reminder, realTimestamp: number
 						message: 'Дата напоминания не может быть раньше сегодняшнего дня',
 						code: z.ZodIssueCode.custom
 					});
+					return;
 				}
 
 				if (
@@ -62,6 +60,7 @@ export function getFormValidatorScheme(reminder: Reminder, realTimestamp: number
 						message: 'Ты не можешь поставить напоминание в прошлое',
 						code: z.ZodIssueCode.custom
 					});
+					return;
 				}
 			}
 		});

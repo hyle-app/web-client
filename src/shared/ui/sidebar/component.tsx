@@ -77,13 +77,13 @@ export function Sidebar({
 
 	return (
 		<div
-			className={cn('fixed top-0 left-0 right-0 bottom-0 z-sidebar', {
-				'block touch-all': isOpen,
+			className={cn('fixed bottom-0 left-0 right-0 top-0 z-sidebar', {
+				'touch-all block': isOpen,
 				'hidden touch-none': !isOpen
 			})}
 		>
 			<div
-				className={cn('absolute top-0 left-0 right-0 bottom-0 bg-color-overlay-bg duration-150 z-10', {
+				className={cn('absolute bottom-0 left-0 right-0 top-0 z-10 bg-color-overlay-bg duration-150', {
 					'opacity-1 touch-all': isBackdropVisible,
 					'touch-none opacity-0': !isBackdropVisible
 				})}
@@ -91,14 +91,14 @@ export function Sidebar({
 			></div>
 			<div
 				className={cn(
-					'absolute right-0 top-0 bottom-0 w-[590px] max-w-full transition-transform bg-color-bg-95 duration-300 z-20',
+					'absolute bottom-0 right-0 top-0 z-20 w-[590px] max-w-full bg-color-bg-95 transition-transform duration-300',
 					{
 						'translate-x-full': !isSidebarVisible,
 						'translate-x-0': isSidebarVisible
 					}
 				)}
 			>
-				<div className="absolute right-0 top-4 flex gap-2 z-10">
+				<div className="absolute right-0 top-4 z-10 flex gap-2">
 					{actions && actions.length > 0 && (
 						<DropdownMenu defaultOpen open={isActionsMenuOpen}>
 							<DropdownMenuTrigger asChild>
@@ -107,7 +107,7 @@ export function Sidebar({
 							<DropdownMenuPortal>
 								<DropdownMenuContent
 									onInteractOutside={handleCloseActionMenu}
-									className="z-select-dropdown bg-color-bg-100 rounded-2xl min-w-[234px]"
+									className="z-select-dropdown min-w-[234px] rounded-2xl bg-color-bg-100"
 									ref={actionMenuContentRef}
 								>
 									{actions.map((action, idx) => (
@@ -117,19 +117,10 @@ export function Sidebar({
 							</DropdownMenuPortal>
 						</DropdownMenu>
 					)}
-					<CloseButton onClick={handleClose} />
 				</div>
-				<div className="h-full overflow-y-auto flex flex-col">{children}</div>
+				<div className="flex h-full flex-col overflow-y-auto">{children}</div>
 			</div>
 		</div>
-	);
-}
-
-function CloseButton({ className, ...attributes }: CloseButtonProps) {
-	return (
-		<button className={cn('p-2', className)} {...attributes}>
-			<Icon name="plus" className="text-color-text-and-icon-80 rotate-45 w-[32px] h-[32px]" />
-		</button>
 	);
 }
 
@@ -138,7 +129,7 @@ const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProps>(({ c
 		<button className={cn('p-2', className)} {...attributes} ref={ref}>
 			<div className="flex gap-0.5">
 				{Array.from({ length: 3 }).map((_, index) => (
-					<div key={index} className="w-1 h-1 rounded-full bg-color-text-and-icon-80"></div>
+					<div key={index} className="h-1 w-1 rounded-full bg-color-text-and-icon-80"></div>
 				))}
 			</div>
 		</button>
@@ -148,7 +139,7 @@ const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProps>(({ c
 function Action({ className, iconSlot, labelSlot, ...attributes }: ActionProps) {
 	return (
 		<DropdownMenuItem asChild>
-			<button className={cn('flex bg-color-bg-100 gap-2 w-full', className)} {...attributes}>
+			<button className={cn('flex w-full gap-2 bg-color-bg-100', className)} {...attributes}>
 				{iconSlot}
 				{labelSlot}
 			</button>

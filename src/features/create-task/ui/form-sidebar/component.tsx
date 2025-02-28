@@ -46,7 +46,7 @@ export const CreateTaskFormSidebar = React.memo(({ isOpen, onClose }: Props) => 
 		<Sidebar isOpen={isOpen} onClose={handleClose} confirmOverlayClose={form.formState.isDirty}>
 			<FormProvider {...form}>
 				<div className="flex h-full flex-col justify-between pb-8">
-					<TaskForm goalsToLinkTo={goals} withCalendarShortcuts />
+					<TaskForm goalsToLinkTo={goals} withCalendarShortcuts autofocus />
 					<Button
 						variant="button"
 						appearance="primary"

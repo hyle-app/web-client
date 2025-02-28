@@ -71,7 +71,7 @@ export function UserMenuDropdownWidget() {
 									</div>
 								</DropdownMenuSubTrigger>
 								<DropdownMenuPortal>
-									<DropdownMenuSubContent>
+									<DropdownMenuSubContent sideOffset={5}>
 										<DropdownMenuItem>
 											<div className="flex flex-row items-center gap-2">
 												<Icon name="trash" />
