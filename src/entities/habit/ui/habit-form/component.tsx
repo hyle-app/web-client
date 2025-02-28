@@ -218,11 +218,15 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 			<FormSection>
 				<SeamlessSelect
 					label="Прикрепить цель"
+					emptyOptionsSlot={
+						<Typography className="text-center text-color-gray-80">
+							Нельзя просто так взять и прикрепить цель, если еще не создано ни одной цели 😉
+						</Typography>
+					}
 					leftSlot={<SeamlessSelect.Icon name="goal" />}
-					className="w-full"
-					inputClassName="md:max-w-full w-full"
+					className={cn('h-16 w-full gap-4', { 'py-0': Boolean(linkedGoalIdField.value) })}
+					inputClassName="md:max-w-full w-full pl-0"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"
-					hideLeftSlotWhenHasContnent
 					value={linkedGoalIdField.value ?? ''}
 					options={goalsOptions}
 					onChange={(goalId) => linkedGoalIdField.onChange(goalId || null)}
@@ -230,7 +234,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					renderOption={({ option }) => (
 						<div>
 							<EntityCard
-								className="w-full"
+								className="duratin-300 w-full transition-colors hover:bg-[#f9faff]"
 								titleSlot={
 									<Typography variant="paragraph" className="text-color-text-and-icon-80">
 										{option.label}

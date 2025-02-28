@@ -4,7 +4,7 @@ export type Props = {
 	className?: string;
 	title: string;
 	isCompleted?: boolean;
-	relatedGoalName?: string;
+	relatedGoalName?: string | null;
 	overdueDetails?: {
 		unit: TimeUnit;
 		value: number;

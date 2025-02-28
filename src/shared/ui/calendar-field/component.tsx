@@ -211,13 +211,14 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	return (
 		<div className="relative">
 			<button
-				className={cn('grid w-full gap-x-4', {
+				className={cn('group/calendar grid w-full gap-x-4', {
 					'grid-cols-[24px_auto]': Boolean(leftSlot),
 					'grid-cols-1': !leftSlot
 				})}
 				onClick={() => {
 					setIsPickerVisible(true);
 				}}
+				data-selected={isValueSelected}
 			>
 				{leftSlot && <div className={cn('row-span-1 h-6 w-6 transition-all will-change-auto')}>{leftSlot}</div>}
 				<div className="relative w-full">
@@ -264,7 +265,15 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 }
 
 function LeftIcon({ className, ...props }: React.ComponentProps<typeof Icon>) {
-	return <Icon {...props} className={cn('h-6 w-6 text-color-gray-80', className)} />;
+	return (
+		<Icon
+			{...props}
+			className={cn(
+				'h-6 w-6 text-color-gray-80 group-data-[selected="true"]/calendar:text-color-text-and-icon-80',
+				className
+			)}
+		/>
+	);
 }
 
 CalendarField.Icon = LeftIcon;

@@ -70,15 +70,17 @@ export const CreateGoalFormSidebar = React.memo(
 							onApplyEntities={handleSetLinkedEntities}
 						/>
 
-						<Button
-							variant="button"
-							appearance="primary"
-							onClick={form.handleSubmit(handleSubmit)}
-							className="sticky bottom-8 mx-8 self-stretch"
-							disabled={isCreatingGoal}
-						>
-							Создать цель
-						</Button>
+						<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 pt-4">
+							<Button
+								variant="button"
+								appearance="primary"
+								onClick={form.handleSubmit(handleSubmit)}
+								className="sticky bottom-8 mx-8 self-stretch"
+								disabled={isCreatingGoal}
+							>
+								Создать цель
+							</Button>
+						</div>
 					</div>
 				</FormProvider>
 			</Sidebar>

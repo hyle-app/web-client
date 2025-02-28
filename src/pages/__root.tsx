@@ -13,6 +13,7 @@ export const Route = createRootRoute({
 		React.useEffect(() => {
 			dispatchEvent(routerService.inputs.setInstance, router);
 		}, []);
+
 		return (
 			<Provider value={getApplicationScope()}>
 				<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">

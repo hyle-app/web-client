@@ -1,3 +1,5 @@
+import arrowLeft from './assets/arrow-left.svg';
+import sidebar from './assets/sidebar.svg';
 import about from './assets/about.svg';
 import alarmClock from './assets/alarm-clock.svg';
 import balance from './assets/balance.svg';
@@ -67,5 +69,7 @@ export const ICONS = {
 	description,
 	subtask,
 	scale,
-	cog
+	cog,
+	sidebar,
+	'arrow-left': arrowLeft
 };

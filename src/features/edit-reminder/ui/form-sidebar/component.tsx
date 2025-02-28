@@ -42,10 +42,9 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 	});
 
 	const {
-		formState: { errors, isDirty }
+		formState: { isDirty }
 	} = form;
 
-	const isFormValid = React.useMemo(() => Object.keys(errors).length === 0, [errors]);
 	const showSaveChangesButton = isDirty;
 	const currentDayTimestamp = React.useMemo(() => timeService.lib.getCurrentTimestamp(), [isViewingToday]);
 	const showCompleteButton =
@@ -59,7 +58,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 	};
 
 	useEventEffect(outputs.reminderEdited, () => {
-		handleClose();
+		form.reset(getDefaultFormValues(reminder!));
 	});
 
 	const handleActionMenuClose = () => {
@@ -110,9 +109,9 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 						appearance="primary"
 						onClick={form.handleSubmit(handleSubmit)}
 						className="sticky bottom-8 mx-8 self-stretch"
-						disabled={isEditingReminder || !isFormValid}
+						disabled={isEditingReminder}
 					>
-						Сохранить изменения напоминание
+						Сохранить изменения
 					</Button>
 				)}
 				{showCompleteButton && (
@@ -122,7 +121,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 						onClick={() => completeReminderEvent({ reminderId })}
 						className="sticky bottom-8 mx-8 self-stretch"
 					>
-						Отметить выполнение
+						Отметить выполнено
 					</Button>
 				)}
 			</div>

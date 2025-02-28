@@ -6,7 +6,7 @@ import { Icon } from '&shared/ui/icon';
 import { SeamlessArrayInput } from '&shared/ui/seamless-array-input';
 import { SeamlessInput } from '&shared/ui/seamless-input';
 import { SeamlessSelect } from '&shared/ui/seamless-select';
-import { generateTemporaryId, getPlainErrors, unicodeToEmoji } from '&shared/utils';
+import { cn, generateTemporaryId, getPlainErrors, unicodeToEmoji } from '&shared/utils';
 
 import { TaskFormFieldName } from '&entities/task/model/constants';
 import { TaskFormValues } from '&entities/task/model/types';
@@ -178,17 +178,21 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 				<SeamlessSelect
 					label="Прикрепить цель"
 					leftSlot={<SeamlessSelect.Icon name="goal" />}
-					className="w-full"
-					inputClassName="md:max-w-full w-full"
+					className={cn('h-16 w-full gap-4', { 'py-0': Boolean(linkedGoalIdField.value) })}
+					inputClassName="md:max-w-full w-full pl-0"
 					contentWrapperClassName="md:max-w-[calc(590px-88px)]"
-					hideLeftSlotWhenHasContnent
 					value={linkedGoalIdField.value ?? ''}
 					options={goalsOptions}
+					emptyOptionsSlot={
+						<Typography className="text-center text-color-gray-80">
+							Нельзя просто так взять и прикрепить цель, если еще не создано ни одной цели 😉
+						</Typography>
+					}
 					onChange={(goalId) => linkedGoalIdField.onChange(goalId || null)}
 					renderOption={({ option }) => (
 						<div>
 							<EntityCard
-								className="w-full"
+								className="duratin-300 w-full transition-colors hover:bg-[#f9faff]"
 								titleSlot={
 									<Typography variant="paragraph" className="text-color-text-and-icon-80">
 										{option.label}

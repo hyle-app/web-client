@@ -174,7 +174,7 @@ export const EditGoalFormSidebar = React.memo(
 							onApplyEntities={handleSetLinkedEntities}
 						/>
 
-						<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pb-8 pt-4">
+						<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pt-4">
 							{goalEntity.lib.isComplexGoal(goal!) && (
 								<ProgressLine
 									customLabel={goal?.progress?.label || undefined}
@@ -194,7 +194,7 @@ export const EditGoalFormSidebar = React.memo(
 								</Button>
 							)}
 							{isComplexCompleteButtonVisible && (
-								<div className={cn('8 relative flex w-full items-center justify-end gap-4')}>
+								<div className={cn('relative flex w-full items-center justify-end gap-4')}>
 									<Input
 										ref={deltaFieldInputRef}
 										value={complexDeltaFieldValue ?? ''}
@@ -222,7 +222,7 @@ export const EditGoalFormSidebar = React.memo(
 									className="w-full"
 									disabled={isEditingGoal}
 								>
-									Отметить выполнение
+									Отметить выполнено
 								</Button>
 							)}
 						</div>

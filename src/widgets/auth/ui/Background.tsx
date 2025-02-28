@@ -3,7 +3,7 @@ import { RightArea } from './RightArea';
 
 export const Background = () => {
 	return (
-		<div className="w-full h-full flex flex-row overflow-hidden gap-10">
+		<div className="flex h-full w-full flex-row gap-10 overflow-hidden">
 			<LeftBar />
 			<RightArea />
 		</div>

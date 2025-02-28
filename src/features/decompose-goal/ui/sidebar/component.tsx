@@ -47,15 +47,23 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 		return { selectedEntitiesCount, totalEntitiesCount };
 	}, [linkedEntities, habitsList, remindersList, tasksList]);
 
+	const [mode, setMode] = React.useState<'active' | 'all'>('all');
+
 	const { tasksListToRender, habitsListToRender, remindersListToRender } = React.useMemo(() => {
 		return {
-			tasksListToRender: tasksList.filter((task) => task.title.toLowerCase().includes(searchQuery.toLowerCase())),
-			habitsListToRender: habitsList.filter((habit) => habit.title.toLowerCase().includes(searchQuery.toLowerCase())),
-			remindersListToRender: remindersList.filter((reminder) =>
-				reminder.title.toLowerCase().includes(searchQuery.toLowerCase())
+			tasksListToRender: tasksList.filter(
+				(task) => task.title.toLowerCase().includes(searchQuery.toLowerCase()) && (mode === 'all' || !task.completedAt)
+			),
+			habitsListToRender: habitsList.filter(
+				(habit) =>
+					habit.title.toLowerCase().includes(searchQuery.toLowerCase()) && (mode === 'all' || !habit.completedAt)
+			),
+			remindersListToRender: remindersList.filter(
+				(reminder) =>
+					reminder.title.toLowerCase().includes(searchQuery.toLowerCase()) && (mode === 'all' || !reminder.completedAt)
 			)
 		};
-	}, [searchQuery, tasksList, habitsList, remindersList]);
+	}, [searchQuery, tasksList, habitsList, remindersList, mode]);
 
 	const handleSelectEntity = (kind: 'task' | 'habit' | 'reminder') => (entityId: string) => {
 		setLinkedEntities((prev) => {
@@ -76,12 +84,16 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 		});
 	};
 
+	const toggleMode = () => {
+		setMode((prev) => (prev === 'active' ? 'all' : 'active'));
+	};
+
 	return (
 		<Sidebar isOpen={isOpen} onClose={onClose} className={className} confirmOverlayClose>
 			<div className="relative flex grow flex-col gap-6 px-8 pt-4">
 				<div className="flex gap-4">
 					<button>
-						<Icon name="double-chevron-left" />
+						<Icon name="arrow-left" className="h-8 w-8" />
 					</button>
 					<Typography variant="heading-3" className="font-semibold">
 						Прикрепить к цели
@@ -98,6 +110,9 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 					<Typography className="text-color-gray-80">
 						Выбрано {selectedEntitiesCount}/{totalEntitiesCount}
 					</Typography>
+					<button onClick={toggleMode}>
+						<Typography className="text-color-brand-primary-50">{{ all: 'Все', active: 'Активные' }[mode]}</Typography>
+					</button>
 				</div>
 
 				<Collapsible className={cn({ hidden: habitsListToRender.length === 0 })}>
@@ -188,9 +203,16 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 					</CollapsibleContent>
 				</Collapsible>
 				<div className="mt-4"></div>
-				<Button className="justify-seld-end sticky bottom-8 mt-auto" appearance="primary" onClick={handleApplyEntities}>
-					Прикрепить
-				</Button>
+
+				<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 pb-8 pt-4">
+					<Button
+						className="justify-seld-end sticky bottom-8 mt-auto"
+						appearance="primary"
+						onClick={handleApplyEntities}
+					>
+						Прикрепить
+					</Button>
+				</div>
 			</div>
 		</Sidebar>
 	);

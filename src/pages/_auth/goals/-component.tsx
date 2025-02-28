@@ -14,18 +14,16 @@ export function GoalsPage() {
 	const count = 1 + (overdueGoals.length > 0 ? 1 : 0) + (achievements.length ? 1 : 0);
 
 	const layoutClasssNames: Record<number, string> = {
-		1: 'md:grid-cols-1',
-		2: 'md:grid-cols-2',
-		3: 'md:grid-cols-3'
+		1: 'md:grid-cols-[repeat(1,minmax(420px,460px))]',
+		2: 'md:grid-cols-[repeat(2,minmax(420px,460px))]',
+		3: 'md:grid-cols-[repeat(3,minmax(420px,1fr))]'
 	};
 
 	return (
 		<div className="h-full w-0 grow">
 			<div
 				className={cn(
-					'no-scrollbar grid h-full w-full gap-3 overflow-x-scroll px-8',
-					'sm:grid-cols-1',
-					'md:grid-cols-[repeat(auto-fit,minmax(375px,460px))]',
+					'no-scrollbar grid h-full w-full grid-cols-[repeat(auto-fit,minmax(375px,460px))] gap-3 overflow-x-scroll px-8',
 					layoutClasssNames[count] ?? layoutClasssNames[3]
 				)}
 			>

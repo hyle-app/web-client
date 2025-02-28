@@ -72,7 +72,10 @@ export function EmojiPickerField({ value, onChange, disabled }: Props) {
 
 	return (
 		<div className="relative h-8 w-8" ref={rootElementRef}>
-			<button onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)} className="h-8 w-8">
+			<button
+				onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)}
+				className="h-8 w-8 text-[#b0b7ce] transition-colors hover:text-[#717da7]"
+			>
 				<p className="relative flex h-8 w-8 items-center justify-center text-[26px]">
 					{value ? unicodeToEmoji(value) : <Smile size={24} className="text-color-text-and-icon-80" />}
 				</p>

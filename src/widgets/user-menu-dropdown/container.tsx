@@ -76,7 +76,7 @@ export function UserMenuDropdownWidget() {
 									</div>
 								</DropdownMenuSubTrigger>
 								<DropdownMenuPortal>
-									<DropdownMenuSubContent className="border-none">
+									<DropdownMenuSubContent sideOffset={5} className="border-none">
 										<DropdownMenuItem>
 											<div className="flex flex-row items-center gap-2">
 												<Trash size={16} className="text-color-text-and-icon-80" />

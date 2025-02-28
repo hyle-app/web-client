@@ -10,5 +10,5 @@ export type Props = {
 		target: number;
 		label?: string;
 	} | null;
-	relatedGoalName?: string;
+	relatedGoalName?: string | null;
 } & React.HTMLAttributes<HTMLButtonElement>;

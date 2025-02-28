@@ -5,7 +5,6 @@ import { Icon } from '&shared/ui/icon';
 
 import { Props } from './types';
 import { ErrorMessage } from '../error-message';
-import { MoveUpLeftIcon } from 'lucide-react';
 
 export function SeamlessInput(props: Props<string>): React.ReactNode;
 export function SeamlessInput(props: Props<number>): React.ReactNode;
@@ -86,26 +85,26 @@ export function SeamlessInput<Value extends number | string = string>({
 	}, [multiline]);
 
 	return (
-		<label className={cn('flex gap-4 items-center py-4', className)}>
+		<label className={cn('group/input flex items-center gap-4 py-4', className)} data-active={Boolean(value)}>
 			{leftSlot && (
 				<div
-					className={cn('w-6 h-6 will-change-auto transition-all', {
-						'opacity-0 w-0 -ml-4': !isLeftSlotVisible,
-						'opacity-1 ': isLeftSlotVisible,
+					className={cn('h-6 w-6 transition-all will-change-auto', {
+						'-ml-4 w-0 opacity-0': !isLeftSlotVisible,
+						'opacity-1': isLeftSlotVisible,
 						'self-start': multiline
 					})}
 				>
 					{leftSlot}
 				</div>
 			)}
-			<div className="flex flex-col relative w-full">
+			<div className="relative flex w-full flex-col">
 				<p
 					className={cn(
-						'normal-case  text-color-gray-80 transition-all absolute left-0 top-1/2 -translate-y-1/2',
+						'absolute left-0 top-1/2 -translate-y-1/2 normal-case text-color-gray-80 transition-all',
 						{
-							'-translate-y-full top-0 font-paragraph  text-caption-1': isInputVisible,
+							'top-0 -translate-y-full text-caption-1 font-paragraph': isInputVisible,
 							'text-paragraph font-medium': !isInputVisible,
-							'opacity-0 pointer-events-none': isInputVisible && !persistantLabel
+							'pointer-events-none opacity-0': isInputVisible && !persistantLabel
 						},
 						labelClassName
 					)}
@@ -121,7 +120,7 @@ export function SeamlessInput<Value extends number | string = string>({
 					onBlur={handleBlur}
 					onFocus={handleFocus}
 					className={cn(
-						'opacity-100 transition-colors-and-opacity bg-transparent border-b border-b-transparent focus:border-b-color-brand-primary-50 outline-none w-full resize-none no-scrollbar h-6 max-h-64',
+						'no-scrollbar h-6 max-h-64 w-full resize-none border-b border-b-transparent bg-transparent opacity-100 outline-none transition-colors-and-opacity focus:border-b-color-brand-primary-50',
 						{
 							'pointer-events-none opacity-0': !isInputVisible
 						},
@@ -135,7 +134,15 @@ export function SeamlessInput<Value extends number | string = string>({
 }
 
 function LeftIcon({ className, ...props }: React.ComponentProps<typeof Icon>) {
-	return <Icon {...props} className={cn('w-6 h-6 text-color-gray-80', className)} />;
+	return (
+		<Icon
+			{...props}
+			className={cn(
+				'h-6 w-6 text-color-gray-80 transition-colors group-data-[active="true"]/input:text-color-text-and-icon-80',
+				className
+			)}
+		/>
+	);
 }
 
 SeamlessInput.Icon = LeftIcon;

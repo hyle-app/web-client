@@ -22,6 +22,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 	error,
 	clearable = true,
 	disabled,
+	emptyOptionsSlot,
 	...attributes
 }: Props<Value, Options>) {
 	const isLeftSlotVisible = hideLeftSlotWhenHasContnent ? !value : true;
@@ -50,7 +51,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 				<Select.Item
 					value={option.value}
 					key={option.key ?? option.value}
-					className="w-full cursor-pointer px-4 py-2 focus:outline-none focus:bg-color-gray-10 transition-colors relative data-[state=checked]:text-color-brand-primary-50"
+					className="relative w-full cursor-pointer px-4 py-2 transition-colors focus:bg-[#f9faff] focus:outline-none data-[state=checked]:text-color-brand-primary-50"
 				>
 					<Select.ItemText>{option.label}</Select.ItemText>
 				</Select.Item>
@@ -68,14 +69,14 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 					<Select.Trigger
 						disabled={disabled}
 						className={cn(
-							'w-full text-start outline-none border-0 !border-b border-transparent border-solid focus:border-b-color-brand-primary-50 relative pl-4 !m-0',
+							'relative !m-0 w-full border-0 !border-b border-solid border-transparent pl-4 text-start outline-none focus:border-b-color-brand-primary-50',
 							inputClassName
 						)}
 						ref={rootElementRef}
 					>
 						<Select.Value
-							className="w-full ml-4"
-							placeholder={<span className="text-color-gray-80 font-medium w-full ">{label}</span>}
+							className="ml-4 w-full"
+							placeholder={<span className="w-full font-medium text-color-gray-80">{label}</span>}
 						/>
 
 						{error && <ErrorMessage className="absolute -bottom-1 translate-y-full">{error}</ErrorMessage>}
@@ -95,12 +96,16 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 	);
 
 	return (
-		<div className={cn('py-4 flex items-center group', className)} {...attributes}>
+		<div
+			className={cn('group/input flex items-center py-4', className)}
+			{...attributes}
+			data-selected={Boolean(value ?? '')}
+		>
 			{leftSlot && (
 				<div
-					className={cn('w-6 h-6 will-change-auto transition-all', {
-						'opacity-0 w-0 -ml-4': !isLeftSlotVisible,
-						'opacity-1 ': isLeftSlotVisible
+					className={cn('h-6 w-6 transition-all will-change-auto', {
+						'-ml-4 w-0 opacity-0': !isLeftSlotVisible,
+						'opacity-1': isLeftSlotVisible
 					})}
 				>
 					{leftSlot}
@@ -113,23 +118,24 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 				{value && clearable && (
 					<Select.SelectIcon asChild>
 						<button
-							className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none group-hover:pointer-events-auto text-color-gray-80 group"
+							className="pointer-events-none text-color-gray-80 opacity-0 transition-opacity group-hover/input:pointer-events-auto group-hover/input:opacity-100"
 							onClick={handleClear}
 						>
-							<Icon name="plus" className="w-6 h-6 rotate-45" />
+							<Icon name="plus" className="h-6 w-6 rotate-45" />
 						</button>
 					</Select.SelectIcon>
 				)}
 
 				<Select.Portal container={rootElementRef.current}>
 					<Select.Content
-						className="z-select-dropdown w-[var(--radix-select-trigger-width)] rounded-2xl overflow-hidden"
+						className="z-select-dropdown w-[var(--radix-select-trigger-width)] overflow-hidden rounded-2xl"
 						position="popper"
 						sticky="always"
 					>
-						<ScrollArea.Root className="w-full h-full" type="auto">
+						<ScrollArea.Root className="h-full w-full" type="auto">
 							<Select.Viewport asChild>
-								<ScrollArea.Viewport className="max-h-[256px] w-full h-full bg-color-bg-100">
+								<ScrollArea.Viewport className="h-full max-h-[256px] w-full bg-color-bg-100">
+									{!options.length && Boolean(emptyOptionsSlot) && <div className="px-6 py-4">{emptyOptionsSlot}</div>}
 									{options.map((option) => finalRenderOption(option, value))}
 								</ScrollArea.Viewport>
 							</Select.Viewport>
@@ -142,7 +148,15 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 }
 
 function LeftIcon({ className, ...props }: React.ComponentProps<typeof Icon>) {
-	return <Icon {...props} className={cn('w-6 h-6 text-color-gray-80', className)} />;
+	return (
+		<Icon
+			{...props}
+			className={cn(
+				'h-6 w-6 text-color-gray-80 transition-colors group-data-[selected="true"]/input:text-color-text-and-icon-80',
+				className
+			)}
+		/>
+	);
 }
 
 SeamlessSelect.Icon = LeftIcon;

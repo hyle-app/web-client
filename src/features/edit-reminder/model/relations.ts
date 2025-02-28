@@ -1,9 +1,9 @@
 import { sample } from 'effector';
-import { inputs, internals } from './model';
+import { inputs, internals, outputs } from './model';
 import { reminderEntity } from '&entities/reminder';
 import { timeService } from '&shared/services/time';
 import { spread } from 'patronum';
-import { mapReminderToCompleteDTO } from './mappers';
+import { mapReminderToCompleteDTO, mapReminderToEditDTO } from './mappers';
 
 sample({
 	clock: inputs.editReminder,
@@ -19,11 +19,22 @@ sample({
 		const newReminderState = reminderEntity.lib.updateReminderWithFormValues(reminder, formValues);
 
 		return {
-			reminderId,
-			reminder: newReminderState
+			local: {
+				reminderId,
+				reminder: newReminderState
+			},
+			remote: {
+				reminderId,
+				reminder: mapReminderToEditDTO(newReminderState)
+			}
 		};
 	},
-	target: reminderEntity.inputs.updateReminder
+	target: spread({ local: reminderEntity.inputs.updateReminder, remote: internals.editReminderFx })
+});
+
+sample({
+	clock: internals.editReminderFx.done,
+	target: outputs.reminderEdited
 });
 
 sample({

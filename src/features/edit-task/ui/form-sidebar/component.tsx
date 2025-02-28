@@ -93,17 +93,31 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 			<FormProvider {...form}>
 				<div className="relative flex h-full flex-col justify-between pb-8">
 					<TaskForm goalsToLinkTo={goals} />
-					{isDirty && (
-						<Button
-							variant="button"
-							appearance="primary"
-							onClick={form.handleSubmit(handleSubmit)}
-							className="sticky bottom-8 mx-8 self-stretch"
-							disabled={isEditingTask}
-						>
-							Сохранить изменения
-						</Button>
-					)}
+
+					<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 pt-4">
+						{isDirty && (
+							<Button
+								variant="button"
+								appearance="primary"
+								onClick={form.handleSubmit(handleSubmit)}
+								className="sticky bottom-8 mx-8 self-stretch"
+								disabled={isEditingTask}
+							>
+								Сохранить изменения
+							</Button>
+						)}
+						{!isDirty && (
+							<Button
+								variant="button"
+								appearance="primary"
+								onClick={form.handleSubmit(handleSubmit)}
+								className="sticky bottom-8 mx-8 self-stretch"
+								disabled={isEditingTask}
+							>
+								Отметить выполнено
+							</Button>
+						)}
+					</div>
 				</div>
 			</FormProvider>
 		</Sidebar>
