@@ -34,6 +34,7 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 		resolver: zodResolver(getFormValidator(task!, MIN_DATE))
 	});
 	const {
+		reset,
 		formState: { isDirty }
 	} = form;
 
@@ -42,7 +43,7 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 	};
 
 	useEventEffect(outputs.taskEdited, () => {
-		form.reset(getDefaultFormValues(task!));
+		reset(getDefaultFormValues(task!));
 	});
 
 	const handleClose = () => {
@@ -68,7 +69,7 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 
 	return (
 		<Sidebar
-			confirmOverlayClose={form.formState.isDirty}
+			confirmOverlayClose={isDirty}
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}

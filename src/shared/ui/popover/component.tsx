@@ -12,7 +12,6 @@ export const Popover = ({
 	autoFocusContent = true
 }: Props) => {
 	const handleFocusOutside = (event: CustomEvent<{ originalEvent: FocusEvent | PointerEvent }>) => {
-		console.log('hui');
 		if (!portalContainerRef?.current) {
 			onClose?.();
 			return;
@@ -21,8 +20,6 @@ export const Popover = ({
 		if (!portalContainerRef.current.contains(event.target as Node)) {
 			onClose?.();
 		}
-
-		console.log('ya loh');
 	};
 	return (
 		<PopoverPrimitives.Root open={isOpen}>
@@ -37,10 +34,10 @@ export const Popover = ({
 					onInteractOutside={handleFocusOutside}
 					onPointerDownOutside={handleFocusOutside}
 					onFocusOutside={handleFocusOutside}
-					className={cn('z-select-dropdown bg-color-bg-100 rounded-2xl', contentClassName)}
+					className={cn('z-select-dropdown rounded-2xl bg-color-bg-100', contentClassName)}
 				>
 					<PopoverPrimitives.Arrow asChild>
-						<div className="border-t-color-bg-100 border-b-0 border-r-[10px] border-l-[10px] border-t-[10px] border-r-transparent border-l-transparent w-0 h-0 mb-2"></div>
+						<div className="mb-2 h-0 w-0 border-b-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-color-bg-100"></div>
 					</PopoverPrimitives.Arrow>
 
 					{content}
