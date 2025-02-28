@@ -47,7 +47,14 @@ export function getFormValidator(originalTask: Task, minDate: Date) {
 		[TaskFormFieldName.ReminderTime]: z.coerce.number().nullable(),
 		[TaskFormFieldName.Subtasks]: z.array(
 			z.object({
-				id: z.string(),
+				id: z.string().transform((value) => {
+					const parsed = parseInt(value, 10);
+					if (isNaN(parsed)) {
+						return z.NEVER;
+					}
+
+					return parsed;
+				}),
 				title: z.string().min(1, 'Укажи название подзадачи'),
 				isCompleted: z.boolean()
 			})
