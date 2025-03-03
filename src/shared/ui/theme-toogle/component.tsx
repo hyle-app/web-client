@@ -1,6 +1,6 @@
 import { Button } from '&shared/ui/button';
-import { Icon } from '&shared/ui/icon';
 import { useTheme } from '&shared/ui/theme-provider';
+import { Moon, Sun } from 'lucide-react';
 
 export const ThemeToogle = () => {
 	const { setTheme, theme } = useTheme();
@@ -10,7 +10,7 @@ export const ThemeToogle = () => {
 			appearance="ghost"
 			className="bg-transparent"
 			variant="icon"
-			iconSlot={theme === 'light' ? <Icon name="moon" /> : <Icon name="flag" />}
+			iconSlot={theme === 'light' ? <Moon size={24} /> : <Sun size={24} />}
 			onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
 		></Button>
 	);
