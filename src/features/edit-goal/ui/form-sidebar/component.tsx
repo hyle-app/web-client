@@ -1,19 +1,19 @@
-import { useUnit } from 'effector-react';
-import type { Props } from './types';
-import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
-import React from 'react';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { goalEntity, GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { timeService } from '&shared/services/time';
-import { Sidebar } from '&shared/ui/sidebar';
 import { Button } from '&shared/ui/button';
-import { cn, useEventEffect } from '&shared/utils';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
-import { Icon } from '&shared/ui/icon';
-import { Typography } from '&shared/ui/typography';
 import { Input } from '&shared/ui/input';
 import { ProgressLine } from '&shared/ui/progress-line';
+import { Sidebar } from '&shared/ui/sidebar';
+import { Typography } from '&shared/ui/typography';
+import { cn, useEventEffect } from '&shared/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useUnit } from 'effector-react';
+import { Trash } from 'lucide-react';
+import React from 'react';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
+import type { Props } from './types';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -146,15 +146,15 @@ export const EditGoalFormSidebar = React.memo(
 						confirmationText="Подтверди удаление задачи"
 					>
 						<Sidebar.Action
-							iconSlot={<Icon name="trash" />}
-							labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+							iconSlot={<Trash className="text-color-text-and-icon-80" />}
+							labelSlot={<Typography>Удалить</Typography>}
 							onClick={() => setIsConfirmDeletePopoverOpen(true)}
 						/>
 					</ConfirmPopover>
 				]}
 			>
 				<FormProvider {...form}>
-					<div className="flex flex-col justify-between pb-8 h-full relative ">
+					<div className="relative flex h-full flex-col justify-between pb-8">
 						<GoalForm
 							withCalendarShortcuts={!disabled}
 							disabled={disabled}
@@ -174,7 +174,7 @@ export const EditGoalFormSidebar = React.memo(
 							onApplyEntities={handleSetLinkedEntities}
 						/>
 
-						<div className="w-full px-8 flex flex-col gap-8 pt-4 pb-8 bottom-0 sticky bg-color-bg-95">
+						<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pb-8 pt-4">
 							{goalEntity.lib.isComplexGoal(goal!) && (
 								<ProgressLine
 									customLabel={goal?.progress?.label || undefined}
@@ -194,19 +194,19 @@ export const EditGoalFormSidebar = React.memo(
 								</Button>
 							)}
 							{isComplexCompleteButtonVisible && (
-								<div className={cn('flex justify-end items-center 8 relative gap-4 w-full')}>
+								<div className={cn('8 relative flex w-full items-center justify-end gap-4')}>
 									<Input
 										ref={deltaFieldInputRef}
 										value={complexDeltaFieldValue ?? ''}
 										onChange={handleDeltaFieldChange}
-										className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
+										className={'max-w-2/5 absolute left-0 top-0 z-0 w-2/5'}
 										label="Введите количество "
 									/>
 									<Button
 										variant="button"
 										appearance="primary"
 										onClick={handleFillComplexHabitDayProgressButtonClick}
-										className={cn('will-change-auto transition-all z-[1] w-full', {
+										className={cn('z-[1] w-full transition-all will-change-auto', {
 											'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
 										})}
 									>

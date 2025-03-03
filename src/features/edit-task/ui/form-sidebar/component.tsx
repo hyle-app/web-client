@@ -1,18 +1,18 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { useUnit } from 'effector-react';
-import { Props } from './types';
 import { goalEntity } from '&entities/goal';
-import { Sidebar } from '&shared/ui/sidebar';
 import { taskEntity, TaskForm, type TaskFormValues } from '&entities/task';
-import { Button } from '&shared/ui/button';
-import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import { timeService } from '&shared/services/time';
-import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
-import { useEventEffect } from '&shared/utils';
-import { Icon } from '&shared/ui/icon';
-import { Typography } from '&shared/ui/typography';
+import { Button } from '&shared/ui/button';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
+import { Sidebar } from '&shared/ui/sidebar';
+import { Typography } from '&shared/ui/typography';
+import { useEventEffect } from '&shared/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useUnit } from 'effector-react';
+import { Trash } from 'lucide-react';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
+import { Props } from './types';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -83,22 +83,22 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 					confirmationText="Подтверди удаление задачи"
 				>
 					<Sidebar.Action
-						iconSlot={<Icon name="trash" />}
-						labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+						iconSlot={<Trash className="text-color-text-and-icon-80" />}
+						labelSlot={<Typography>Удалить</Typography>}
 						onClick={() => setIsConfirmDeletePopoverOpen(true)}
 					/>
 				</ConfirmPopover>
 			]}
 		>
 			<FormProvider {...form}>
-				<div className="flex flex-col justify-between pb-8 h-full relative">
+				<div className="relative flex h-full flex-col justify-between pb-8">
 					<TaskForm goalsToLinkTo={goals} />
 					{isDirty && (
 						<Button
 							variant="button"
 							appearance="primary"
 							onClick={form.handleSubmit(handleSubmit)}
-							className="mx-8 self-stretch bottom-8 sticky"
+							className="sticky bottom-8 mx-8 self-stretch"
 							disabled={isEditingTask}
 						>
 							Сохранить изменения

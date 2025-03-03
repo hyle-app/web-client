@@ -1,18 +1,18 @@
-import { Sidebar } from '&shared/ui/sidebar';
-import { Typography } from '&shared/ui/typography';
-import React from 'react';
-import { Props } from './types';
+import { LinkedEntities } from '&entities/goal';
+import { HabitCard, habitEntity } from '&entities/habit';
+import { ReminderCard, reminderEntity } from '&entities/reminder';
+import { TaskCard, taskEntity } from '&entities/task';
+import { timeService } from '&shared/services/time';
+import { Button } from '&shared/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '&shared/ui/collapsible';
 import { Icon } from '&shared/ui/icon';
 import { Input } from '&shared/ui/input';
-import { TaskCard, taskEntity } from '&entities/task';
-import { ReminderCard, reminderEntity } from '&entities/reminder';
-import { HabitCard, habitEntity } from '&entities/habit';
-import { useUnit } from 'effector-react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '&shared/ui/collapsible';
-import { timeService } from '&shared/services/time';
+import { Sidebar } from '&shared/ui/sidebar';
+import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
-import { Button } from '&shared/ui/button';
-import { LinkedEntities } from '&entities/goal';
+import { useUnit } from 'effector-react';
+import React from 'react';
+import { Props } from './types';
 
 export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, className, value }: Props) => {
 	const { tasksList, remindersList, habitsList, selectedAppDateStart } = useUnit({
@@ -78,7 +78,7 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 
 	return (
 		<Sidebar isOpen={isOpen} onClose={onClose} className={className} confirmOverlayClose>
-			<div className="px-8 pt-4 flex flex-col gap-6 grow relative">
+			<div className="relative flex grow flex-col gap-6 px-8 pt-4">
 				<div className="flex gap-4">
 					<button>
 						<Icon name="double-chevron-left" />
@@ -88,7 +88,12 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 					</Typography>
 				</div>
 
-				<Input label="Поиск" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} />
+				<Input
+					className="text-color-text-and-icon-80"
+					label="Поиск"
+					value={searchQuery}
+					onChange={(event) => setSearchQuery(event.target.value)}
+				/>
 				<div className="flex justify-between">
 					<Typography className="text-color-gray-80">
 						Выбрано {selectedEntitiesCount}/{totalEntitiesCount}
@@ -96,9 +101,9 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 				</div>
 
 				<Collapsible className={cn({ hidden: habitsListToRender.length === 0 })}>
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
-						<div className="flex gap-4 items-center p-6">
-							<Icon name="habit" className="w-5 h-5" />
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
+						<div className="flex items-center gap-4 p-6">
+							<Icon name="habit" className="h-5 w-5" />
 							<Typography variant="heading-4" className="font-semibold">
 								Привычки
 							</Typography>
@@ -131,9 +136,9 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 				</Collapsible>
 
 				<Collapsible className={cn({ hidden: tasksListToRender.length === 0 })}>
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
-						<div className="flex gap-4 items-center p-6">
-							<Icon name="flag" className="w-5 h-5" />
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
+						<div className="flex items-center gap-4 p-6">
+							<Icon name="flag" className="h-5 w-5" />
 							<Typography variant="heading-4" className="font-semibold">
 								Задачи
 							</Typography>
@@ -158,9 +163,9 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 				</Collapsible>
 
 				<Collapsible className={cn({ hidden: remindersListToRender.length === 0 })}>
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
-						<div className="flex gap-4 items-center p-6">
-							<Icon name="alarm-clock" className="w-5 h-5" />
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
+						<div className="flex items-center gap-4 p-6">
+							<Icon name="alarm-clock" className="h-5 w-5" />
 							<Typography variant="heading-4" className="font-semibold">
 								Напоминания
 							</Typography>
@@ -183,7 +188,7 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 					</CollapsibleContent>
 				</Collapsible>
 				<div className="mt-4"></div>
-				<Button className="sticky bottom-8 justify-seld-end mt-auto" appearance="primary" onClick={handleApplyEntities}>
+				<Button className="justify-seld-end sticky bottom-8 mt-auto" appearance="primary" onClick={handleApplyEntities}>
 					Прикрепить
 				</Button>
 			</div>

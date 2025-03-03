@@ -1,3 +1,3 @@
-export { LinkedEntitiesPreview, DecomposeGoalSidebar } from './ui';
+export { DecomposeGoalSidebar, LinkedEntitiesPreview } from './ui';
 
 export const decomposeGoalFeature = {};

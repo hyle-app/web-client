@@ -1,14 +1,14 @@
+import { GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
+import { timeService } from '&shared/services/time';
+import { Button } from '&shared/ui/button';
+import { Sidebar } from '&shared/ui/sidebar';
+import { useEventEffect } from '&shared/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useUnit } from 'effector-react';
-import type { Props } from './types';
-import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { timeService } from '&shared/services/time';
-import { Sidebar } from '&shared/ui/sidebar';
-import { Button } from '&shared/ui/button';
-import { useEventEffect } from '&shared/utils';
+import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
+import type { Props } from './types';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -52,7 +52,7 @@ export const CreateGoalFormSidebar = React.memo(
 				confirmOverlayClose={form.formState.isDirty}
 			>
 				<FormProvider {...form}>
-					<div className="flex flex-col justify-between pb-8 h-full relative">
+					<div className="relative flex h-full flex-col justify-between pb-8">
 						<GoalForm
 							withCalendarShortcuts
 							onDecomposeClick={() => setIsDecomposeOpen(true)}
@@ -74,7 +74,7 @@ export const CreateGoalFormSidebar = React.memo(
 							variant="button"
 							appearance="primary"
 							onClick={form.handleSubmit(handleSubmit)}
-							className="mx-8 self-stretch sticky bottom-8"
+							className="sticky bottom-8 mx-8 self-stretch"
 							disabled={isCreatingGoal}
 						>
 							Создать цель

@@ -1,20 +1,20 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { useUnit } from 'effector-react';
-import { Props } from './types';
 import { goalEntity } from '&entities/goal';
-import { Sidebar } from '&shared/ui/sidebar';
-import { Button } from '&shared/ui/button';
-import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { habitEntity, HabitForm, HabitFormValues } from '&entities/habit';
-import { cn, useEventEffect } from '&shared/utils';
 import { timeService } from '&shared/services/time';
-import React from 'react';
-import { Input } from '&shared/ui/input';
+import { Button } from '&shared/ui/button';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
-import { Icon } from '&shared/ui/icon';
-import { Typography } from '&shared/ui/typography';
+import { Input } from '&shared/ui/input';
 import { ProgressLine } from '&shared/ui/progress-line';
+import { Sidebar } from '&shared/ui/sidebar';
+import { Typography } from '&shared/ui/typography';
+import { cn, useEventEffect } from '&shared/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useUnit } from 'effector-react';
+import { Trash } from 'lucide-react';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
+import { Props } from './types';
 
 export function EditHabitFormSidebar({
 	isOpen,
@@ -121,18 +121,18 @@ export function EditHabitFormSidebar({
 					confirmationText="Подтверди удаление привычки"
 				>
 					<Sidebar.Action
-						iconSlot={<Icon name="trash" />}
-						labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+						iconSlot={<Trash className="text-color-text-and-icon-80" />}
+						labelSlot={<Typography>Удалить</Typography>}
 						onClick={() => setIsConfirmDeletePopoverOpen(true)}
 					/>
 				</ConfirmPopover>
 			]}
 		>
 			<FormProvider {...form}>
-				<div className="flex flex-col justify-between h-full relative">
+				<div className="relative flex h-full flex-col justify-between">
 					<HabitForm goalsToLinkTo={goals} />
-					<div className="px-8 w-full flex flex-col gap-8 sticky bottom-0 bg-color-bg-95 pt-4 pb-8 ">
-						<div className="gap-1 flex flex-col">
+					<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pb-8 pt-4">
+						<div className="flex flex-col gap-1">
 							{habitEntity.lib.isComplexHabit(habit) && (
 								<ProgressLine
 									customLabel={habit.dailyTargetProgressDetails?.label || undefined}
@@ -148,7 +148,7 @@ export function EditHabitFormSidebar({
 								variant="secondary"
 								labelRowEndSlot={
 									habit.penalty && (
-										<Typography className="text-color-gray-30 font-semibold">Штраф: {habit.penalty}</Typography>
+										<Typography className="font-semibold text-color-gray-30">Штраф: {habit.penalty}</Typography>
 									)
 								}
 							/>
@@ -169,19 +169,19 @@ export function EditHabitFormSidebar({
 							</Button>
 						)}
 						{isFillComplexHabitDayProgressButtonVisible && (
-							<div className={cn('flex justify-end items-center relative gap-4 w-full')}>
+							<div className={cn('relative flex w-full items-center justify-end gap-4')}>
 								<Input
 									ref={deltaFieldInputRef}
 									value={complexDeltaFieldValue ?? ''}
 									onChange={handleDeltaFieldChange}
-									className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
+									className={'max-w-2/5 absolute left-0 top-0 z-0 w-2/5'}
 									label="Введите количество "
 								/>
 								<Button
 									variant="button"
 									appearance="primary"
 									onClick={handleFillComplexHabitDayProgressButtonClick}
-									className={cn('will-change-auto transition-all z-[1] w-full', {
+									className={cn('z-[1] w-full transition-all will-change-auto', {
 										'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
 									})}
 								>
