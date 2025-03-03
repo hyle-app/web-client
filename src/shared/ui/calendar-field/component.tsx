@@ -1,21 +1,21 @@
-import React from 'react';
+import { timeService } from '&shared/services/time';
+import { Icon } from '&shared/ui/icon';
+import { cn, devLogger } from '&shared/utils';
 import { ru } from 'date-fns/locale';
+import React from 'react';
 import {
 	DateRange,
 	DayPicker,
+	Modifiers,
 	type PropsRangeRequired,
 	type PropsSingleRequired,
-	UI,
-	Modifiers
+	UI
 } from 'react-day-picker';
 import 'react-day-picker/style.css';
-import { cn, devLogger } from '&shared/utils';
-import { Props } from './types';
-import { Icon } from '&shared/ui/icon';
-import { timeService } from '&shared/services/time';
-import { Typography } from '../typography';
 import { Button } from '../button';
 import { ErrorMessage } from '../error-message';
+import { Typography } from '../typography';
+import { Props } from './types';
 
 export function CalendarField<Mode extends 'range' | 'single'>({
 	className,
@@ -193,10 +193,11 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 			classNames={{
 				today: 'today',
 				selected: 'text-white selected',
-				[UI.Day]: 'w-[36px] h-[36px] text-caption-1 text-text-and-icon-80 p-0 group',
+				[UI.Day]: 'w-[36px] h-[36px] text-caption-1 text-color-text-and-icon-80 p-0 group',
 				[UI.DayButton]:
-					'w-[36px] h-[36px] !border-transparent !border !border-solid rounded-xl group-[.selected]:bg-color-brand-primary-50 group-[.today]:!border-color-brand-primary-50 text-caption-1 group-[.selected]:text-caption-1 group-[.selected]:text-text-and-icon-80',
-				[UI.MonthCaption]: 'text-default font-regular h-10 flex items-center mb-4 capitalize justify-center',
+					'w-[36px] h-[36px] !border-transparent !border !border-solid rounded-xl group-[.selected]:bg-color-brand-primary-50 group-[.today]:!border-color-brand-primary-50 text-caption-1 group-[.selected]:text-caption-1 group-[.selected]:text-color-text-and-icon-80',
+				[UI.MonthCaption]:
+					'text-default font-regular h-10 flex items-center mb-4 capitalize justify-center text-color-text-and-icon-80',
 				[UI.Nav]: 'h-10 absolute top-0 right-0 left-0 flex justify-between items-center',
 				[UI.Weekday]:
 					'text-color-text-and-icon-70 opacity-50 text-caption-1 font-normal [&:nth-child(n+6)]:text-color-error',
@@ -208,9 +209,9 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 	);
 
 	return (
-		<div className="relative ">
+		<div className="relative">
 			<button
-				className={cn('grid gap-x-4 w-full', {
+				className={cn('grid w-full gap-x-4', {
 					'grid-cols-[24px_auto]': Boolean(leftSlot),
 					'grid-cols-1': !leftSlot
 				})}
@@ -218,10 +219,10 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 					setIsPickerVisible(true);
 				}}
 			>
-				{leftSlot && <div className={cn('w-6 h-6 will-change-auto transition-all row-span-1')}>{leftSlot}</div>}
+				{leftSlot && <div className={cn('row-span-1 h-6 w-6 transition-all will-change-auto')}>{leftSlot}</div>}
 				<div className="relative w-full">
 					<Typography
-						className={cn('font-medium text-left', {
+						className={cn('text-left font-medium', {
 							'text-color-gray-80': !isValueSelected,
 							'text-color-text-and-icon-80': isValueSelected
 						})}
@@ -230,7 +231,7 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 					</Typography>
 					{subText && (
 						<Typography
-							className={cn('text-caption-1 text-color-gray-80 col-span-1 text-left', { 'col-start-2': leftSlot })}
+							className={cn('col-span-1 text-left text-caption-1 text-color-gray-80', { 'col-start-2': leftSlot })}
 						>
 							{subText}
 						</Typography>
@@ -242,13 +243,13 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 
 			<div
 				ref={pickerRef}
-				className={cn('absolute left-8 bottom-0 w-fit h-fit translate-y-full bg-color-bg-100 p-6 z-10', {
+				className={cn('absolute bottom-0 left-8 z-10 h-fit w-fit translate-y-full bg-color-bg-100 p-6', {
 					'pointer-events-none p-0': !isPickerVisibleOrForcedVisible
 				})}
 			>
 				{isPickerVisibleOrForcedVisible && picker}
 				{isPickerVisibleOrForcedVisible && mode === 'range' && (
-					<div className="flex gap-2 justify-end">
+					<div className="flex justify-end gap-2">
 						<Button variant="text" appearance="ghost" className="px-4 py-2" onClick={handleClose}>
 							Отмена
 						</Button>
@@ -263,7 +264,7 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 }
 
 function LeftIcon({ className, ...props }: React.ComponentProps<typeof Icon>) {
-	return <Icon {...props} className={cn('w-6 h-6 text-color-gray-80', className)} />;
+	return <Icon {...props} className={cn('h-6 w-6 text-color-gray-80', className)} />;
 }
 
 CalendarField.Icon = LeftIcon;

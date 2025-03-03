@@ -1,9 +1,9 @@
-import EmojiPicker, { Categories } from 'emoji-picker-react';
-import { Props } from './types';
-import React from 'react';
-import { Icon } from '../icon';
 import { emojiToUnicode, unicodeToEmoji } from '&shared/utils';
+import EmojiPicker, { Categories } from 'emoji-picker-react';
 import type { CategoriesConfig } from 'emoji-picker-react/dist/config/categoryConfig';
+import { Smile } from 'lucide-react';
+import React from 'react';
+import { Props } from './types';
 
 const CATEGORIES: CategoriesConfig = [
 	{ category: Categories.SMILEYS_PEOPLE, name: 'Люди' },
@@ -71,15 +71,15 @@ export function EmojiPickerField({ value, onChange, disabled }: Props) {
 	}, [isOpen]);
 
 	return (
-		<div className="w-8 h-8 relative" ref={rootElementRef}>
-			<button onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)} className="w-8 h-8 ">
-				<p className="w-8 h-8 flex justify-centery items-center relative text-[26px]">
-					{value ? unicodeToEmoji(value) : <Icon name="smiley" />}
+		<div className="relative h-8 w-8" ref={rootElementRef}>
+			<button onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)} className="h-8 w-8">
+				<p className="relative flex h-8 w-8 items-center justify-center text-[26px]">
+					{value ? unicodeToEmoji(value) : <Smile size={24} className="text-color-text-and-icon-80" />}
 				</p>
 			</button>
 
 			<EmojiPicker
-				className="w-full max-w-[600px] absolute z-50"
+				className="absolute z-50 w-full max-w-[600px]"
 				previewConfig={{ showPreview: false }}
 				onEmojiClick={(emojiData) => {
 					onChange(emojiToUnicode(emojiData.emoji));
