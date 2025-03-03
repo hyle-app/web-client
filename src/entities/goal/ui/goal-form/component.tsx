@@ -1,18 +1,18 @@
-import { useController, useFormContext, useWatch } from 'react-hook-form';
-import { Props } from './types';
-import { GoalFormFieldName, type GoalFormValues } from '../../model';
-import React from 'react';
-import { getPlainErrors } from '&shared/utils';
-import { FormSection } from '&shared/ui/form-section';
-import { EmojiPickerField } from '&shared/ui/emoji-picker';
-import { SeamlessInput } from '&shared/ui/seamless-input';
-import { SeamlessSelect } from '&shared/ui/seamless-select';
+import { ALLOWED_GOAL_WEIGHTS } from '&entities/goal/model/constants';
 import { BalanceCategory } from '&shared/constants';
+import { timeService } from '&shared/services/time';
 import { CalendarField } from '&shared/ui/calendar-field/component';
 import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
-import { timeService } from '&shared/services/time';
-import { ALLOWED_GOAL_WEIGHTS } from '&entities/goal/model/constants';
+import { EmojiPickerField } from '&shared/ui/emoji-picker';
+import { FormSection } from '&shared/ui/form-section';
+import { SeamlessInput } from '&shared/ui/seamless-input';
+import { SeamlessSelect } from '&shared/ui/seamless-select';
 import { Typography } from '&shared/ui/typography';
+import { getPlainErrors } from '&shared/utils';
+import React from 'react';
+import { useController, useFormContext, useWatch } from 'react-hook-form';
+import { GoalFormFieldName, type GoalFormValues } from '../../model';
+import { Props } from './types';
 
 const CATEGORY_LABEL_MAP: Record<BalanceCategory, string> = {
 	[BalanceCategory.Health]: 'Здоровье',
@@ -53,14 +53,14 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 
 	const emptyLinkedEntitiesSection =
 		linkedEntitiesCount === 0 ? (
-			<button className="py-4 flex gap-4" onClick={disabled ? undefined : onDecomposeClick}>
+			<button className="flex gap-4 py-4" onClick={disabled ? undefined : onDecomposeClick}>
 				<SeamlessInput.Icon name="templates" />
 				<Typography className="text-color-gray-80">Декомпозировать</Typography>
 			</button>
 		) : null;
 	const filledLinkedEntitiesSection =
 		linkedEntitiesCount > 0 ? (
-			<div className="py-4 flex gap-4">
+			<div className="flex gap-4 py-4">
 				<SeamlessInput.Icon name="templates" />
 				{linkedEntitiesPreviewImpl}
 			</div>
@@ -68,7 +68,7 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 
 	return (
 		<div>
-			<FormSection className="flex gap-2 items-center">
+			<FormSection className="flex items-center gap-2">
 				<EmojiPickerField value={emojiField.value ?? undefined} onChange={emojiField.onChange} disabled={!!disabled} />
 				<SeamlessInput
 					label="Название цели"
@@ -76,7 +76,7 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 					onChange={titleField.onChange}
 					error={plainErrors[titleField.name]}
 					persistantLabel={false}
-					inputClassName="text-heading-3 h-full"
+					inputClassName="text-heading-3 h-full text-color-text-and-icon-80"
 					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
 					disabled={disabled}
@@ -90,6 +90,7 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 					options={CATEGORY_OPTIONS}
 					error={plainErrors[categoryField.name]}
 					label="Категория"
+					className="text-color-text-and-icon-80"
 					clearable={false}
 					disabled={disabled}
 				/>
@@ -103,6 +104,7 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 					options={WEIGHT_OPTIONS}
 					error={plainErrors[weightField.name]}
 					clearable={false}
+					className="text-color-text-and-icon-80"
 					disabled={disabled}
 				/>
 			</FormSection>
@@ -138,6 +140,7 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 					value={descriptionField.value || ''}
 					onChange={descriptionField.onChange}
 					multiline
+					inputClassName="text-color-text-and-icon-80"
 					error={plainErrors[descriptionField.name]}
 					disabled={disabled}
 				/>
@@ -150,6 +153,7 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 					leftSlot={<SeamlessSelect.Icon name="ruler" />}
 					error={plainErrors[progressDetailsCountField.name]}
 					disabled={disabled}
+					inputClassName="text-color-text-and-icon-80"
 				/>
 				<SeamlessInput
 					label="Чего"
@@ -157,6 +161,7 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 					onChange={progressDetailsLabelField.onChange}
 					error={plainErrors[progressDetailsLabelField.name]}
 					disabled={disabled}
+					inputClassName="text-color-text-and-icon-80"
 				/>
 			</FormSection>
 			<FormSection>

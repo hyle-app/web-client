@@ -1,19 +1,19 @@
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
+import { CalendarField } from '&shared/ui/calendar-field/component';
+import { EntityCard } from '&shared/ui/entity-card';
+import { FormSection } from '&shared/ui/form-section';
 import { SeamlessInput } from '&shared/ui/seamless-input';
 import { SeamlessSelect } from '&shared/ui/seamless-select';
-import { FormSection } from '&shared/ui/form-section';
-import { getPlainErrors, unicodeToEmoji } from '&shared/utils';
-import { EntityCard } from '&shared/ui/entity-card';
 import { Typography } from '&shared/ui/typography';
-import { CalendarField } from '&shared/ui/calendar-field/component';
+import { getPlainErrors, unicodeToEmoji } from '&shared/utils';
 
+import { timeService } from '&shared/services/time';
+import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
+import { ReminderFormFieldName, ReminderFormValues } from '../../model';
 import { getReminderRepeatOptions, getReminderTimeOptions } from './constants';
 import { Props } from './types';
-import { ReminderFormFieldName, ReminderFormValues } from '../../model';
-import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
-import { timeService } from '&shared/services/time';
 
 const TIME_OPTIONS = getReminderTimeOptions();
 const REPEAT_OPTIONS = getReminderRepeatOptions();
@@ -45,7 +45,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					value={titleField.value}
 					onChange={titleField.onChange}
 					persistantLabel={false}
-					inputClassName="text-heading-3 h-full"
+					inputClassName="text-heading-3 h-full text-color-text-and-icon-80"
 					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
 					error={plainErrors[titleField.name]}
@@ -81,6 +81,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					value={targetTimeField.value ? targetTimeField.value.toString() : undefined}
 					onChange={(value: string | undefined) => targetTimeField.onChange(value ? parseInt(value) : null)}
 					label="Время напоминания"
+					className="text-color-text-and-icon-80"
 					leftSlot={<SeamlessSelect.Icon name="watch" />}
 					inputClassName="max-w-[194px]"
 					error={plainErrors[targetTimeField.name]}
@@ -92,6 +93,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					value={repeatRuleField.value}
 					onChange={(value: string | undefined) => repeatRuleField.onChange(value ?? null)}
 					label="Повторять"
+					className="text-color-text-and-icon-80"
 					leftSlot={<SeamlessSelect.Icon name="refresh" />}
 					clearable={false}
 					error={plainErrors[repeatRuleField.name]}
@@ -104,6 +106,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					value={descriptionField.value || ''}
 					onChange={(value) => descriptionField.onChange(value || null)}
 					multiline
+					inputClassName="text-color-text-and-icon-80"
 					error={plainErrors[descriptionField.name]}
 				/>
 			</FormSection>

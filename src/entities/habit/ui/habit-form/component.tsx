@@ -1,20 +1,20 @@
 import React from 'react';
 
+import { FormSection } from '&shared/ui/form-section';
 import { SeamlessInput } from '&shared/ui/seamless-input';
 import { SeamlessSelect } from '&shared/ui/seamless-select';
-import { FormSection } from '&shared/ui/form-section';
 import { cn, getPlainErrors, unicodeToEmoji } from '&shared/utils';
 
-import { getReminderTimeOptions } from './constants';
-import { Props } from './types';
-import { EntityCard } from '&shared/ui/entity-card';
-import { Typography } from '&shared/ui/typography';
-import { useController, useFormContext, useFieldArray, useWatch } from 'react-hook-form';
 import { HabitFormFieldName, HabitFormValues } from '&entities/habit';
-import { SquareCheckbox } from '&shared/ui/square-checkbox';
 import { HabitRepeatRule } from '&entities/habit/model/constants';
 import { EmojiPickerField } from '&shared/ui/emoji-picker';
+import { EntityCard } from '&shared/ui/entity-card';
 import { ErrorMessage } from '&shared/ui/error-message';
+import { SquareCheckbox } from '&shared/ui/square-checkbox';
+import { Typography } from '&shared/ui/typography';
+import { useController, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { getReminderTimeOptions } from './constants';
+import { Props } from './types';
 
 const TIME_OPTIONS = getReminderTimeOptions();
 
@@ -117,14 +117,14 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 
 	return (
 		<div className="">
-			<FormSection className="flex gap-2 items-center">
+			<FormSection className="flex items-center gap-2">
 				<EmojiPickerField value={emojiField.value ?? undefined} onChange={emojiField.onChange} />
 				<SeamlessInput
 					label="Название привычки"
 					value={titleField.value}
 					onChange={titleField.onChange}
 					persistantLabel={false}
-					inputClassName="text-heading-3 h-full"
+					inputClassName="text-heading-3 h-full text-color-text-and-icon-80"
 					labelClassName="!text-heading-3 font-light"
 					className="h-[39px] py-0"
 					error={plainErrors[titleField.name]}
@@ -132,6 +132,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 			</FormSection>
 			<FormSection className="flex gap-4">
 				<SeamlessInput
+					inputClassName="text-color-text-and-icon-80"
 					label="Повторений"
 					value={totalRepeatCountField.value}
 					onChange={totalRepeatCountField.onChange}
@@ -140,6 +141,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 				/>
 				<SeamlessInput
 					label="Штраф"
+					inputClassName="text-color-text-and-icon-80"
 					value={penaltyField.value?.toString() ?? ''}
 					onChange={penaltyField.onChange}
 					error={plainErrors[penaltyField.name]}
@@ -150,11 +152,11 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					<SquareCheckbox checked={isRepeatEveryDayActive} onClick={toggleRepeatEveryDay} />
 					<Typography>Повторять каждый день</Typography>
 				</label>
-				<div className="flex gap-2 relative">
+				<div className="relative flex gap-2">
 					{REPEAT_RULE_OPTIONS.map((option) => (
 						<button
 							key={option.value}
-							className={cn('bg-color-bg-100 p-4 rounded-[15px] transition-colors', {
+							className={cn('rounded-[15px] bg-color-bg-100 p-4 transition-colors', {
 								'text-color-error':
 									option.value === HabitRepeatRule.Sunday || option.value === HabitRepeatRule.Saturday,
 								'bg-color-brand-primary-50 text-color-white': activeRepeatRules.includes(option.value)
@@ -179,6 +181,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 						value === undefined ? reminderTimeField.onChange(value) : reminderTimeField.onChange(parseInt(value))
 					}
 					label="Напомнить"
+					className="text-color-text-and-icon-80"
 					leftSlot={<SeamlessSelect.Icon name="bell" />}
 					error={plainErrors[reminderTimeField.name]}
 				/>
@@ -189,6 +192,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 					leftSlot={<SeamlessInput.Icon name="description" />}
 					value={descriptionField.value || ''}
 					onChange={descriptionField.onChange}
+					inputClassName="text-color-text-and-icon-80"
 					multiline
 					error={plainErrors[descriptionField.name]}
 				/>
@@ -197,6 +201,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 			<FormSection className="flex gap-4">
 				<SeamlessInput
 					label="Сколько"
+					inputClassName="text-color-text-and-icon-80"
 					value={dailyTargetProgressField.value?.toString() ?? ''}
 					onChange={dailyTargetProgressField.onChange}
 					leftSlot={<SeamlessSelect.Icon name="ruler" />}
@@ -204,6 +209,7 @@ export function HabitForm({ goalsToLinkTo }: Props) {
 				/>
 				<SeamlessInput
 					label="Чего"
+					inputClassName="text-color-text-and-icon-80"
 					value={dailyTargetProgressLabelField.value ?? ''}
 					onChange={dailyTargetProgressLabelField.onChange}
 					error={plainErrors[dailyTargetProgressLabelField.name]}
