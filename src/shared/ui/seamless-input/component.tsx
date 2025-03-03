@@ -85,7 +85,10 @@ export function SeamlessInput<Value extends number | string = string>({
 	}, [multiline]);
 
 	return (
-		<label className={cn('group/input flex items-center gap-4 py-4', className)} data-active={Boolean(value)}>
+		<label
+			className={cn('group/input flex cursor-pointer items-center gap-4 py-4', className)}
+			data-active={Boolean(value)}
+		>
 			{leftSlot && (
 				<div
 					className={cn('h-6 w-6 transition-all will-change-auto', {

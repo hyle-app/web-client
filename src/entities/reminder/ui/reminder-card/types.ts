@@ -2,7 +2,7 @@ import { TimeUnit } from '&shared/services/time';
 
 export type Props = {
 	className?: string;
-	title: string;
+	title: React.ReactNode;
 	isCompleted?: boolean;
 	relatedGoalName?: string;
 	overdueDetails?: {
@@ -11,4 +11,4 @@ export type Props = {
 	} | null;
 	targetDateTime: number;
 	onToggleCompletion?(): void;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'title'>;

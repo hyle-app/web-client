@@ -51,7 +51,20 @@ function AuthLayout() {
 			})}
 		>
 			<header className="col-start-2 col-end-3 row-start-1 row-end-1 flex items-center justify-between bg-color-bg-95 px-8 py-6">
-				<h1 className="text-heading-2 font-heading-2 text-color-text-and-icon-80">{title}</h1>
+				<div className="flex items-center gap-4">
+					{!isExpanded && (
+						<button
+							onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
+							className="flex h-8 w-8 items-center justify-center"
+						>
+							<Icon
+								name="sidebar"
+								className={cn('h-6 w-6 text-color-gray-50 transition-transform', { 'rotate-180': !isExpanded })}
+							/>
+						</button>
+					)}
+					<h1 className="text-heading-2 font-heading-2 text-color-text-and-icon-80">{title}</h1>
+				</div>
 				<span className="flex items-center">
 					<SearchButtonWidget />
 					{/* TODO: Use notifications button widget here */}
@@ -67,16 +80,21 @@ function AuthLayout() {
 			</header>
 			<aside className="col-start-1 col-end-2 row-start-1 row-end-3 h-screen bg-color-bg-100 py-6 @container">
 				<nav className="flex h-full flex-col justify-start">
-					<div className="relative flex flex-wrap items-center justify-start px-6">
+					<div className="relative flex flex-wrap items-center justify-between px-6">
 						<div className="h-[70px] w-[var(--nav-sidebar-narrow-width)]">
 							<Logo height="70px" width="70px" />
 						</div>
-						<button
-							onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
-							className="absolute right-0 flex h-8 w-8 translate-x-1/2 items-center justify-center rounded-full bg-color-white"
-						>
-							<Icon name="sidebar" className={cn('h-6 w-6 transition-transform', { 'rotate-180': !isExpanded })} />
-						</button>
+						{isExpanded && (
+							<button
+								onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
+								className="flex h-8 w-8 translate-x-2 items-center justify-center rounded-full bg-color-white"
+							>
+								<Icon
+									name="sidebar"
+									className={cn('h-6 w-6 text-color-gray-50 transition-transform', { 'rotate-180': !isExpanded })}
+								/>
+							</button>
+						)}
 					</div>
 					<div className="mb-4 mt-3 flex h-[276px] min-h-[312px] items-center justify-center">
 						<LeftSideCalendarWidget className={cn({ hidden: !isExpanded })} />

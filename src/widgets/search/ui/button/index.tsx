@@ -39,7 +39,7 @@ export const SearchButtonWidget = ({ ...attrs }: Props) => {
 	}, [isVisible]);
 
 	return (
-		<div className="relative z-40 w-fit" ref={ref}>
+		<div className="relative z-10 w-fit" ref={ref}>
 			<button className="flex h-14 w-14 items-center justify-center" {...attrs} onClick={() => setIsVisible(true)}>
 				<Icon name="search" className="h-6 w-6" />
 			</button>

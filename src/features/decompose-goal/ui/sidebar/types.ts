@@ -6,4 +6,5 @@ export type Props = {
 	className?: string;
 	onClose(): void;
 	isOpen: boolean;
+	interactive?: boolean | undefined;
 };

@@ -1,7 +1,6 @@
 import { HabitCard, habitEntity } from '&entities/habit';
 import { ReminderCard, reminderEntity } from '&entities/reminder';
 import { TaskCard, taskEntity } from '&entities/task';
-import { Button } from '&shared/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '&shared/ui/collapsible';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
@@ -11,7 +10,7 @@ import { Props } from './types';
 import React from 'react';
 import { timeService } from '&shared/services/time';
 
-export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick, interactive = true }: Props) => {
+export const LinkedEntitiesPreview = ({ className, linkedEntities }: Props) => {
 	const linkedHabitsCount = linkedEntities.habitIds.length;
 	const linkedTasksCount = linkedEntities.taskIds.length;
 	const linkedRemindersCount = linkedEntities.reminderIds.length;
@@ -38,10 +37,10 @@ export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick, 
 	);
 
 	return (
-		<div className={cn('w-full flex flex-col gap-2', className)}>
+		<div className={cn('flex w-full flex-col gap-2', className)}>
 			{linkedHabitsCount > 0 && (
-				<Collapsible className="w-full flex flex-col gap-2">
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
+				<Collapsible className="flex w-full flex-col gap-2">
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
 						<Typography className="text-color-gray-80">
 							{linkedHabitsCount} {plural(linkedHabitsCount, ['привычка', 'привычки', 'привычек'])}
 						</Typography>
@@ -69,8 +68,8 @@ export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick, 
 				</Collapsible>
 			)}
 			{linkedTasksCount > 0 && (
-				<Collapsible className="w-full flex flex-col gap-2">
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
+				<Collapsible className="flex w-full flex-col gap-2">
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
 						<Typography className="text-color-gray-80">
 							{linkedTasksCount} {plural(linkedTasksCount, ['задача', 'задачи', 'задач'])}
 						</Typography>
@@ -90,8 +89,8 @@ export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick, 
 				</Collapsible>
 			)}
 			{linkedRemindersCount > 0 && (
-				<Collapsible className="w-full flex flex-col gap-2">
-					<CollapsibleTrigger className="flex items-center justify-between w-full group">
+				<Collapsible className="flex w-full flex-col gap-2">
+					<CollapsibleTrigger className="group flex w-full items-center justify-between">
 						<Typography className="text-color-gray-80">
 							{linkedRemindersCount} {plural(linkedRemindersCount, ['напоминание', 'напоминания', 'напоминаний'])}
 						</Typography>
@@ -108,17 +107,6 @@ export const LinkedEntitiesPreview = ({ className, linkedEntities, onEditClick, 
 						))}
 					</CollapsibleContent>
 				</Collapsible>
-			)}
-			{interactive && (
-				<Button
-					variant="text"
-					appearance="ghost"
-					iconSlot={<Icon name="refresh" className="text-color-gray-80 w-4 h-4" />}
-					className="mt-2"
-					onClick={onEditClick}
-				>
-					Редактировать
-				</Button>
 			)}
 		</div>
 	);

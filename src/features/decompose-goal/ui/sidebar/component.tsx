@@ -92,7 +92,7 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 		<Sidebar isOpen={isOpen} onClose={onClose} className={className} confirmOverlayClose>
 			<div className="relative flex grow flex-col gap-6 px-8 pt-4">
 				<div className="flex gap-4">
-					<button>
+					<button onClick={onClose}>
 						<Icon name="arrow-left" className="h-8 w-8" />
 					</button>
 					<Typography variant="heading-3" className="font-semibold">
@@ -197,7 +197,7 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 						</div>
 					</CollapsibleContent>
 				</Collapsible>
-				<div className="mt-4"></div>
+				<div className="mt-4 grow"></div>
 
 				<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 pb-8 pt-4">
 					<Button

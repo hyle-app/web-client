@@ -26,14 +26,14 @@ function InputWithRef(
 	const isLabelMinified = isFocused || (props.value && props.value?.toString().length > 0);
 
 	return (
-		<label className={cn('relative block', className)}>
+		<label className={cn('relative block hover:cursor-pointer', className)}>
 			{leftSlot ?? null}
 			{label && (
 				<p
 					className={cn(
-						'normal-case text-color-gray-80 transition-all absolute top-1/2 -translate-y-1/2 left-6',
+						'absolute left-6 top-1/2 -translate-y-1/2 normal-case text-color-gray-80 transition-all',
 						{
-							'top-2 -translate-y-0 font-paragraph  text-caption-1 ': isLabelMinified,
+							'top-2 -translate-y-0 text-caption-1 font-paragraph': isLabelMinified,
 							'text-paragraph font-medium': !isLabelMinified
 						},
 						labelClassName
@@ -47,7 +47,7 @@ function InputWithRef(
 				ref={ref}
 				onBlur={handleBlur}
 				onFocus={handleFocus}
-				className={cn('py-2 px-6 bg-color-bg-100 pt-6 border-color-gray-10 rounded-[16px] w-full', inputClassName)}
+				className={cn('w-full rounded-[16px] border-color-gray-10 bg-color-bg-100 px-6 py-2 pt-6', inputClassName)}
 			/>
 		</label>
 	);

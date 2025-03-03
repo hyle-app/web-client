@@ -53,22 +53,33 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 
 	const emptyLinkedEntitiesSection =
 		linkedEntitiesCount === 0 ? (
-			<button className="py-4 flex gap-4" onClick={disabled ? undefined : onDecomposeClick}>
+			<button className="flex gap-4 py-4" onClick={disabled ? undefined : onDecomposeClick}>
 				<SeamlessInput.Icon name="templates" />
 				<Typography className="text-color-gray-80">Декомпозировать</Typography>
 			</button>
 		) : null;
 	const filledLinkedEntitiesSection =
 		linkedEntitiesCount > 0 ? (
-			<div className="py-4 flex gap-4">
-				<SeamlessInput.Icon name="templates" />
-				{linkedEntitiesPreviewImpl}
+			<div className="flex flex-col gap-4">
+				<div className="flex justify-between gap-4 py-4">
+					<div className="flex gap-4">
+						<SeamlessInput.Icon name="templates" />
+						<Typography className="text-color-gray-80">Декомпозировать</Typography>
+					</div>
+					{!disabled && (
+						<button onClick={onDecomposeClick} className="text-color-brand-primary-50">
+							Редактировать
+						</button>
+					)}
+				</div>
+
+				<div className="pl-10">{linkedEntitiesPreviewImpl}</div>
 			</div>
 		) : null;
 
 	return (
 		<div>
-			<FormSection className="flex gap-2 items-center">
+			<FormSection className="flex items-center gap-2">
 				<EmojiPickerField value={emojiField.value ?? undefined} onChange={emojiField.onChange} disabled={!!disabled} />
 				<SeamlessInput
 					label="Название цели"

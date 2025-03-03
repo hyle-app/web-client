@@ -14,6 +14,7 @@ import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { Input } from '&shared/ui/input';
 import { ProgressLine } from '&shared/ui/progress-line';
+import dayjs from 'dayjs';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -53,11 +54,15 @@ export const EditGoalFormSidebar = React.memo(
 		};
 
 		const {
-			formState: { isDirty }
+			formState: { isDirty },
+			getValues
 		} = form;
 
 		useEventEffect(outputs.goalEdited, () => {
-			form.reset(getDefaultFormValues(goal!, linkedEntities));
+			form.reset(
+				{ ...getValues() },
+				{ keepDirty: false, keepErrors: false, keepIsSubmitted: false, keepIsValid: true }
+			);
 		});
 
 		React.useEffect(() => {
@@ -99,7 +104,7 @@ export const EditGoalFormSidebar = React.memo(
 		};
 
 		const handleSetLinkedEntities = (linkedEntities: LinkedEntities) => {
-			form.setValue(GoalFormFieldName.LinkedEntities, linkedEntities);
+			form.setValue(GoalFormFieldName.LinkedEntities, linkedEntities, { shouldDirty: true });
 		};
 
 		const handleFillComplexHabitDayProgressButtonClick = () => {
@@ -136,6 +141,11 @@ export const EditGoalFormSidebar = React.memo(
 				onClose={handleClose}
 				actionMenuContentRef={sidebarActionMenuRef}
 				onCloseActionMenu={handleActionMenuClose}
+				foreheadSlot={
+					<Typography className="text-color-gray-50" variant="caption-1">
+						Цель / Создана {dayjs(goal!.createdAt).format('DD MMM YYYY')}
+					</Typography>
+				}
 				actions={[
 					<ConfirmPopover
 						isOpen={isConfirmDeletePopoverOpen}
@@ -154,7 +164,7 @@ export const EditGoalFormSidebar = React.memo(
 				]}
 			>
 				<FormProvider {...form}>
-					<div className="relative flex h-full flex-col justify-between pb-8">
+					<div className="relative flex h-full flex-col justify-between">
 						<GoalForm
 							withCalendarShortcuts={!disabled}
 							disabled={disabled}
@@ -163,7 +173,6 @@ export const EditGoalFormSidebar = React.memo(
 								<DecomposePreviewImplementation
 									linkedEntities={linkedEntitiesIds}
 									onEditClick={() => setIsDecomposeOpen(true)}
-									interactive={!disabled}
 								/>
 							}
 						/>
@@ -174,7 +183,7 @@ export const EditGoalFormSidebar = React.memo(
 							onApplyEntities={handleSetLinkedEntities}
 						/>
 
-						<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pt-4">
+						<div className="sticky bottom-8 flex w-full flex-col gap-8 bg-color-bg-95 px-8 !pb-8 pt-4">
 							{goalEntity.lib.isComplexGoal(goal!) && (
 								<ProgressLine
 									customLabel={goal?.progress?.label || undefined}
@@ -199,7 +208,9 @@ export const EditGoalFormSidebar = React.memo(
 										ref={deltaFieldInputRef}
 										value={complexDeltaFieldValue ?? ''}
 										onChange={handleDeltaFieldChange}
-										className={'max-w-2/5 absolute left-0 top-0 z-0 w-2/5'}
+										className={
+											'max-w-2/5 absolute left-0 top-0 z-0 w-2/5 focus:border-color-brand-primary-50 focus:outline-none'
+										}
 										label="Введите количество "
 									/>
 									<Button

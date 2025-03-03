@@ -18,9 +18,9 @@ export function HabitCard({
 			className={className}
 			relationSlot={
 				relatedGoalName && (
-					<div className="flex gap-0.5 items-center">
-						<Icon name="goal" className="text-color-brand-secondary-80 w-[10px] h-[10px]" />
-						<Typography variant="caption-2" className="text-color-brand-secondary-80 ">
+					<div className="flex items-center gap-0.5">
+						<Icon name="goal" className="h-[10px] w-[10px] text-color-brand-secondary-80" />
+						<Typography variant="caption-2" className="text-color-brand-secondary-80">
 							{relatedGoalName}
 						</Typography>
 					</div>

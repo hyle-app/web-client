@@ -15,6 +15,7 @@ import { ConfirmPopover } from '&shared/ui/confirm-popover';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { ProgressLine } from '&shared/ui/progress-line';
+import dayjs from 'dayjs';
 
 export function EditHabitFormSidebar({
 	isOpen,
@@ -50,8 +51,9 @@ export function EditHabitFormSidebar({
 		resolver: zodResolver(getFormValidator())
 	});
 
+	const { reset, getValues } = form;
 	useEventEffect(outputs.habitEdited, () => {
-		form.reset(getDefaultFormValues(habit!));
+		reset({ ...getValues() }, { keepDirty: false, keepErrors: false, keepIsSubmitted: false, keepIsValid: true });
 	});
 
 	const handleFillComplexHabitDayProgressButtonClick = () => {
@@ -111,6 +113,11 @@ export function EditHabitFormSidebar({
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
+			foreheadSlot={
+				<Typography className="text-color-gray-50" variant="caption-1">
+					Привычка / Создана {dayjs(habit!.createdAt).format('DD MMM YYYY')}
+				</Typography>
+			}
 			actions={[
 				<ConfirmPopover
 					isOpen={isConfirmDeletePopoverOpen}
@@ -129,10 +136,10 @@ export function EditHabitFormSidebar({
 			]}
 		>
 			<FormProvider {...form}>
-				<div className="flex flex-col justify-between h-full relative">
+				<div className="relative flex h-full flex-col justify-between">
 					<HabitForm goalsToLinkTo={goals} />
-					<div className="px-8 w-full flex flex-col gap-8 sticky bottom-0 bg-color-bg-95 pt-4 pb-8 ">
-						<div className="gap-1 flex flex-col">
+					<div className="sticky bottom-8 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pb-8 pt-4">
+						<div className="flex flex-col gap-1">
 							{habitEntity.lib.isComplexHabit(habit) && (
 								<ProgressLine
 									customLabel={habit.dailyTargetProgressDetails?.label || undefined}
@@ -148,7 +155,7 @@ export function EditHabitFormSidebar({
 								variant="secondary"
 								labelRowEndSlot={
 									habit.penalty && (
-										<Typography className="text-color-gray-30 font-semibold">Штраф: {habit.penalty}</Typography>
+										<Typography className="font-semibold text-color-gray-30">Штраф: {habit.penalty}</Typography>
 									)
 								}
 							/>
@@ -169,19 +176,21 @@ export function EditHabitFormSidebar({
 							</Button>
 						)}
 						{isFillComplexHabitDayProgressButtonVisible && (
-							<div className={cn('flex justify-end items-center relative gap-4 w-full')}>
+							<div className={cn('relative flex w-full items-center justify-end gap-4')}>
 								<Input
 									ref={deltaFieldInputRef}
 									value={complexDeltaFieldValue ?? ''}
 									onChange={handleDeltaFieldChange}
-									className={'w-2/5 absolute left-0 top-0 z-0 max-w-2/5'}
+									className={
+										'max-w-2/5 absolute left-0 top-0 z-0 w-2/5 focus:border-color-brand-primary-50 focus:outline-none'
+									}
 									label="Введите количество "
 								/>
 								<Button
 									variant="button"
 									appearance="primary"
 									onClick={handleFillComplexHabitDayProgressButtonClick}
-									className={cn('will-change-auto transition-all z-[1] w-full', {
+									className={cn('z-[1] w-full transition-all will-change-auto', {
 										'w-[calc(60%-16px)]': isComplexDeltaFieldVisible
 									})}
 								>

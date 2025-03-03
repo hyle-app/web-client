@@ -8,6 +8,7 @@ export type Props = {
 	confirmOverlayClose?: boolean;
 	actions?: React.ReactNode[];
 	actionMenuContentRef?: React.RefObject<HTMLDivElement>;
+	foreheadSlot?: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export type CloseButtonProps = {

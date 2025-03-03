@@ -1,5 +1,5 @@
 export type Props = {
-	title: string;
+	title: React.ReactNode;
 	emoji?: string | null;
 	overallProgress: {
 		current: number;
@@ -11,4 +11,4 @@ export type Props = {
 		label?: string;
 	} | null;
 	relatedGoalName?: string | null;
-} & React.HTMLAttributes<HTMLButtonElement>;
+} & Omit<React.HTMLAttributes<HTMLButtonElement>, 'title'>;

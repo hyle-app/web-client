@@ -2,7 +2,7 @@ import { TimeUnit } from '&shared/services/time';
 import type { Subtask } from '../../model';
 
 export type Props = {
-	title: string;
+	title: React.ReactNode;
 	isCompleted?: boolean;
 	targetDate?: number;
 	overdueDetails?: {
@@ -11,4 +11,4 @@ export type Props = {
 	} | null;
 	relatedGoalName?: string;
 	subtasks?: Subtask[];
-} & React.HTMLAttributes<HTMLButtonElement>;
+} & Omit<React.HTMLAttributes<HTMLButtonElement>, 'title'>;
