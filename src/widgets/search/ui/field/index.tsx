@@ -1,12 +1,13 @@
+import { EntityCard } from '&shared/ui/entity-card';
 import { Icon } from '&shared/ui/icon';
 import { Input } from '&shared/ui/input';
 import { Popover } from '&shared/ui/popover';
-import { useUnit } from 'effector-react';
-import { inputs, outputs } from '../../model';
-import React, { MutableRefObject } from 'react';
 import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
-import { EntityCard } from '&shared/ui/entity-card';
+import { useUnit } from 'effector-react';
+import { Search } from 'lucide-react';
+import React, { MutableRefObject } from 'react';
+import { inputs, outputs } from '../../model';
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
 	onClose: () => void;
@@ -44,15 +45,15 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 		<>
 			{hasHabits && (
 				<div>
-					<div className="px-4 py-2 flex gap-3 items-center">
-						<Icon name="habit" className="w-6 h-6" />
+					<div className="flex items-center gap-3 px-4 py-2">
+						<Icon name="habit" className="h-6 w-6" />
 						<Typography variant="heading-5" className="font-semibold">
 							Привычки
 						</Typography>
 					</div>
 					<div>
 						{searchResults.habits.map((task) => (
-							<button className="py-2 px-4" key={task.id} onClick={() => setSelectedHabitIdEvent({ value: task.id })}>
+							<button className="px-4 py-2" key={task.id} onClick={() => setSelectedHabitIdEvent({ value: task.id })}>
 								{task.title}
 							</button>
 						))}
@@ -62,15 +63,15 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 
 			{hasTasks && (
 				<div>
-					<div className="px-4 py-2 flex gap-3 items-center">
-						<Icon name="flag" className="w-6 h-6" />
+					<div className="flex items-center gap-3 px-4 py-2">
+						<Icon name="flag" className="h-6 w-6" />
 						<Typography variant="heading-5" className="font-semibold">
 							Задачи
 						</Typography>
 					</div>
 					<div>
 						{searchResults.tasks.map((task) => (
-							<button className="py-2 px-4" key={task.id} onClick={() => setSelectedTaskIdEvent({ value: task.id })}>
+							<button className="px-4 py-2" key={task.id} onClick={() => setSelectedTaskIdEvent({ value: task.id })}>
 								{task.title}
 							</button>
 						))}
@@ -80,8 +81,8 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 
 			{hasReminders && (
 				<div>
-					<div className="px-4 py-2 flex gap-3 items-center">
-						<Icon name="alarm-clock" className="w-6 h-6" />
+					<div className="flex items-center gap-3 px-4 py-2">
+						<Icon name="alarm-clock" className="h-6 w-6" />
 						<Typography variant="heading-5" className="font-semibold">
 							Напоминания
 						</Typography>
@@ -89,7 +90,7 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 					<div>
 						{searchResults.reminders.map((task) => (
 							<button
-								className="py-2 px-4"
+								className="px-4 py-2"
 								key={task.id}
 								onClick={() => setSelectedReminderIdEvent({ value: task.id })}
 							>
@@ -103,8 +104,8 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 	);
 
 	const loader = (
-		<div className="w-full flex justify-center items-center pt-3 ">
-			<EntityCard.ProgressCircleBar progressValue={0.6} className="animate-spin duration-300 origin-center" />
+		<div className="flex w-full items-center justify-center pt-3">
+			<EntityCard.ProgressCircleBar progressValue={0.6} className="origin-center animate-spin duration-300" />
 		</div>
 	);
 
@@ -116,7 +117,7 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 
 		if (isEmptyResults) {
 			return (
-				<Typography variant="paragraph" className="w-full text-center pt-3">
+				<Typography variant="paragraph" className="w-full pt-3 text-center">
 					Ничего не найдено
 				</Typography>
 			);
@@ -139,12 +140,13 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 				autoFocusContent={false}
 			>
 				<Input
+					className="text-color-text-and-icon-80"
 					label=""
 					ref={inputRef}
 					onChange={(event) => changeQueryEvent(event.target.value)}
 					placeholder="Введите название"
 					inputClassName={cn('pl-12 py-3', inputClassName)}
-					leftSlot={<Icon name="search" className="absolute top-1/2 -translate-y-1/2 left-4" />}
+					leftSlot={<Search size={24} className="absolute left-4 top-1/2 -translate-y-1/2" />}
 				/>
 			</Popover>
 		</div>

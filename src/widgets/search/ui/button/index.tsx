@@ -1,9 +1,9 @@
-import { Icon } from '&shared/ui/icon';
-import React from 'react';
-import { SearchField } from '../field';
 import { cn } from '&shared/utils';
 import { useUnit } from 'effector-react';
+import { Search } from 'lucide-react';
+import React from 'react';
 import { inputs } from '../../model';
+import { SearchField } from '../field';
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -40,16 +40,16 @@ export const SearchButtonWidget = ({ ...attrs }: Props) => {
 
 	return (
 		<div className="relative w-fit" ref={ref}>
-			<button className="w-14 h-14 flex items-center justify-center" {...attrs} onClick={() => setIsVisible(true)}>
-				<Icon name="search" className="w-6 h-6" />
+			<button className="flex h-14 w-14 items-center justify-center" {...attrs} onClick={() => setIsVisible(true)}>
+				<Search size={24} className="text-color-text-and-icon-80" />
 			</button>
 
 			<SearchField
 				inputRef={inputRef}
 				className={cn(
-					'absolute right-0 top-1/2 md:w-[330px] -translate-y-1/2 w-14 md:max-w-[330px] transition-all opacity100',
+					'opacity100 absolute right-0 top-1/2 w-14 -translate-y-1/2 transition-all md:w-[330px] md:max-w-[330px]',
 					{
-						'md:max-w-14 pointer-events-none opacity-0': !isVisible
+						'pointer-events-none opacity-0 md:max-w-14': !isVisible
 					}
 				)}
 				inputClassName={cn('transition-all', { 'px-4': !isVisible })}
