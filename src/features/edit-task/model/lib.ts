@@ -46,18 +46,27 @@ export function getFormValidator(originalTask: Task, minDate: Date) {
 		}),
 		[TaskFormFieldName.ReminderTime]: z.coerce.number().nullable(),
 		[TaskFormFieldName.Subtasks]: z.array(
-			z.object({
-				id: z.string().transform((value) => {
-					const parsed = parseInt(value, 10);
-					if (isNaN(parsed)) {
-						return z.NEVER;
-					}
+			z
+				.object({
+					id: z.string().transform((value) => {
+						const parsed = parseInt(value, 10);
 
-					return parsed;
-				}),
-				title: z.string().min(1, 'Укажи название подзадачи'),
-				isCompleted: z.boolean()
-			})
+						if (isNaN(parsed)) {
+							return null;
+						}
+
+						return parsed;
+					}),
+					title: z.string().min(1, 'Укажи название подзадачи'),
+					isCompleted: z.boolean()
+				})
+				.transform((value) => {
+					if (value.id === null) {
+						const { id, ...rest } = value;
+						return rest;
+					}
+					return value;
+				})
 		),
 		[TaskFormFieldName.LinkedGoalId]: z.string().nullable()
 	});

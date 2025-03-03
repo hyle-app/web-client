@@ -12,6 +12,7 @@ import { ConfirmPopover } from '&shared/ui/confirm-popover';
 import { Typography } from '&shared/ui/typography';
 import { useEventEffect } from '&shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
 import { Trash } from 'lucide-react';
 import React from 'react';
 import { getDefaultFormValues, getFormValidatorScheme, inputs, outputs } from '../../model';
@@ -42,7 +43,8 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 	});
 
 	const {
-		formState: { isDirty }
+		formState: { isDirty },
+		getValues
 	} = form;
 
 	const showSaveChangesButton = isDirty;
@@ -58,7 +60,7 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 	};
 
 	useEventEffect(outputs.reminderEdited, () => {
-		form.reset(getDefaultFormValues(reminder!));
+		form.reset({ ...getValues() }, { keepDirty: false, keepErrors: false, keepIsSubmitted: false, keepIsValid: true });
 	});
 
 	const handleActionMenuClose = () => {
@@ -81,6 +83,11 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
+			foreheadSlot={
+				<Typography className="text-color-gray-50" variant="caption-1">
+					Напоминание / Создано {dayjs(reminder!.createdAt).format('DD MMM YYYY')}
+				</Typography>
+			}
 			onCloseActionMenu={handleActionMenuClose}
 			actions={[
 				<ConfirmPopover
@@ -99,31 +106,33 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 				</ConfirmPopover>
 			]}
 		>
-			<div className="relative flex h-full flex-col justify-between pb-8">
+			<div className="relative flex h-full flex-col justify-between">
 				<FormProvider {...form}>
 					<ReminderForm goalsToLinkTo={goals} />
 				</FormProvider>
-				{showSaveChangesButton && (
-					<Button
-						variant="button"
-						appearance="primary"
-						onClick={form.handleSubmit(handleSubmit)}
-						className="sticky bottom-8 mx-8 self-stretch"
-						disabled={isEditingReminder}
-					>
-						Сохранить изменения
-					</Button>
-				)}
-				{showCompleteButton && (
-					<Button
-						variant="button"
-						appearance="primary"
-						onClick={() => completeReminderEvent({ reminderId })}
-						className="sticky bottom-8 mx-8 self-stretch"
-					>
-						Отметить выполнено
-					</Button>
-				)}
+				<div className="sticky bottom-8 w-full px-8 pb-8">
+					{showSaveChangesButton && (
+						<Button
+							variant="button"
+							appearance="primary"
+							onClick={form.handleSubmit(handleSubmit)}
+							disabled={isEditingReminder}
+							className="w-full"
+						>
+							Сохранить изменения
+						</Button>
+					)}
+					{showCompleteButton && (
+						<Button
+							variant="button"
+							appearance="primary"
+							onClick={() => completeReminderEvent({ reminderId })}
+							className="w-full"
+						>
+							Отметить выполнено
+						</Button>
+					)}
+				</div>
 			</div>
 		</Sidebar>
 	);

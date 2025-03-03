@@ -1,7 +1,6 @@
 import { cn, useEventEffect } from '&shared/utils';
 import React from 'react';
-import { ActionButtonProps, ActionProps, CloseButtonProps, Props } from './types';
-import { Icon } from '../icon';
+import { ActionButtonProps, ActionProps, Props } from './types';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -23,7 +22,8 @@ export function Sidebar({
 	closeOnOverlayClick = true,
 	confirmOverlayClose,
 	actions,
-	actionMenuContentRef
+	actionMenuContentRef,
+	foreheadSlot
 }: React.PropsWithChildren<Props>) {
 	const [isActionsMenuOpen, setIsActionMenuOpen] = React.useState(false);
 	const [isSidebarVisible, setIsSidebarVisible] = React.useState(false);
@@ -98,26 +98,31 @@ export function Sidebar({
 					}
 				)}
 			>
-				<div className="absolute right-0 top-4 z-10 flex gap-2">
-					{actions && actions.length > 0 && (
-						<DropdownMenu defaultOpen open={isActionsMenuOpen}>
-							<DropdownMenuTrigger asChild>
-								<ActionButton onClick={handleOpenActionMenu} />
-							</DropdownMenuTrigger>
-							<DropdownMenuPortal>
-								<DropdownMenuContent
-									onInteractOutside={handleCloseActionMenu}
-									className="z-select-dropdown min-w-[234px] rounded-2xl bg-color-bg-100"
-									ref={actionMenuContentRef}
-								>
-									{actions.map((action, idx) => (
-										<React.Fragment key={idx}>{action}</React.Fragment>
-									))}
-								</DropdownMenuContent>
-							</DropdownMenuPortal>
-						</DropdownMenu>
-					)}
-				</div>
+				{((actions && actions.length > 0) || Boolean(foreheadSlot)) && (
+					<div className="border-b-solid flex items-center justify-between border-b-[1px] border-b-color-gray-10 py-[6px] pl-8 pr-4">
+						{foreheadSlot || <div></div>}
+						<div className="flex items-center gap-2">
+							{actions && actions.length > 0 && (
+								<DropdownMenu defaultOpen open={isActionsMenuOpen}>
+									<DropdownMenuTrigger asChild>
+										<ActionButton onClick={handleOpenActionMenu} />
+									</DropdownMenuTrigger>
+									<DropdownMenuPortal>
+										<DropdownMenuContent
+											onInteractOutside={handleCloseActionMenu}
+											className="z-select-dropdown min-w-[234px] rounded-2xl bg-color-bg-100"
+											ref={actionMenuContentRef}
+										>
+											{actions.map((action, idx) => (
+												<React.Fragment key={idx}>{action}</React.Fragment>
+											))}
+										</DropdownMenuContent>
+									</DropdownMenuPortal>
+								</DropdownMenu>
+							)}
+						</div>
+					</div>
+				)}
 				<div className="flex h-full flex-col overflow-y-auto">{children}</div>
 			</div>
 		</div>

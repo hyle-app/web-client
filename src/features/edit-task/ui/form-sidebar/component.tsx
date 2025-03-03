@@ -7,6 +7,7 @@ import { Sidebar } from '&shared/ui/sidebar';
 import { Typography } from '&shared/ui/typography';
 import { useEventEffect } from '&shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
 import { useUnit } from 'effector-react';
 import { Trash } from 'lucide-react';
 import React from 'react';
@@ -35,15 +36,20 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 	});
 	const {
 		reset,
-		formState: { isDirty }
+		formState: { isDirty },
+		handleSubmit,
+		getValues
 	} = form;
 
-	const handleSubmit = (formValues: TaskFormValues) => {
-		applyEditTaskEvent({ taskId, formValues });
-	};
+	const _handleSubmit = React.useCallback(
+		(formValues: TaskFormValues) => {
+			applyEditTaskEvent({ taskId, formValues });
+		},
+		[applyEditTaskEvent]
+	);
 
 	useEventEffect(outputs.taskEdited, () => {
-		reset(getDefaultFormValues(task!));
+		reset({ ...getValues() }, { keepDirty: false, keepErrors: false, keepIsSubmitted: false, keepIsValid: true });
 	});
 
 	const handleClose = () => {
@@ -74,6 +80,11 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
 			onCloseActionMenu={handleActionMenuClose}
+			foreheadSlot={
+				<Typography className="text-color-gray-50" variant="caption-1">
+					Задача / Создана {dayjs(task.createdAt!).format('DD MMM YYYY')}
+				</Typography>
+			}
 			actions={[
 				<ConfirmPopover
 					isOpen={isConfirmDeletePopoverOpen}
@@ -92,15 +103,16 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 			]}
 		>
 			<FormProvider {...form}>
-				<div className="relative flex h-full flex-col justify-between pb-8">
+				<div className="relative flex h-full flex-col justify-between">
 					<TaskForm goalsToLinkTo={goals} />
 
-					<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 pt-4">
+					<div className="sticky bottom-8 flex w-full flex-col gap-8 bg-color-bg-95 pb-8 pt-4">
 						{isDirty && (
 							<Button
+								key="save"
 								variant="button"
 								appearance="primary"
-								onClick={form.handleSubmit(handleSubmit)}
+								onClick={handleSubmit(_handleSubmit)}
 								className="sticky bottom-8 mx-8 self-stretch"
 								disabled={isEditingTask}
 							>
@@ -109,9 +121,10 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 						)}
 						{!isDirty && (
 							<Button
+								key="complete"
 								variant="button"
 								appearance="primary"
-								onClick={form.handleSubmit(handleSubmit)}
+								onClick={handleSubmit(_handleSubmit)}
 								className="sticky bottom-8 mx-8 self-stretch"
 								disabled={isEditingTask}
 							>

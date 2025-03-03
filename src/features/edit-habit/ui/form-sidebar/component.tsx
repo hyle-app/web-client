@@ -9,6 +9,7 @@ import { Sidebar } from '&shared/ui/sidebar';
 import { Typography } from '&shared/ui/typography';
 import { cn, useEventEffect } from '&shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
 import { useUnit } from 'effector-react';
 import { Trash } from 'lucide-react';
 import React from 'react';
@@ -50,8 +51,9 @@ export function EditHabitFormSidebar({
 		resolver: zodResolver(getFormValidator())
 	});
 
+	const { reset, getValues } = form;
 	useEventEffect(outputs.habitEdited, () => {
-		form.reset(getDefaultFormValues(habit!));
+		reset({ ...getValues() }, { keepDirty: false, keepErrors: false, keepIsSubmitted: false, keepIsValid: true });
 	});
 
 	const handleFillComplexHabitDayProgressButtonClick = () => {
@@ -111,6 +113,11 @@ export function EditHabitFormSidebar({
 			isOpen={isOpen}
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
+			foreheadSlot={
+				<Typography className="text-color-gray-50" variant="caption-1">
+					Привычка / Создана {dayjs(habit!.createdAt).format('DD MMM YYYY')}
+				</Typography>
+			}
 			actions={[
 				<ConfirmPopover
 					isOpen={isConfirmDeletePopoverOpen}
@@ -131,7 +138,7 @@ export function EditHabitFormSidebar({
 			<FormProvider {...form}>
 				<div className="relative flex h-full flex-col justify-between">
 					<HabitForm goalsToLinkTo={goals} />
-					<div className="sticky bottom-0 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pb-8 pt-4">
+					<div className="sticky bottom-8 flex w-full flex-col gap-8 bg-color-bg-95 px-8 pb-8 pt-4">
 						<div className="flex flex-col gap-1">
 							{habitEntity.lib.isComplexHabit(habit) && (
 								<ProgressLine
@@ -174,7 +181,9 @@ export function EditHabitFormSidebar({
 									ref={deltaFieldInputRef}
 									value={complexDeltaFieldValue ?? ''}
 									onChange={handleDeltaFieldChange}
-									className={'max-w-2/5 absolute left-0 top-0 z-0 w-2/5'}
+									className={
+										'max-w-2/5 absolute left-0 top-0 z-0 w-2/5 focus:border-color-brand-primary-50 focus:outline-none'
+									}
 									label="Введите количество "
 								/>
 								<Button

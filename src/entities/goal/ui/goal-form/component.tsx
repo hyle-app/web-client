@@ -60,9 +60,20 @@ export function GoalForm({ withCalendarShortcuts, disabled, onDecomposeClick, li
 		) : null;
 	const filledLinkedEntitiesSection =
 		linkedEntitiesCount > 0 ? (
-			<div className="flex gap-4 py-4">
-				<SeamlessInput.Icon name="templates" />
-				{linkedEntitiesPreviewImpl}
+			<div className="flex flex-col gap-4">
+				<div className="flex justify-between gap-4 py-4">
+					<div className="flex gap-4">
+						<SeamlessInput.Icon name="templates" />
+						<Typography className="text-color-gray-80">Декомпозировать</Typography>
+					</div>
+					{!disabled && (
+						<button onClick={onDecomposeClick} className="text-color-brand-primary-50">
+							Редактировать
+						</button>
+					)}
+				</div>
+
+				<div className="pl-10">{linkedEntitiesPreviewImpl}</div>
 			</div>
 		) : null;
 
