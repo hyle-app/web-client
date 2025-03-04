@@ -5,6 +5,7 @@ import { cn } from '&shared/utils';
 import { LeftSideCalendarWidget } from '&widgets/left-side-calendar';
 import { useMatchRoute, useRouter } from '@tanstack/react-router';
 import { useUnit } from 'effector-react';
+import { PanelLeft } from 'lucide-react';
 import { inputs, outputs } from '../model';
 
 const LINKS = [
@@ -33,9 +34,9 @@ export const SideMenu = () => {
 							onClick={() => setSideMenuOpen(!isSideMenuOpen)}
 							className="flex h-8 w-8 translate-x-2 items-center justify-center rounded-full bg-color-bg-100"
 						>
-							<Icon
-								name="sidebar"
-								className={cn('h-6 w-6 text-color-gray-50 transition-transform', { 'rotate-180': !isSideMenuOpen })}
+							<PanelLeft
+								size={24}
+								className={cn('text-color-gray-50 transition-transform', { 'rotate-180': !isSideMenuOpen })}
 							/>
 						</button>
 					)}
