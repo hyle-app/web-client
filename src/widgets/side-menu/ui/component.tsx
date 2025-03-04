@@ -24,19 +24,21 @@ export const SideMenu = () => {
 	return (
 		<aside className="col-start-1 col-end-2 row-start-1 row-end-3 h-screen bg-color-bg-100 py-6 @container">
 			<nav className="flex h-full flex-col justify-start">
-				<div className="relative flex flex-wrap items-center justify-start px-6">
+				<div className="relative flex flex-wrap items-center justify-between px-6">
 					<div className="h-[70px] w-[var(--nav-sidebar-narrow-width)]">
 						<Logo height="70px" width="70px" />
 					</div>
-					<button
-						onClick={() => setSideMenuOpen(!isSideMenuOpen)}
-						className="absolute right-0 flex h-8 w-8 translate-x-1/2 items-center justify-center rounded-full bg-color-white"
-					>
-						<Icon
-							name="double-chevron-left"
-							className={cn('transition-transform', { 'rotate-180': !isSideMenuOpen })}
-						/>
-					</button>
+					{isSideMenuOpen && (
+						<button
+							onClick={() => setSideMenuOpen(!isSideMenuOpen)}
+							className="flex h-8 w-8 translate-x-2 items-center justify-center rounded-full bg-color-bg-100"
+						>
+							<Icon
+								name="sidebar"
+								className={cn('h-6 w-6 text-color-gray-50 transition-transform', { 'rotate-180': !isSideMenuOpen })}
+							/>
+						</button>
+					)}
 				</div>
 				<div className="mb-4 mt-3 flex h-[276px] min-h-[312px] items-center justify-center">
 					<LeftSideCalendarWidget className={cn({ hidden: !isSideMenuOpen })} />
