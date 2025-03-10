@@ -17,9 +17,6 @@ import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import type { Props } from './types';
 
-import dayjs from 'dayjs';
-
-
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
 export const EditGoalFormSidebar = React.memo(

@@ -6,9 +6,6 @@ import { EntityCard } from '&shared/ui/entity-card';
 import { FormSection } from '&shared/ui/form-section';
 import { SeamlessInput } from '&shared/ui/seamless-input';
 import { SeamlessSelect } from '&shared/ui/seamless-select';
-import { FormSection } from '&shared/ui/form-section';
-import { cn, getPlainErrors, unicodeToEmoji } from '&shared/utils';
-import { EntityCard } from '&shared/ui/entity-card';
 import { Typography } from '&shared/ui/typography';
 import { cn, getPlainErrors, unicodeToEmoji } from '&shared/utils';
 
