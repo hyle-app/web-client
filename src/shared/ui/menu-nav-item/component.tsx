@@ -6,7 +6,7 @@ export function MenuNavItem({ title, iconSlot, isActive, className, ...props }: 
 		<button {...props} className={cn('group/core relative flex w-14 items-center gap-4 @[185px]:w-full', className)}>
 			<div
 				className={cn(
-					'absolute bottom-0 left-0 top-0 h-14 w-14 rounded-2xl bg-color-bg-95 transition-all duration-300 group-hover/core:w-full group-hover/core:bg-[#f4f6ff]',
+					'absolute bottom-0 left-0 top-0 h-14 w-14 rounded-2xl bg-color-bg-95 transition-all duration-300 group-hover/core:w-full',
 					{
 						'w-14': !isActive,
 						'w-full': isActive
