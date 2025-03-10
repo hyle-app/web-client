@@ -130,7 +130,6 @@ export function UserMenuDropdownWidget() {
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={onlogout}>
 							<div className="flex flex-row items-center gap-2">
-								{/* <Icon name="logout" className="text-color-text-and-icon-80" /> */}
 								<LogOut size={16} className="text-color-text-and-icon-80" />
 								<span className="text-color-text-and-icon-80">Выйти из аккаунта</span>
 							</div>

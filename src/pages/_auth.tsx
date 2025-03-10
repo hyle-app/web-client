@@ -49,6 +49,7 @@ function AuthLayout() {
 					{!isSideMenuOpen && (
 						<button
 							onClick={() => setSideMenuOpen(!isSideMenuOpen)}
+
 							className="flex h-8 w-8 items-center justify-center"
 						>
 							<Icon
@@ -75,7 +76,6 @@ function AuthLayout() {
 			<main className="col-start-2 col-end-3 row-start-2 row-end-3 flex bg-color-bg-95">
 				<Outlet />
 				<DialogContainer />
-
 				<CheerUpSidebar />
 			</main>
 		</div>

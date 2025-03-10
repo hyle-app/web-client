@@ -5,12 +5,14 @@ import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose
 import { EditGoalFormSidebar } from '&features/edit-goal';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
-import { EntityColumn } from '&shared/ui/entity-column';
 import { Icon } from '&shared/ui/icon';
 import { useUnit } from 'effector-react';
 import React from 'react';
 import { inputs, outputs } from './model';
 import { Props } from './types';
+import { completeGoalFeature } from '&features/complete-goal';
+import { EntityColumn } from '&shared/ui/entity-column';
+
 
 export const GoalListWidget = React.memo(({ className, ...attributes }: Props) => {
 	const {

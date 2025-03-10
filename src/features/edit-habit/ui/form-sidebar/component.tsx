@@ -5,6 +5,7 @@ import { Button } from '&shared/ui/button';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
 import { Input } from '&shared/ui/input';
 import { ProgressLine } from '&shared/ui/progress-line';
+
 import { Sidebar } from '&shared/ui/sidebar';
 import { Typography } from '&shared/ui/typography';
 import { cn, useEventEffect } from '&shared/utils';
@@ -16,6 +17,9 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import { Props } from './types';
+
+import dayjs from 'dayjs';
+
 
 export function EditHabitFormSidebar({
 	isOpen,
