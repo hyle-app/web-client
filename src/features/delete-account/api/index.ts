@@ -1,0 +1,1 @@
+export { deleteAccountApi } from './api';
