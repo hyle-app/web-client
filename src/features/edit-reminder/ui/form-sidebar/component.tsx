@@ -1,21 +1,23 @@
-import { useUnit } from 'effector-react';
-import { Props } from './types';
 import { goalEntity } from '&entities/goal';
-import { Sidebar } from '&shared/ui/sidebar';
-import { Button } from '&shared/ui/button';
 import { ReminderForm, reminderEntity } from '&entities/reminder';
+import { Button } from '&shared/ui/button';
+import { Sidebar } from '&shared/ui/sidebar';
+import { useUnit } from 'effector-react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Props } from './types';
 
-import { getDefaultFormValues, getFormValidatorScheme, inputs, outputs } from '../../model';
 import { ReminderFormValues } from '&entities/reminder/model';
-import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
-import { useEventEffect } from '&shared/utils';
 import { timeService } from '&shared/services/time';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
-import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
+
+import { useEventEffect } from '&shared/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
+import { Trash } from 'lucide-react';
+import React from 'react';
+import { getDefaultFormValues, getFormValidatorScheme, inputs, outputs } from '../../model';
+
 
 export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId }: Props) => {
 	const [isConfirmDeletePopoverOpen, setIsConfirmDeletePopoverOpen] = React.useState(false);
@@ -99,8 +101,8 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 					confirmationText="Подтверди удаление задачи"
 				>
 					<Sidebar.Action
-						iconSlot={<Icon name="trash" />}
-						labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+						iconSlot={<Trash className="text-color-text-and-icon-80" />}
+						labelSlot={<Typography>Удалить</Typography>}
 						onClick={() => setIsConfirmDeletePopoverOpen(true)}
 					/>
 				</ConfirmPopover>

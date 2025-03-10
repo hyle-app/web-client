@@ -4,6 +4,7 @@ import { Button } from '&shared/ui/button';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '&shared/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '&shared/ui/form/Form';
 import { RadioGroup, RadioGroupItem } from '&shared/ui/radio-group';
+import { Typography } from '&shared/ui/typography';
 import { useUnit } from 'effector-react';
 import { useForm } from 'react-hook-form';
 
@@ -31,7 +32,7 @@ export function SubscribeModal() {
 	};
 
 	return (
-		<DialogContent className="bg-white px-14 py-8">
+		<DialogContent className="bg-color-bg-100 px-14 py-8">
 			<DialogHeader>
 				<DialogTitle className="text-subheader-1 font-caption-2 text-color-text-and-icon-80">
 					Выберите длительность подписки:
@@ -55,7 +56,7 @@ export function SubscribeModal() {
 											</FormLabel>
 										</div>
 										<div className="flex flex-col">
-											<span>390 Р</span>
+											<Typography variant="paragraph">390 Р</Typography>
 											<span className="text-caption-2 text-color-gray-50">390 Р / мес</span>
 										</div>
 									</FormItem>
@@ -69,7 +70,7 @@ export function SubscribeModal() {
 											</FormLabel>
 										</div>
 										<div className="flex flex-col">
-											<span>990 Р</span>
+											<Typography variant="paragraph">990 Р</Typography>
 											<span className="text-caption-2 text-color-gray-50">330 Р / мес</span>
 										</div>
 									</FormItem>
@@ -83,7 +84,7 @@ export function SubscribeModal() {
 											</FormLabel>
 										</div>
 										<div className="flex flex-col">
-											<span>3290 Р</span>
+											<Typography variant="paragraph">3290 Р</Typography>
 											<span className="text-caption-2 text-color-gray-50">274 Р / мес</span>
 										</div>
 									</FormItem>
@@ -106,7 +107,7 @@ export function SubscribeModal() {
 											<span>3900 Р / мес</span>
 										</div>
 									</FormItem>
-									<Button variant="button" appearance="primary" className="w-full">
+									<Button variant="button" appearance="primary" className="mt-6 w-full rounded-full">
 										Оплатить
 									</Button>
 								</RadioGroup>
@@ -116,7 +117,7 @@ export function SubscribeModal() {
 				</Form>
 			</DialogDescription>
 			<DialogFooter>
-				<div className="">
+				<Typography variant="paragraph">
 					Нажимая на кнопку "Оплатить", вы соглашаетесь с{' '}
 					<a
 						className="text-color-brand-primary-50"
@@ -144,7 +145,7 @@ export function SubscribeModal() {
 					>
 						пользовательским соглашением
 					</a>
-				</div>
+				</Typography>
 			</DialogFooter>
 		</DialogContent>
 	);

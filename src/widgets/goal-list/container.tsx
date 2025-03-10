@@ -1,18 +1,18 @@
+import { GoalCard, goalEntity } from '&entities/goal';
+import { completeGoalFeature } from '&features/complete-goal';
+import { CreateGoalFormSidebar } from '&features/create-goal';
+import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose-goal';
+import { EditGoalFormSidebar } from '&features/edit-goal';
 import { timeService } from '&shared/services/time';
 import { Button } from '&shared/ui/button';
 import { Icon } from '&shared/ui/icon';
-import { Typography } from '&shared/ui/typography';
 import { useUnit } from 'effector-react';
-import { Props } from './types';
-import { cn } from '&shared/utils';
-import { goalEntity, GoalCard } from '&entities/goal';
-import { CreateGoalFormSidebar } from '&features/create-goal';
 import React from 'react';
-import { EditGoalFormSidebar } from '&features/edit-goal';
 import { inputs, outputs } from './model';
+import { Props } from './types';
 import { completeGoalFeature } from '&features/complete-goal';
-import { DecomposeGoalSidebar, LinkedEntitiesPreview } from '&features/decompose-goal';
 import { EntityColumn } from '&shared/ui/entity-column';
+
 
 export const GoalListWidget = React.memo(({ className, ...attributes }: Props) => {
 	const {

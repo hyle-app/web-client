@@ -1,12 +1,13 @@
+import { EntityCard } from '&shared/ui/entity-card';
 import { Icon } from '&shared/ui/icon';
 import { Input } from '&shared/ui/input';
 import { Popover } from '&shared/ui/popover';
-import { useUnit } from 'effector-react';
-import { inputs, outputs } from '../../model';
-import React, { MutableRefObject } from 'react';
 import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
-import { EntityCard } from '&shared/ui/entity-card';
+import { useUnit } from 'effector-react';
+import { Search } from 'lucide-react';
+import React, { MutableRefObject } from 'react';
+import { inputs, outputs } from '../../model';
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
 	onClose: () => void;
@@ -139,12 +140,13 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 				autoFocusContent={false}
 			>
 				<Input
+					className="text-color-text-and-icon-80"
 					label=""
 					ref={inputRef}
 					onChange={(event) => changeQueryEvent(event.target.value)}
 					placeholder="Введите название"
 					inputClassName={cn('pl-12 py-3', inputClassName)}
-					leftSlot={<Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2" />}
+					leftSlot={<Search size={24} className="absolute left-4 top-1/2 -translate-y-1/2" />}
 				/>
 			</Popover>
 		</div>

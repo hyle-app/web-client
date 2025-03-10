@@ -1,14 +1,14 @@
+import { GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
+import { timeService } from '&shared/services/time';
+import { Button } from '&shared/ui/button';
+import { Sidebar } from '&shared/ui/sidebar';
+import { useEventEffect } from '&shared/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useUnit } from 'effector-react';
-import type { Props } from './types';
-import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { GoalForm, GoalFormFieldName, GoalFormValues, LinkedEntities } from '&entities/goal';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { timeService } from '&shared/services/time';
-import { Sidebar } from '&shared/ui/sidebar';
-import { Button } from '&shared/ui/button';
-import { useEventEffect } from '&shared/utils';
+import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
+import type { Props } from './types';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 

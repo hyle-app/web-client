@@ -15,14 +15,16 @@ export function MenuNavItem({ title, iconSlot, isActive, className, ...props }: 
 			></div>
 			<div
 				className={cn('transition-color relative flex h-14 w-14 items-center justify-center', {
-					'text-color-brand-primary-50': isActive
+					'text-color-brand-primary-50': isActive,
+					'text-color-text-and-icon-80': !isActive
 				})}
 			>
 				{iconSlot}
 			</div>
 			<p
 				className={cn('relative hidden transition-colors @[185px]:flex', {
-					'text-color-brand-primary-50': isActive
+					'text-color-brand-primary-50': isActive,
+					'text-color-text-and-icon-80': !isActive
 				})}
 			>
 				{title}

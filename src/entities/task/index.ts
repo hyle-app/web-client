@@ -4,17 +4,17 @@ import {
 	getOverdueDetails,
 	getTaskTargetDate,
 	inputs,
+	isSubtaskCompleted,
 	isTaskCompleted,
 	outputs,
 	uncompleteSubtask,
 	uncompleteTask,
-	isSubtaskCompleted,
 	updateTaskWithFormValues
 } from './model';
 
-export type { TaskId, SubtaskId, Subtask, Task, TaskFormValues } from './model';
+export type { Subtask, SubtaskId, Task, TaskFormValues, TaskId } from './model';
 
-export { TaskCard, CompletableSubtaskCard, SubtaskCard, TaskForm, CompletableTaskCard } from './ui';
+export { CompletableSubtaskCard, CompletableTaskCard, SubtaskCard, TaskCard, TaskForm } from './ui';
 
 export const taskEntity = {
 	inputs,

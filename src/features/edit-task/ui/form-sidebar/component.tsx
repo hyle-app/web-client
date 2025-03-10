@@ -1,19 +1,27 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { useUnit } from 'effector-react';
-import { Props } from './types';
 import { goalEntity } from '&entities/goal';
-import { Sidebar } from '&shared/ui/sidebar';
 import { taskEntity, TaskForm, type TaskFormValues } from '&entities/task';
-import { Button } from '&shared/ui/button';
-import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import { timeService } from '&shared/services/time';
+import { Button } from '&shared/ui/button';
+import { ConfirmPopover } from '&shared/ui/confirm-popover';
+import { Sidebar } from '&shared/ui/sidebar';
+import { Typography } from '&shared/ui/typography';
+import { useEventEffect } from '&shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
+import { useUnit } from 'effector-react';
+import { Trash } from 'lucide-react';
 import React from 'react';
+
+import { FormProvider, useForm } from 'react-hook-form';
+import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
+import { Props } from './types';
+
 import { useEventEffect } from '&shared/utils';
 import { Icon } from '&shared/ui/icon';
 import { Typography } from '&shared/ui/typography';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
 import dayjs from 'dayjs';
+
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -95,8 +103,8 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 					confirmationText="Подтверди удаление задачи"
 				>
 					<Sidebar.Action
-						iconSlot={<Icon name="trash" />}
-						labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+						iconSlot={<Trash className="text-color-text-and-icon-80" />}
+						labelSlot={<Typography>Удалить</Typography>}
 						onClick={() => setIsConfirmDeletePopoverOpen(true)}
 					/>
 				</ConfirmPopover>

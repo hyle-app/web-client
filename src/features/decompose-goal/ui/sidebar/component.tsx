@@ -1,18 +1,18 @@
-import { Sidebar } from '&shared/ui/sidebar';
-import { Typography } from '&shared/ui/typography';
-import React from 'react';
-import { Props } from './types';
+import { LinkedEntities } from '&entities/goal';
+import { HabitCard, habitEntity } from '&entities/habit';
+import { ReminderCard, reminderEntity } from '&entities/reminder';
+import { TaskCard, taskEntity } from '&entities/task';
+import { timeService } from '&shared/services/time';
+import { Button } from '&shared/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '&shared/ui/collapsible';
 import { Icon } from '&shared/ui/icon';
 import { Input } from '&shared/ui/input';
-import { TaskCard, taskEntity } from '&entities/task';
-import { ReminderCard, reminderEntity } from '&entities/reminder';
-import { HabitCard, habitEntity } from '&entities/habit';
-import { useUnit } from 'effector-react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '&shared/ui/collapsible';
-import { timeService } from '&shared/services/time';
+import { Sidebar } from '&shared/ui/sidebar';
+import { Typography } from '&shared/ui/typography';
 import { cn } from '&shared/utils';
-import { Button } from '&shared/ui/button';
-import { LinkedEntities } from '&entities/goal';
+import { useUnit } from 'effector-react';
+import React from 'react';
+import { Props } from './types';
 
 export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, className, value }: Props) => {
 	const { tasksList, remindersList, habitsList, selectedAppDateStart } = useUnit({
@@ -100,7 +100,12 @@ export const DecomposeGoalSidebar = ({ onApplyEntities, isOpen, onClose, classNa
 					</Typography>
 				</div>
 
-				<Input label="Поиск" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} />
+				<Input
+					className="text-color-text-and-icon-80"
+					label="Поиск"
+					value={searchQuery}
+					onChange={(event) => setSearchQuery(event.target.value)}
+				/>
 				<div className="flex justify-between">
 					<Typography className="text-color-gray-80">
 						Выбрано {selectedEntitiesCount}/{totalEntitiesCount}

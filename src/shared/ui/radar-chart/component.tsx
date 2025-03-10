@@ -1,7 +1,7 @@
+import { map } from '&shared/utils';
 import React from 'react';
 import { CANVAS_SIZE, CHART_SIZE } from './constants';
 import { Props } from './types';
-import { map } from '&shared/utils';
 
 function getPointOnCanvas(
 	angle: number,
@@ -97,7 +97,15 @@ export function RadarChart<T extends string | symbol | number>({ data, getLabel,
 				fillOpacity="0.2"
 			></path>
 			{titles.map(({ x, y, label }) => (
-				<text x={x} y={y} fontSize="16" fill="var(--text-and-icon-80)" textAnchor="middle" key={label}>
+				<text
+					x={x}
+					y={y}
+					fontSize="16"
+					fill="var(--text-and-icon-80)"
+					textAnchor="middle"
+					key={label}
+					className="stroke-color-text-and-icon-80 text-color-text-and-icon-80"
+				>
 					{label}
 				</text>
 			))}

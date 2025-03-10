@@ -8,274 +8,240 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 // Import Routes
 
-import { Route as rootRoute } from './pages/__root'
-import { Route as AuthImport } from './pages/_auth'
-import { Route as IndexImport } from './pages/index'
+import { Route as rootRoute } from './pages/__root';
+import { Route as AuthImport } from './pages/_auth';
+import { Route as IndexImport } from './pages/index';
 
 // Create Virtual Routes
 
-const WebVersionTeaserIndexLazyImport = createFileRoute(
-  '/web-version-teaser/',
-)()
-const AuthIndexLazyImport = createFileRoute('/auth/')()
-const AuthProfileIndexLazyImport = createFileRoute('/_auth/profile/')()
-const AuthHomeIndexLazyImport = createFileRoute('/_auth/home/')()
-const AuthGoalsIndexLazyImport = createFileRoute('/_auth/goals/')()
-const AuthBalanceIndexLazyImport = createFileRoute('/_auth/balance/')()
-const AuthAboutIndexLazyImport = createFileRoute('/_auth/about/')()
+const WebVersionTeaserIndexLazyImport = createFileRoute('/web-version-teaser/')();
+const AuthIndexLazyImport = createFileRoute('/auth/')();
+const AuthProfileIndexLazyImport = createFileRoute('/_auth/profile/')();
+const AuthHomeIndexLazyImport = createFileRoute('/_auth/home/')();
+const AuthGoalsIndexLazyImport = createFileRoute('/_auth/goals/')();
+const AuthBalanceIndexLazyImport = createFileRoute('/_auth/balance/')();
+const AuthAboutIndexLazyImport = createFileRoute('/_auth/about/')();
 
 // Create/Update Routes
 
 const AuthRoute = AuthImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRoute,
-} as any)
+	id: '/_auth',
+	getParentRoute: () => rootRoute
+} as any);
 
 const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
+	id: '/',
+	path: '/',
+	getParentRoute: () => rootRoute
+} as any);
 
 const WebVersionTeaserIndexLazyRoute = WebVersionTeaserIndexLazyImport.update({
-  id: '/web-version-teaser/',
-  path: '/web-version-teaser/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/web-version-teaser/index.lazy').then((d) => d.Route),
-)
+	id: '/web-version-teaser/',
+	path: '/web-version-teaser/',
+	getParentRoute: () => rootRoute
+} as any).lazy(() => import('./pages/web-version-teaser/index.lazy').then((d) => d.Route));
 
 const AuthIndexLazyRoute = AuthIndexLazyImport.update({
-  id: '/auth/',
-  path: '/auth/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./pages/auth/index.lazy').then((d) => d.Route))
+	id: '/auth/',
+	path: '/auth/',
+	getParentRoute: () => rootRoute
+} as any).lazy(() => import('./pages/auth/index.lazy').then((d) => d.Route));
 
 const AuthProfileIndexLazyRoute = AuthProfileIndexLazyImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./pages/_auth/profile/index.lazy').then((d) => d.Route),
-)
+	id: '/profile/',
+	path: '/profile/',
+	getParentRoute: () => AuthRoute
+} as any).lazy(() => import('./pages/_auth/profile/index.lazy').then((d) => d.Route));
 
 const AuthHomeIndexLazyRoute = AuthHomeIndexLazyImport.update({
-  id: '/home/',
-  path: '/home/',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./pages/_auth/home/index.lazy').then((d) => d.Route),
-)
+	id: '/home/',
+	path: '/home/',
+	getParentRoute: () => AuthRoute
+} as any).lazy(() => import('./pages/_auth/home/index.lazy').then((d) => d.Route));
 
 const AuthGoalsIndexLazyRoute = AuthGoalsIndexLazyImport.update({
-  id: '/goals/',
-  path: '/goals/',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./pages/_auth/goals/index.lazy').then((d) => d.Route),
-)
+	id: '/goals/',
+	path: '/goals/',
+	getParentRoute: () => AuthRoute
+} as any).lazy(() => import('./pages/_auth/goals/index.lazy').then((d) => d.Route));
 
 const AuthBalanceIndexLazyRoute = AuthBalanceIndexLazyImport.update({
-  id: '/balance/',
-  path: '/balance/',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./pages/_auth/balance/index.lazy').then((d) => d.Route),
-)
+	id: '/balance/',
+	path: '/balance/',
+	getParentRoute: () => AuthRoute
+} as any).lazy(() => import('./pages/_auth/balance/index.lazy').then((d) => d.Route));
 
 const AuthAboutIndexLazyRoute = AuthAboutIndexLazyImport.update({
-  id: '/about/',
-  path: '/about/',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./pages/_auth/about/index.lazy').then((d) => d.Route),
-)
+	id: '/about/',
+	path: '/about/',
+	getParentRoute: () => AuthRoute
+} as any).lazy(() => import('./pages/_auth/about/index.lazy').then((d) => d.Route));
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/': {
-      id: '/auth/'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthIndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/web-version-teaser/': {
-      id: '/web-version-teaser/'
-      path: '/web-version-teaser'
-      fullPath: '/web-version-teaser'
-      preLoaderRoute: typeof WebVersionTeaserIndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth/about/': {
-      id: '/_auth/about/'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AuthAboutIndexLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/balance/': {
-      id: '/_auth/balance/'
-      path: '/balance'
-      fullPath: '/balance'
-      preLoaderRoute: typeof AuthBalanceIndexLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/goals/': {
-      id: '/_auth/goals/'
-      path: '/goals'
-      fullPath: '/goals'
-      preLoaderRoute: typeof AuthGoalsIndexLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/home/': {
-      id: '/_auth/home/'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof AuthHomeIndexLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/profile/': {
-      id: '/_auth/profile/'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthProfileIndexLazyImport
-      parentRoute: typeof AuthImport
-    }
-  }
+	interface FileRoutesByPath {
+		'/': {
+			id: '/';
+			path: '/';
+			fullPath: '/';
+			preLoaderRoute: typeof IndexImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/_auth': {
+			id: '/_auth';
+			path: '';
+			fullPath: '';
+			preLoaderRoute: typeof AuthImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/auth/': {
+			id: '/auth/';
+			path: '/auth';
+			fullPath: '/auth';
+			preLoaderRoute: typeof AuthIndexLazyImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/web-version-teaser/': {
+			id: '/web-version-teaser/';
+			path: '/web-version-teaser';
+			fullPath: '/web-version-teaser';
+			preLoaderRoute: typeof WebVersionTeaserIndexLazyImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/_auth/about/': {
+			id: '/_auth/about/';
+			path: '/about';
+			fullPath: '/about';
+			preLoaderRoute: typeof AuthAboutIndexLazyImport;
+			parentRoute: typeof AuthImport;
+		};
+		'/_auth/balance/': {
+			id: '/_auth/balance/';
+			path: '/balance';
+			fullPath: '/balance';
+			preLoaderRoute: typeof AuthBalanceIndexLazyImport;
+			parentRoute: typeof AuthImport;
+		};
+		'/_auth/goals/': {
+			id: '/_auth/goals/';
+			path: '/goals';
+			fullPath: '/goals';
+			preLoaderRoute: typeof AuthGoalsIndexLazyImport;
+			parentRoute: typeof AuthImport;
+		};
+		'/_auth/home/': {
+			id: '/_auth/home/';
+			path: '/home';
+			fullPath: '/home';
+			preLoaderRoute: typeof AuthHomeIndexLazyImport;
+			parentRoute: typeof AuthImport;
+		};
+		'/_auth/profile/': {
+			id: '/_auth/profile/';
+			path: '/profile';
+			fullPath: '/profile';
+			preLoaderRoute: typeof AuthProfileIndexLazyImport;
+			parentRoute: typeof AuthImport;
+		};
+	}
 }
 
 // Create and export the route tree
 
 interface AuthRouteChildren {
-  AuthAboutIndexLazyRoute: typeof AuthAboutIndexLazyRoute
-  AuthBalanceIndexLazyRoute: typeof AuthBalanceIndexLazyRoute
-  AuthGoalsIndexLazyRoute: typeof AuthGoalsIndexLazyRoute
-  AuthHomeIndexLazyRoute: typeof AuthHomeIndexLazyRoute
-  AuthProfileIndexLazyRoute: typeof AuthProfileIndexLazyRoute
+	AuthAboutIndexLazyRoute: typeof AuthAboutIndexLazyRoute;
+	AuthBalanceIndexLazyRoute: typeof AuthBalanceIndexLazyRoute;
+	AuthGoalsIndexLazyRoute: typeof AuthGoalsIndexLazyRoute;
+	AuthHomeIndexLazyRoute: typeof AuthHomeIndexLazyRoute;
+	AuthProfileIndexLazyRoute: typeof AuthProfileIndexLazyRoute;
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthAboutIndexLazyRoute: AuthAboutIndexLazyRoute,
-  AuthBalanceIndexLazyRoute: AuthBalanceIndexLazyRoute,
-  AuthGoalsIndexLazyRoute: AuthGoalsIndexLazyRoute,
-  AuthHomeIndexLazyRoute: AuthHomeIndexLazyRoute,
-  AuthProfileIndexLazyRoute: AuthProfileIndexLazyRoute,
-}
+	AuthAboutIndexLazyRoute: AuthAboutIndexLazyRoute,
+	AuthBalanceIndexLazyRoute: AuthBalanceIndexLazyRoute,
+	AuthGoalsIndexLazyRoute: AuthGoalsIndexLazyRoute,
+	AuthHomeIndexLazyRoute: AuthHomeIndexLazyRoute,
+	AuthProfileIndexLazyRoute: AuthProfileIndexLazyRoute
+};
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
-  '/auth': typeof AuthIndexLazyRoute
-  '/web-version-teaser': typeof WebVersionTeaserIndexLazyRoute
-  '/about': typeof AuthAboutIndexLazyRoute
-  '/balance': typeof AuthBalanceIndexLazyRoute
-  '/goals': typeof AuthGoalsIndexLazyRoute
-  '/home': typeof AuthHomeIndexLazyRoute
-  '/profile': typeof AuthProfileIndexLazyRoute
+	'/': typeof IndexRoute;
+	'': typeof AuthRouteWithChildren;
+	'/auth': typeof AuthIndexLazyRoute;
+	'/web-version-teaser': typeof WebVersionTeaserIndexLazyRoute;
+	'/about': typeof AuthAboutIndexLazyRoute;
+	'/balance': typeof AuthBalanceIndexLazyRoute;
+	'/goals': typeof AuthGoalsIndexLazyRoute;
+	'/home': typeof AuthHomeIndexLazyRoute;
+	'/profile': typeof AuthProfileIndexLazyRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
-  '/auth': typeof AuthIndexLazyRoute
-  '/web-version-teaser': typeof WebVersionTeaserIndexLazyRoute
-  '/about': typeof AuthAboutIndexLazyRoute
-  '/balance': typeof AuthBalanceIndexLazyRoute
-  '/goals': typeof AuthGoalsIndexLazyRoute
-  '/home': typeof AuthHomeIndexLazyRoute
-  '/profile': typeof AuthProfileIndexLazyRoute
+	'/': typeof IndexRoute;
+	'': typeof AuthRouteWithChildren;
+	'/auth': typeof AuthIndexLazyRoute;
+	'/web-version-teaser': typeof WebVersionTeaserIndexLazyRoute;
+	'/about': typeof AuthAboutIndexLazyRoute;
+	'/balance': typeof AuthBalanceIndexLazyRoute;
+	'/goals': typeof AuthGoalsIndexLazyRoute;
+	'/home': typeof AuthHomeIndexLazyRoute;
+	'/profile': typeof AuthProfileIndexLazyRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
-  '/auth/': typeof AuthIndexLazyRoute
-  '/web-version-teaser/': typeof WebVersionTeaserIndexLazyRoute
-  '/_auth/about/': typeof AuthAboutIndexLazyRoute
-  '/_auth/balance/': typeof AuthBalanceIndexLazyRoute
-  '/_auth/goals/': typeof AuthGoalsIndexLazyRoute
-  '/_auth/home/': typeof AuthHomeIndexLazyRoute
-  '/_auth/profile/': typeof AuthProfileIndexLazyRoute
+	__root__: typeof rootRoute;
+	'/': typeof IndexRoute;
+	'/_auth': typeof AuthRouteWithChildren;
+	'/auth/': typeof AuthIndexLazyRoute;
+	'/web-version-teaser/': typeof WebVersionTeaserIndexLazyRoute;
+	'/_auth/about/': typeof AuthAboutIndexLazyRoute;
+	'/_auth/balance/': typeof AuthBalanceIndexLazyRoute;
+	'/_auth/goals/': typeof AuthGoalsIndexLazyRoute;
+	'/_auth/home/': typeof AuthHomeIndexLazyRoute;
+	'/_auth/profile/': typeof AuthProfileIndexLazyRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/auth'
-    | '/web-version-teaser'
-    | '/about'
-    | '/balance'
-    | '/goals'
-    | '/home'
-    | '/profile'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/auth'
-    | '/web-version-teaser'
-    | '/about'
-    | '/balance'
-    | '/goals'
-    | '/home'
-    | '/profile'
-  id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/auth/'
-    | '/web-version-teaser/'
-    | '/_auth/about/'
-    | '/_auth/balance/'
-    | '/_auth/goals/'
-    | '/_auth/home/'
-    | '/_auth/profile/'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths: '/' | '' | '/auth' | '/web-version-teaser' | '/about' | '/balance' | '/goals' | '/home' | '/profile';
+	fileRoutesByTo: FileRoutesByTo;
+	to: '/' | '' | '/auth' | '/web-version-teaser' | '/about' | '/balance' | '/goals' | '/home' | '/profile';
+	id:
+		| '__root__'
+		| '/'
+		| '/_auth'
+		| '/auth/'
+		| '/web-version-teaser/'
+		| '/_auth/about/'
+		| '/_auth/balance/'
+		| '/_auth/goals/'
+		| '/_auth/home/'
+		| '/_auth/profile/';
+	fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  AuthIndexLazyRoute: typeof AuthIndexLazyRoute
-  WebVersionTeaserIndexLazyRoute: typeof WebVersionTeaserIndexLazyRoute
+	IndexRoute: typeof IndexRoute;
+	AuthRoute: typeof AuthRouteWithChildren;
+	AuthIndexLazyRoute: typeof AuthIndexLazyRoute;
+	WebVersionTeaserIndexLazyRoute: typeof WebVersionTeaserIndexLazyRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthRoute: AuthRouteWithChildren,
-  AuthIndexLazyRoute: AuthIndexLazyRoute,
-  WebVersionTeaserIndexLazyRoute: WebVersionTeaserIndexLazyRoute,
-}
+	IndexRoute: IndexRoute,
+	AuthRoute: AuthRouteWithChildren,
+	AuthIndexLazyRoute: AuthIndexLazyRoute,
+	WebVersionTeaserIndexLazyRoute: WebVersionTeaserIndexLazyRoute
+};
 
-export const routeTree = rootRoute
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {

@@ -1,21 +1,21 @@
-import React from 'react';
+import { timeService } from '&shared/services/time';
+import { Icon } from '&shared/ui/icon';
+import { cn, devLogger } from '&shared/utils';
 import { ru } from 'date-fns/locale';
+import React from 'react';
 import {
 	DateRange,
 	DayPicker,
+	Modifiers,
 	type PropsRangeRequired,
 	type PropsSingleRequired,
-	UI,
-	Modifiers
+	UI
 } from 'react-day-picker';
 import 'react-day-picker/style.css';
-import { cn, devLogger } from '&shared/utils';
-import { Props } from './types';
-import { Icon } from '&shared/ui/icon';
-import { timeService } from '&shared/services/time';
-import { Typography } from '../typography';
 import { Button } from '../button';
 import { ErrorMessage } from '../error-message';
+import { Typography } from '../typography';
+import { Props } from './types';
 
 export function CalendarField<Mode extends 'range' | 'single'>({
 	className,
@@ -193,10 +193,11 @@ export function CalendarField<Mode extends 'range' | 'single'>({
 			classNames={{
 				today: 'today',
 				selected: 'text-white selected',
-				[UI.Day]: 'w-[36px] h-[36px] text-caption-1 text-text-and-icon-80 p-0 group',
+				[UI.Day]: 'w-[36px] h-[36px] text-caption-1 text-color-text-and-icon-80 p-0 group',
 				[UI.DayButton]:
-					'w-[36px] h-[36px] !border-transparent !border !border-solid rounded-xl group-[.selected]:bg-color-brand-primary-50 group-[.today]:!border-color-brand-primary-50 text-caption-1 group-[.selected]:text-caption-1 group-[.selected]:text-text-and-icon-80',
-				[UI.MonthCaption]: 'text-default font-regular h-10 flex items-center mb-4 capitalize justify-center',
+					'w-[36px] h-[36px] !border-transparent !border !border-solid rounded-xl group-[.selected]:bg-color-brand-primary-50 group-[.today]:!border-color-brand-primary-50 text-caption-1 group-[.selected]:text-caption-1 group-[.selected]:text-color-text-and-icon-80',
+				[UI.MonthCaption]:
+					'text-default font-regular h-10 flex items-center mb-4 capitalize justify-center text-color-text-and-icon-80',
 				[UI.Nav]: 'h-10 absolute top-0 right-0 left-0 flex justify-between items-center',
 				[UI.Weekday]:
 					'text-color-text-and-icon-70 opacity-50 text-caption-1 font-normal [&:nth-child(n+6)]:text-color-error',

@@ -1,25 +1,25 @@
 import React from 'react';
 
-import { SeamlessInput } from '&shared/ui/seamless-input';
-import { SeamlessSelect } from '&shared/ui/seamless-select';
-import { FormSection } from '&shared/ui/form-section';
 import { Subtask } from '&entities/task/model';
-import { cn, generateTemporaryId, getPlainErrors, unicodeToEmoji } from '&shared/utils';
+import { FormSection } from '&shared/ui/form-section';
 import { Icon } from '&shared/ui/icon';
 import { SeamlessArrayInput } from '&shared/ui/seamless-array-input';
+import { SeamlessInput } from '&shared/ui/seamless-input';
+import { SeamlessSelect } from '&shared/ui/seamless-select';
+import { cn, generateTemporaryId, getPlainErrors, unicodeToEmoji } from '&shared/utils';
 
-import { getReminderTimeOptions } from './constants';
-import { SubtaskCard } from '../subtask-card';
-import { Props } from './types';
-import { EntityCard } from '&shared/ui/entity-card';
-import { Typography } from '&shared/ui/typography';
-import { CalendarField } from '&shared/ui/calendar-field/component';
-import { useController, useFieldArray, useFormContext } from 'react-hook-form';
 import { TaskFormFieldName } from '&entities/task/model/constants';
 import { TaskFormValues } from '&entities/task/model/types';
-import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
 import { timeService } from '&shared/services/time';
+import { CalendarField } from '&shared/ui/calendar-field/component';
+import { CalendarFieldShortcuts } from '&shared/ui/calendar-shortcuts';
+import { EntityCard } from '&shared/ui/entity-card';
 import { ErrorMessage } from '&shared/ui/error-message';
+import { Typography } from '&shared/ui/typography';
+import { useController, useFieldArray, useFormContext } from 'react-hook-form';
+import { SubtaskCard } from '../subtask-card';
+import { getReminderTimeOptions } from './constants';
+import { Props } from './types';
 
 const TIME_OPTIONS = getReminderTimeOptions();
 
@@ -75,7 +75,7 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					persistantLabel={false}
 					inputClassName="text-heading-3 h-full"
 					labelClassName="!text-heading-3 font-light"
-					className="h-[39px] py-0"
+					className="h-[39px] py-0 text-color-text-and-icon-80"
 					error={plainErrors[titleField.name]}
 				/>
 			</FormSection>
@@ -125,6 +125,7 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 						value === undefined ? reminderTimeField.onChange(value) : reminderTimeField.onChange(parseInt(value))
 					}
 					label="Напомнить"
+					className="text-color-text-and-icon-80"
 					leftSlot={<SeamlessSelect.Icon name="bell" />}
 					error={plainErrors[reminderTimeField.name]}
 				/>
@@ -136,6 +137,7 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 					value={descriptionField.value || ''}
 					onChange={descriptionField.onChange}
 					multiline
+					inputClassName="text-color-text-and-icon-80"
 					error={plainErrors[descriptionField.name]}
 				/>
 			</FormSection>
@@ -150,6 +152,7 @@ export function TaskForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 						title,
 						isCompleted: false
 					})}
+					inputClassName="text-color-text-and-icon-80"
 					inputLeftSlot={<SeamlessInput.Icon name="subtask" />}
 					renderElement={(subtask, index) => (
 						<div className="flex flex-col gap-1" key={subtask.id}>

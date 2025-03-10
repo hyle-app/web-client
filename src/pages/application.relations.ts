@@ -1,17 +1,17 @@
-import { EventPayload, sample } from 'effector';
-import { inputs, internals, outputs } from './application.model';
-import { timeService } from '&shared/services/time';
-import { ApplicationState } from './application.constants';
-import { combineEvents } from 'patronum';
-import { taskEntity } from '&entities/task';
-import { authService } from '&shared/services/auth';
+import { balanceEntity } from '&entities/balance';
+import { goalEntity } from '&entities/goal';
 import { habitEntity } from '&entities/habit';
 import { reminderEntity } from '&entities/reminder';
-import { routerService } from '&shared/services/router';
-import { goalEntity } from '&entities/goal';
-import { balanceEntity } from '&entities/balance';
-import { httpService } from '&shared/services/http';
+import { taskEntity } from '&entities/task';
+import { authService } from '&shared/services/auth';
 import { FeatureFlag, featureFlagsService } from '&shared/services/feature-flags';
+import { httpService } from '&shared/services/http';
+import { routerService } from '&shared/services/router';
+import { timeService } from '&shared/services/time';
+import { EventPayload, sample } from 'effector';
+import { combineEvents } from 'patronum';
+import { ApplicationState } from './application.constants';
+import { inputs, internals, outputs } from './application.model';
 
 sample({
 	clock: inputs.startApplication,

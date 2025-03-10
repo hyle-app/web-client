@@ -10,7 +10,8 @@ export function GoalsPage() {
 		achievements: goalEntity.outputs.$achievements,
 		overdueGoals: goalEntity.outputs.$overdueGoals
 	});
-	const count: number = 1 + (overdueGoals.length > 0 ? 1 : 0) + (achievements.length ? 1 : 0);
+
+	const count = 1 + (overdueGoals.length > 0 ? 1 : 0) + (achievements.length ? 1 : 0);
 
 	const layoutClasssNames: Record<number, string> = {
 		1: 'md:grid-cols-[repeat(1,minmax(420px,460px))]',

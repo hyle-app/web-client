@@ -58,6 +58,27 @@
 	--rdp-accent-color: var(--color-text-and-icon-80);
 }
 
+.dark {
+	/* Темная тема */
+	--color-gray-10: #30343d; /* dark */
+	--color-gray-30: #404552; /* dark */
+	--color-gray-50: #565c6b; /* dark */
+	--color-gray-80: #8990a3; /* dark */
+	--color-bg-95: #404552; /* dark */
+	--color-bg-100: #353941; /* dark */
+	--color-brand-primary-50: #557afa; /*dark */
+	--color-brand-primary-70: #99aef8;
+	--color-brand-secondary-90: #b7a5ff; /*dark */
+	--color-brand-secondary-80: #9d6ffa; /*dark */
+	--color-text-and-icon-80: #f7f8fa; /* dark */
+	--color-text-and-icon-70: #dbdee3; /* dark */
+	--color-error: #ec5a46; /* dark */
+	--color-warning: #f6c84f; /* dark */
+	--color-success: #83c964; /* dark */
+	--color-brand-solid-gradient: linear-gradient(3deg, rgba(159, 63, 255, 1) 0%, rgba(63, 105, 255, 1) 100%);
+	--color-overlay-bg: #ffffff33;
+}
+
 @layer base {
 	button {
 		background: none;
@@ -73,7 +94,6 @@
 }
 
 @layer utilities {
-
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;

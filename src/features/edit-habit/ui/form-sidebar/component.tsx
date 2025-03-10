@@ -1,21 +1,25 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { useUnit } from 'effector-react';
-import { Props } from './types';
 import { goalEntity } from '&entities/goal';
-import { Sidebar } from '&shared/ui/sidebar';
-import { Button } from '&shared/ui/button';
-import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { habitEntity, HabitForm, HabitFormValues } from '&entities/habit';
-import { cn, useEventEffect } from '&shared/utils';
 import { timeService } from '&shared/services/time';
-import React from 'react';
-import { Input } from '&shared/ui/input';
+import { Button } from '&shared/ui/button';
 import { ConfirmPopover } from '&shared/ui/confirm-popover';
-import { Icon } from '&shared/ui/icon';
-import { Typography } from '&shared/ui/typography';
+import { Input } from '&shared/ui/input';
 import { ProgressLine } from '&shared/ui/progress-line';
+
+import { Sidebar } from '&shared/ui/sidebar';
+import { Typography } from '&shared/ui/typography';
+import { cn, useEventEffect } from '&shared/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
+import { useUnit } from 'effector-react';
+import { Trash } from 'lucide-react';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
+import { Props } from './types';
+
+import dayjs from 'dayjs';
+
 
 export function EditHabitFormSidebar({
 	isOpen,
@@ -128,8 +132,8 @@ export function EditHabitFormSidebar({
 					confirmationText="Подтверди удаление привычки"
 				>
 					<Sidebar.Action
-						iconSlot={<Icon name="trash" />}
-						labelSlot={<Typography className="text-color-text-and-icon-80">Удалить</Typography>}
+						iconSlot={<Trash className="text-color-text-and-icon-80" />}
+						labelSlot={<Typography>Удалить</Typography>}
 						onClick={() => setIsConfirmDeletePopoverOpen(true)}
 					/>
 				</ConfirmPopover>

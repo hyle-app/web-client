@@ -1,9 +1,9 @@
-import EmojiPicker, { Categories } from 'emoji-picker-react';
-import { Props } from './types';
-import React from 'react';
-import { Icon } from '../icon';
 import { emojiToUnicode, unicodeToEmoji } from '&shared/utils';
+import EmojiPicker, { Categories } from 'emoji-picker-react';
 import type { CategoriesConfig } from 'emoji-picker-react/dist/config/categoryConfig';
+import { Smile } from 'lucide-react';
+import React from 'react';
+import { Props } from './types';
 
 const CATEGORIES: CategoriesConfig = [
 	{ category: Categories.SMILEYS_PEOPLE, name: 'Люди' },
@@ -76,8 +76,8 @@ export function EmojiPickerField({ value, onChange, disabled }: Props) {
 				onClick={() => !disabled && setIsOpen((isOpen) => !isOpen)}
 				className="h-8 w-8 text-[#b0b7ce] transition-colors hover:text-[#717da7]"
 			>
-				<p className="justify-centery relative flex h-8 w-8 items-center text-[26px]">
-					{value ? unicodeToEmoji(value) : <Icon name="smiley" />}
+				<p className="relative flex h-8 w-8 items-center justify-center text-[26px]">
+					{value ? unicodeToEmoji(value) : <Smile size={24} className="text-color-text-and-icon-80" />}
 				</p>
 			</button>
 
