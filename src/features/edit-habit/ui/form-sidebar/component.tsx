@@ -18,9 +18,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import { Props } from './types';
 
-import dayjs from 'dayjs';
-
-
 export function EditHabitFormSidebar({
 	isOpen,
 	onClose,
