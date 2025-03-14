@@ -1,9 +1,9 @@
-import { sample } from 'effector';
-import { inputs, internals, outputs } from './model';
-import { onAuthStateChanged, onIdTokenChanged } from 'firebase/auth';
-import { auth } from './lib';
 import { dispatchEvent, getStateOf } from '&shared/utils/effector';
+import { sample } from 'effector';
+import { onAuthStateChanged, onIdTokenChanged } from 'firebase/auth';
 import { httpService } from '../http';
+import { auth } from './lib';
+import { inputs, internals, outputs } from './model';
 
 sample({
 	clock: inputs.setUser,
@@ -52,7 +52,9 @@ sample({
 
 sample({
 	clock: internals.logoutFx.doneData,
-	fn: () => null,
+	fn: () => {
+		return null;
+	},
 	target: outputs.$user
 });
 
