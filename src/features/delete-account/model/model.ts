@@ -1,7 +1,7 @@
 import { createEffect, createEvent } from 'effector';
 import { deleteAccountApi } from '../api';
 
-const deleteAccount = createEvent<string>();
+const deleteAccount = createEvent();
 
 const deleteAccountFx = createEffect(deleteAccountApi.deleteAccount);
 
