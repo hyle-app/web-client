@@ -1,10 +1,10 @@
-import { sample } from 'effector';
-import { inputs, internals, outputs } from './model';
 import { habitEntity } from '&entities/habit';
 import { authService } from '&shared/services/auth';
-import { spread } from 'patronum';
 import { timeService } from '&shared/services/time';
+import { sample } from 'effector';
+import { spread } from 'patronum';
 import { mapHabitToDTO } from './mappers';
+import { inputs, internals, outputs } from './model';
 
 sample({
 	clock: inputs.completeSimpleHabit,
