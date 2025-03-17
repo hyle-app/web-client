@@ -1,3 +1,4 @@
+import { inputs as deleteAccountInputs } from '&features/delete-account/model';
 import { HttpModeToggle } from '&features/toggle-http-mode';
 import { authService } from '&shared/services/auth';
 import { Button } from '&shared/ui/button';
@@ -24,10 +25,11 @@ import { useState } from 'react';
 export function UserMenuDropdownWidget() {
 	const router = useRouter();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const { logout, user, isLoggedIn } = useUnit({
+	const { logout, user, isLoggedIn, deleteAccount } = useUnit({
 		logout: authService.inputs.logout,
 		user: authService.outputs.$user,
-		isLoggedIn: authService.outputs.$isLoggedIn
+		isLoggedIn: authService.outputs.$isLoggedIn,
+		deleteAccount: deleteAccountInputs.deleteAccount
 	});
 
 	const onlogout = () => {
@@ -78,10 +80,10 @@ export function UserMenuDropdownWidget() {
 								<DropdownMenuPortal>
 									<DropdownMenuSubContent sideOffset={5} className="border-none">
 										<DropdownMenuItem>
-											<div className="flex flex-row items-center gap-2">
+											<button className="flex flex-row items-center gap-2" onClick={() => deleteAccount()}>
 												<Trash size={16} className="text-color-text-and-icon-80" />
 												<span className="text-color-text-and-icon-80">Удалить аккаунт</span>
-											</div>
+											</button>
 										</DropdownMenuItem>
 									</DropdownMenuSubContent>
 								</DropdownMenuPortal>

@@ -5,7 +5,7 @@ import { Theme, ThemeProviderProps } from './types';
 export function ThemeProvider({
 	children,
 	defaultTheme = 'light',
-	storageKey = 'vite-ui-theme',
+	storageKey = 'hyle-ui-theme',
 	...props
 }: ThemeProviderProps) {
 	const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
