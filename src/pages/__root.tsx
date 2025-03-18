@@ -18,7 +18,7 @@ export const Route = createRootRoute({
 			<Provider value={getApplicationScope()}>
 				<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
 					<Outlet />
-					<TanStackRouterDevtools />
+					{import.meta.env.DEV && <TanStackRouterDevtools />}
 				</ThemeProvider>
 			</Provider>
 		);
