@@ -5,6 +5,7 @@ import { Outlet, createRootRoute, useRouter } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { Provider } from 'effector-react';
 import React from 'react';
+import { MobilePlaceholder } from './-mobile-placeholder';
 
 export const Route = createRootRoute({
 	// TODO: Root layout
@@ -17,7 +18,10 @@ export const Route = createRootRoute({
 		return (
 			<Provider value={getApplicationScope()}>
 				<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-					<Outlet />
+					<div className="hidden md:block">
+						<Outlet />
+					</div>
+					<MobilePlaceholder className="md:hidden" />
 					{import.meta.env.DEV && <TanStackRouterDevtools />}
 				</ThemeProvider>
 			</Provider>
