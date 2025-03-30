@@ -10,7 +10,7 @@ export function PurchaseItem({ purchase }: { purchase: Purchase }) {
 			<div className="flex w-full flex-col">
 				<span
 					className={cn(
-						'rounded-lg border border-solid py-2',
+						'w-[150px] rounded-[8px] border border-solid py-2',
 						purchase.status === 'ERROR' && 'border-color-error text-color-error',
 						purchase.status === 'PENDING' && 'border-color-warning text-color-warning',
 						purchase.status === 'SUCCESS' && 'border-color-success text-color-success'

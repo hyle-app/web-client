@@ -19,12 +19,13 @@ const twMerge = extendTailwindMerge({
 				'text-color-gray-10',
 				'text-color-gray-30',
 				'text-color-gray-50',
-				'text-text-color-gray-80',
+				'text-color-gray-80',
 				'text-color-error',
 				'text-color-bg-95',
 				'text-color-bg-100',
 				'text-color-brand-primary-50',
-				'text-color-text-and-icon-80'
+				'text-color-text-and-icon-80',
+				'text-color-white'
 			]
 		}
 	}

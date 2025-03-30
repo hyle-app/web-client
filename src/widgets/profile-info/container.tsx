@@ -30,8 +30,8 @@ export function ProfileInfoWidget({}: Props) {
 		getSubscription(user.uid);
 	}, [user]);
 	return (
-		<div className="w-full p-4">
-			<Tabs defaultValue="account" className="">
+		<div className="h-full w-full p-4">
+			<Tabs defaultValue="account" className="flex h-full flex-col">
 				<TabsList className="h-auto w-full justify-start space-x-6">
 					<TabsTrigger
 						value="account"
@@ -86,8 +86,8 @@ export function ProfileInfoWidget({}: Props) {
 						<SubscribeModal />
 					</Dialog>
 				</TabsContent>
-				<TabsContent value="history">
-					<div className="mt-12 flex w-full flex-col gap-4 py-4 text-center">
+				<TabsContent value="history" className="flex flex-grow">
+					<div className="mt-12 flex w-full grow flex-col gap-4 py-4 text-center">
 						<PurchasesTable purchases={purchases} />
 					</div>
 				</TabsContent>

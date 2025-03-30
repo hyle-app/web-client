@@ -32,13 +32,17 @@ export function CalendarFieldShortcuts({
 	return (
 		<div className={cn('flex gap-2', className)} {...attributes}>
 			<SmallButton onClick={onTodayPress} isActive={isTodayActive}>
-				<Typography variant="caption-1">Сегодня</Typography>
+				<Typography variant="caption-1" className={cn(isTodayActive && 'text-color-white')}>
+					Сегодня
+				</Typography>
 			</SmallButton>
 			<SmallButton onClick={onTomorrowPress} isActive={isTomorrowActive}>
-				<Typography variant="caption-1">Завтра</Typography>
+				<Typography variant="caption-1" className={cn(isTomorrowActive && 'text-color-white')}>
+					Завтра
+				</Typography>
 			</SmallButton>
 			<SmallButton onClick={onCalendarPress} isActive={!isTomorrowActive && !isTodayActive}>
-				<Icon name="calendar" className="w-4 h-4" />
+				<Icon className={cn(!isTomorrowActive && !isTodayActive && 'text-color-white', 'h-4 w-4')} name="calendar" />
 			</SmallButton>
 		</div>
 	);
@@ -47,13 +51,7 @@ export function CalendarFieldShortcuts({
 function SmallButton({ className, onClick, children, isActive, ...attributes }: SmallButtonProps) {
 	return (
 		<button
-			className={cn(
-				'h-8 text-color-gray-80 px-4 rounded-2xl',
-				{
-					'bg-color-brand-primary-50 text-color-white': isActive
-				},
-				className
-			)}
+			className={cn('h-8 rounded-2xl px-4', isActive && 'bg-color-brand-primary-50 text-color-white', className)}
 			onClick={onClick}
 			{...attributes}
 		>
