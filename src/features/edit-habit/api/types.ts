@@ -4,8 +4,8 @@ export type HabitLinkedGoal = {
 };
 
 export type HabitSteps = {
-	count: string | undefined;
-	rate: string | undefined;
+	count?: string;
+	rate?: string;
 };
 export type EditHabitParams = {
 	customerId: string;
@@ -15,7 +15,7 @@ export type EditHabitParams = {
 export type HabitDTO = {
 	habitId: string;
 	title: string;
-	description: string | undefined;
+	description?: string;
 	linkedGoal: { id: string; title: string } | null;
 	progress: number;
 	progressMax: number;
@@ -25,5 +25,5 @@ export type HabitDTO = {
 	steps: HabitSteps;
 	rule: ('MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY')[];
 	emoji: string;
-	remindAt: number | undefined;
+	remindAt?: number;
 };

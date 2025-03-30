@@ -10,6 +10,6 @@ export type CommonProps = {
 
 export type Props = CommonProps &
 	(
-		| ({ tag?: 'button' | undefined | never } & React.ButtonHTMLAttributes<HTMLButtonElement>)
+		| ({ tag?: 'button' | never } & React.ButtonHTMLAttributes<HTMLButtonElement>)
 		| ({ tag: 'a' } & React.AnchorHTMLAttributes<HTMLAnchorElement>)
 	);

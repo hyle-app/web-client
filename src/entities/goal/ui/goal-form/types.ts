@@ -1,7 +1,7 @@
 export type Props = {
 	withCalendarShortcuts?: boolean;
-	disabled?: boolean | undefined;
+	disabled?: boolean;
 	onDecomposeClick(): void;
 	linkedEntitiesPreviewImpl: React.ReactNode;
-	interactive?: boolean | undefined;
+	interactive?: boolean;
 };

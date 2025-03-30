@@ -38,7 +38,7 @@ export function isComplexGoal(goal: Goal): boolean {
 	return Boolean(goal.progress && goal.progress.targetProgress > 1);
 }
 
-export function getGoalProgress(goal: Goal): { current: number; target: number; label: string | undefined } {
+export function getGoalProgress(goal: Goal): { current: number; target: number; label?: string } {
 	if (isComplexGoal(goal)) {
 		return {
 			current: goal.progress!.currentProgress,

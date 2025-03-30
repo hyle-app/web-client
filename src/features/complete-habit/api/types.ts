@@ -4,7 +4,7 @@ export type HabitDTO = {
 	habitId: HabitId;
 	customerId: string;
 	completions: number[];
-	completedAt: number | undefined;
+	completedAt?: number;
 	progress: number;
 	progressedSteps: {
 		performed: number;

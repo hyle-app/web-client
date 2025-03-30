@@ -1,12 +1,12 @@
 export type Props<Value extends string | number = string> = {
-	label?: string | undefined;
+	label?: string;
 	value: Value;
 	defaultValue?: Value;
 	onChange?(value: Value): void;
 	leftSlot?: React.ReactNode;
 	inputClassName?: string;
 	labelClassName?: string;
-	error?: string | null | undefined;
+	error?: string | null;
 
 	/**
 	 * Marker if left slot should be hidden when input has content

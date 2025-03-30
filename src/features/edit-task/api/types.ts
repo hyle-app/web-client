@@ -15,10 +15,10 @@ export type TaskDTO = {
 	createdAt: number;
 	completedAt: number | null;
 	taskCompletionDateRange?: [number, number | null];
-	description: string | undefined;
+	description?: string;
 	subtasks: Subtask[];
 	linkedGoal: TaskLinkedGoal | null;
-	remindAt: number | undefined;
+	remindAt?: number;
 };
 
 export type EditTaskParams = {

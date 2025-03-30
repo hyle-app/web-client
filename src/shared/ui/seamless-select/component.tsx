@@ -38,7 +38,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 	);
 
 	const finalRenderOption = React.useCallback(
-		(option: Options, value: Value | undefined) => {
+		(option: Options, value?: Value) => {
 			if (renderOption) {
 				return (
 					<Select.Item asChild value={option.value} key={option.key ?? option.value}>
@@ -63,7 +63,7 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 	const rootElementRef = React.useRef<HTMLButtonElement>(null);
 
 	const finalRenderSelected = React.useCallback(
-		(value: Value | undefined) => {
+		(value?: Value) => {
 			if (!value || !renderOption || !options.find((option) => option.value === value)) {
 				return (
 					<Select.Trigger
@@ -111,7 +111,6 @@ export function SeamlessSelect<Value extends string = string, Options extends Op
 					{leftSlot}
 				</div>
 			)}
-			{/* @ts-expect-error suppresses the issue wiht root typing when string | undefined is not assignable to `propsName?: string` type */}
 			<Select.Root value={value ?? ''} onValueChange={onChange}>
 				{finalRenderSelected(value)}
 

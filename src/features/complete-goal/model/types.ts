@@ -16,5 +16,5 @@ export type GoalCompletionChangedPayload = {
 		new: number;
 		target: number;
 	};
-	label?: string | undefined;
+	label?: string;
 };

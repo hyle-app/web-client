@@ -13,16 +13,16 @@ export type RenderSelected<Value, Options extends Option<Value>> = (option: Opti
 
 export type Props<Value, Options extends Option<Value>> = {
 	options: Options[];
-	onChange(value: Value | undefined): void;
-	value?: Value | undefined;
+	onChange(value: Value): void;
+	value?: Value;
 	hideLeftSlotWhenHasContnent?: boolean;
 	label?: React.ReactNode;
 	inputClassName?: string;
 	contentWrapperClassName?: string;
 	leftSlot?: React.ReactNode;
-	error?: string | null | undefined;
+	error?: string | null;
 	clearable?: boolean;
-	disabled?: boolean | undefined;
+	disabled?: boolean;
 	emptyOptionsSlot?: React.ReactNode;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> &
 	(

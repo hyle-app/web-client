@@ -5,6 +5,6 @@ export type Props = {
 	titleSlot?: React.ReactNode;
 	cardsSlot?: React.ReactNode;
 	footerSlot?: React.ReactNode;
-	className?: string | undefined;
+	className?: string;
 	createButtonSlot?: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;

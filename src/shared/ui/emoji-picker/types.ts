@@ -1,5 +1,5 @@
 export type Props = {
-	value?: string | undefined;
+	value?: string;
 	onChange(value: string): void;
 	disabled?: boolean;
 };

@@ -1,4 +1,4 @@
 export type Props = {
 	isCompleted: boolean;
-	onCompletionToggle: (() => void) | undefined;
+	onCompletionToggle?: () => void;
 } & React.HTMLAttributes<HTMLButtonElement>;

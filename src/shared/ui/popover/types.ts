@@ -4,6 +4,6 @@ export type Props = {
 	isOpen: boolean;
 	onClose(): void;
 	contentClassName?: string;
-	portalContainerRef?: React.RefObject<HTMLElement> | undefined;
+	portalContainerRef?: React.RefObject<HTMLElement>;
 	autoFocusContent?: boolean;
 };

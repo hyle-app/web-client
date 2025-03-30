@@ -7,12 +7,12 @@ export type CreateTaskDTO = {
 	title: string;
 	customerId: string;
 	taskCompletionDateRange: [number, null | number];
-	description: string | undefined;
+	description?: string;
 	subtasks: CreateSubtaskDTO[];
 	linkedGoal: {
 		id: string;
 	} | null;
-	remindAt: number | undefined;
+	remindAt?: number;
 };
 
 export type TaskLinkedGoal = {

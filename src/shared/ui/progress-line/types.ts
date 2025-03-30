@@ -1,6 +1,6 @@
 export type Props = {
 	className?: string;
-	customLabel?: string | undefined;
+	customLabel?: string;
 	withDayLabel?: boolean;
 	variant?: 'primary' | 'secondary';
 	maxValue: number;

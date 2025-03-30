@@ -12,7 +12,7 @@ export type DecomposePreviewImplementationProps = {
 	className?: string;
 	linkedEntities: LinkedEntities;
 	onEditClick(): void;
-	interactive?: boolean | undefined;
+	interactive?: boolean;
 };
 
 export type Props = {

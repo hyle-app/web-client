@@ -79,7 +79,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 				<SeamlessSelect
 					options={TIME_OPTIONS}
 					value={targetTimeField.value ? targetTimeField.value.toString() : undefined}
-					onChange={(value: string | undefined) => targetTimeField.onChange(value ? parseInt(value) : null)}
+					onChange={(value?: string) => targetTimeField.onChange(value ? parseInt(value) : null)}
 					label="Время напоминания"
 					className="text-color-text-and-icon-80"
 					leftSlot={<SeamlessSelect.Icon name="watch" />}
@@ -91,7 +91,7 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 				<SeamlessSelect
 					options={REPEAT_OPTIONS}
 					value={repeatRuleField.value}
-					onChange={(value: string | undefined) => repeatRuleField.onChange(value ?? null)}
+					onChange={(value?: string) => repeatRuleField.onChange(value ?? null)}
 					label="Повторять"
 					className="text-color-text-and-icon-80"
 					leftSlot={<SeamlessSelect.Icon name="refresh" />}
