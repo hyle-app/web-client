@@ -3,6 +3,7 @@ import type { AddTaskParams, DatedTask, DeleteTaskParams, Task, TaskId, UpdateTa
 import { timeService } from '&shared/services/time';
 import { taskApi } from '../api';
 import { once } from 'patronum';
+import { getOverdueDetails } from './lib';
 
 const $datedTasksList = createStore<DatedTask[]>([]);
 
@@ -38,7 +39,11 @@ const $isFetchingTasks = fetchTasksOfDayFx.pending;
 const $currentAppDateTasks = combine(
 	{ tasksByDays: $tasksByDays, currentAppDateStart: timeService.outputs.$currentAppDateStart },
 	({ currentAppDateStart, tasksByDays }) => {
-		return tasksByDays[currentAppDateStart] ?? [];
+		return (tasksByDays[currentAppDateStart] ?? []).sort((a, b) => {
+			const is_a_overdue = getOverdueDetails(a, timeService.lib.getCurrentTimestamp()) !== null ? 0 : 1;
+			const is_b_overdue = getOverdueDetails(b, timeService.lib.getCurrentTimestamp()) !== null ? 0 : 1;
+			return is_a_overdue - is_b_overdue;
+		});
 	}
 );
 

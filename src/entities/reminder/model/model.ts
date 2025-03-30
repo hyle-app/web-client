@@ -18,9 +18,17 @@ const $remindersList = createStore<Reminder[]>([]);
 const $currentAppDateReminders = combine(
 	{ remindersList: $remindersList, currentAppDateStart: timeService.outputs.$currentAppDateStart },
 	({ currentAppDateStart, remindersList }) => {
-		return remindersList.filter((reminder) =>
-			lib.isReminderAttachedToDay(reminder, timeService.lib.getCurrentTimestamp(), currentAppDateStart)
-		);
+		return remindersList
+			.filter((reminder) =>
+				lib.isReminderAttachedToDay(reminder, timeService.lib.getCurrentTimestamp(), currentAppDateStart)
+			)
+			.sort((a, b) => {
+				const is_a_overdue =
+					lib.getOverdueDetailsOnDate(a, currentAppDateStart, timeService.lib.getCurrentTimestamp()) !== null ? 0 : 1;
+				const is_b_overdue =
+					lib.getOverdueDetailsOnDate(b, currentAppDateStart, timeService.lib.getCurrentTimestamp()) !== null ? 0 : 1;
+				return is_a_overdue - is_b_overdue;
+			});
 	}
 );
 
