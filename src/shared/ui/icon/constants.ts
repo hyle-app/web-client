@@ -34,6 +34,7 @@ import ruler from './assets/ruler.svg';
 import subtask from './assets/subtask.svg';
 import scale from './assets/scale.svg';
 import cog from './assets/cog.svg';
+import check from './assets/check.svg';
 
 export const ICONS = {
 	balance,
@@ -71,5 +72,6 @@ export const ICONS = {
 	scale,
 	cog,
 	sidebar,
-	'arrow-left': arrowLeft
+	'arrow-left': arrowLeft,
+	check
 };

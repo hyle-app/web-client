@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 import { Trash } from 'lucide-react';
 import React from 'react';
 import { getDefaultFormValues, getFormValidatorScheme, inputs, outputs } from '../../model';
-
+import { Icon } from '&shared/ui/icon';
 
 export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId }: Props) => {
 	const [isConfirmDeletePopoverOpen, setIsConfirmDeletePopoverOpen] = React.useState(false);
@@ -86,8 +86,9 @@ export const EditReminderFormSidebar = React.memo(({ isOpen, onClose, reminderId
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
 			foreheadSlot={
-				<Typography className="text-color-gray-50" variant="caption-1">
-					Напоминание / Создано {dayjs(reminder!.createdAt).format('DD MMM YYYY')}
+				<Typography className="flex items-center gap-2 text-color-gray-50" variant="caption-1">
+					{reminder!.completedAt && <Icon name="check" className="w-[9px] text-gray-50" />}
+					<span>Напоминание / Создано {dayjs(reminder!.createdAt).format('DD MMM YYYY')}</span>
 				</Typography>
 			}
 			onCloseActionMenu={handleActionMenuClose}

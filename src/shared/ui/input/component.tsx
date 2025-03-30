@@ -48,7 +48,10 @@ function InputWithRef(
 				ref={ref}
 				onBlur={handleBlur}
 				onFocus={handleFocus}
-				className={cn('w-full rounded-[16px] border-color-gray-10 bg-color-bg-100 px-6 py-2 pt-6', inputClassName)}
+				className={cn(
+					'w-full rounded-[16px] border-color-gray-10 bg-color-bg-100 px-6 py-2 pt-6 text-color-text-and-icon-80',
+					inputClassName
+				)}
 				list={suggestions && suggestions.length > 0 ? `suggestions-${id}` : undefined}
 			/>
 			{suggestions && suggestions.length > 0 && (

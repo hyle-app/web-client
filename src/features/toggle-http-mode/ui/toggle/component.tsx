@@ -5,7 +5,7 @@ import { Typography } from '&shared/ui/typography';
 import { Switch } from '&shared/ui/switch';
 import { cn } from '&shared/utils';
 
-export function HttpModeToggle({ className }: Props) {
+export function HttpModeToggle({ className, textClassName }: Props) {
 	const { activeKind, toggleEvent } = useUnit({
 		activeKind: httpService.outputs.$httpConfigKind,
 		toggleEvent: httpService.inputs.toggleHttpConfig
@@ -21,7 +21,7 @@ export function HttpModeToggle({ className }: Props) {
 			}}
 		>
 			<Switch checked={HttpConfigKind.Dev === activeKind} />
-			<Typography>Current mode: {activeKind}</Typography>
+			<Typography className={textClassName}>Current mode: {activeKind}</Typography>
 		</div>
 	);
 }

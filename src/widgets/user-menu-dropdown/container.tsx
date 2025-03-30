@@ -46,11 +46,14 @@ export function UserMenuDropdownWidget() {
 							<Typography className="font-semibold">{user && user.email}</Typography>
 							<ChevronDown
 								size={24}
-								className={cn({ 'rotate-180': isOpen }, 'text-color-text-and-icon-80 transition-transform')}
+								className={cn(
+									{ 'rotate-180': isOpen },
+									'text-color-text-and-icon-80 transition-transform hover:text-color-white'
+								)}
 							/>
 						</Button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className="w-80 rounded-2xl border-none bg-color-bg-100">
+					<DropdownMenuContent className="w-80 rounded-2xl border-none bg-color-bg-100 p-0 [&_[data-radix-collection-item]:hover]:bg-color-brand-primary-70 [&_[data-radix-collection-item]:hover]:text-color-white [&_[data-radix-collection-item]]:px-4 [&_[data-radix-collection-item]]:py-3 [&_[data-radix-collection-item]]:text-color-text-and-icon-80">
 						<DropdownMenuLabel>
 							<div className="flex w-full flex-col p-2">
 								<span className="text-color-gray-80">Подписка</span>
@@ -64,25 +67,23 @@ export function UserMenuDropdownWidget() {
 						<DropdownMenuGroup>
 							<DropdownMenuItem>
 								<div className="flex flex-row items-center gap-2">
-									<Home size={16} className="text-color-text-and-icon-80" />
-									<a className="text-color-text-and-icon-80" href="/profile">
-										Личный кабинет
-									</a>
+									<Home size={16} />
+									<a href="/profile">Личный кабинет</a>
 								</div>
 							</DropdownMenuItem>
 							<DropdownMenuSub>
 								<DropdownMenuSubTrigger>
 									<div className="flex flex-row items-center gap-2">
-										<Settings size={16} className="text-color-text-and-icon-80" />
-										<span className="text-color-text-and-icon-80">Настройки</span>
+										<Settings size={16} />
+										<span>Настройки</span>
 									</div>
 								</DropdownMenuSubTrigger>
 								<DropdownMenuPortal>
 									<DropdownMenuSubContent sideOffset={5} className="border-none">
 										<DropdownMenuItem>
 											<button className="flex flex-row items-center gap-2" onClick={() => deleteAccount()}>
-												<Trash size={16} className="text-color-text-and-icon-80" />
-												<span className="text-color-text-and-icon-80">Удалить аккаунт</span>
+												<Trash size={16} />
+												<span>Удалить аккаунт</span>
 											</button>
 										</DropdownMenuItem>
 									</DropdownMenuSubContent>
@@ -93,8 +94,8 @@ export function UserMenuDropdownWidget() {
 						<DropdownMenuGroup>
 							<DropdownMenuItem>
 								<div className="flex flex-row items-center gap-2">
-									<Bug size={16} className="text-color-text-and-icon-80" />
-									<a target="_blank" href="https://t.me/Hyle_app_bot" className="text-color-text-and-icon-80">
+									<Bug size={16} />
+									<a target="_blank" href="https://t.me/Hyle_app_bot">
 										Связаться с разработчиками
 									</a>
 								</div>
@@ -102,38 +103,36 @@ export function UserMenuDropdownWidget() {
 							<DropdownMenuItem>
 								<Link to="" className="text-default">
 									<div className="flex flex-row items-center gap-2">
-										<HelpCircle size={16} className="text-color-text-and-icon-80" />
-										<span className="text-color-text-and-icon-80">Режим обучения</span>
+										<HelpCircle size={16} />
+										<span>Режим обучения</span>
 									</div>
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<Link to="" className="text-default">
 									<div className="flex flex-row items-center gap-2">
-										<Info size={16} className="text-color-text-and-icon-80" />
-										<Link className="text-color-text-and-icon-80" href="/about">
-											О приложении
-										</Link>
+										<Info size={16} />
+										<Link href="/about">О приложении</Link>
 									</div>
 								</Link>
 							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem className="group">
 								<div className="flex flex-row items-center gap-2">
-									<Send size={16} className="text-color-text-and-icon-80" />
-									<a href="https://t.me/hyle_app" target="_blank" className="text-color-text-and-icon-80">
+									<Send size={16} />
+									<a href="https://t.me/hyle_app" target="_blank">
 										Телеграмм канал
 									</a>
 								</div>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
-								<HttpModeToggle />
+								<HttpModeToggle textClassName="text-color-text-and-icon-80 hover:text-color-white transition-colors" />
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={onlogout}>
 							<div className="flex flex-row items-center gap-2">
-								<LogOut size={16} className="text-color-text-and-icon-80" />
-								<span className="text-color-text-and-icon-80">Выйти из аккаунта</span>
+								<LogOut size={16} />
+								<span>Выйти из аккаунта</span>
 							</div>
 						</DropdownMenuItem>
 					</DropdownMenuContent>

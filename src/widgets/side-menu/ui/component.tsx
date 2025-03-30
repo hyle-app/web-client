@@ -44,7 +44,7 @@ export const SideMenu = () => {
 				<div className="mb-4 mt-3 flex h-[276px] min-h-[312px] items-center justify-center">
 					<LeftSideCalendarWidget className={cn({ hidden: !isSideMenuOpen })} />
 				</div>
-				<hr className={cn({ hidden: !isSideMenuOpen })} />
+				<div className={cn('h-[1px] bg-color-gray-10', { hidden: !isSideMenuOpen })} />
 				<ul className="mt-14 grid w-full max-w-[185px] grid-cols-1 gap-6 px-6 md:max-w-none">
 					{LINKS.map((link) => (
 						<li key={link.to} className="col-span-1 flex justify-start">

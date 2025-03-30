@@ -9,6 +9,7 @@ export type DecomposeImplementationProps = {
 };
 
 export type DecomposePreviewImplementationProps = {
+	onDetachEntity(entityId: string, type: 'task' | 'reminder' | 'habit'): void;
 	className?: string;
 	linkedEntities: LinkedEntities;
 	onEditClick(): void;

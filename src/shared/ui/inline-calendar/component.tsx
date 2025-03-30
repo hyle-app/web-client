@@ -17,7 +17,7 @@ export function InlineCalendar({ className, onChange, value }: Props) {
 				selected: 'text-white selected',
 				[UI.Day]: 'w-[36px] h-[36px] text-caption-1 font-semibold text-color-text-and-icon-80 p-0 group',
 				[UI.DayButton]:
-					'w-[36px] h-[36px] !border-transparent !border !border-solid rounded-xl group-[.selected]:bg-color-brand-primary-50 group-[.today]:!border-color-brand-primary-50 ',
+					'w-[36px] h-[36px] !border-transparent !border !border-solid rounded-xl group-[.selected]:bg-color-brand-primary-50 group-[.today]:!border-color-brand-primary-50 hover:bg-color-brand-primary-70 hover:text-color-white transition-colors',
 				[UI.MonthCaption]:
 					'pl-3 text-default font-semibold h-10 flex items-center mb-4 capitalize text-color-text-and-icon-80',
 				[UI.Nav]: 'h-10 absolute top-0 right-0',

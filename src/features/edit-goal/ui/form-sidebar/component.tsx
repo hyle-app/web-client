@@ -16,6 +16,7 @@ import React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import type { Props } from './types';
+import { Icon } from '&shared/ui/icon';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -135,6 +136,20 @@ export const EditGoalFormSidebar = React.memo(
 
 		const linkedEntitiesIds = useWatch({ control: form.control, name: GoalFormFieldName.LinkedEntities });
 
+		const handleDetachEntity = (entityId: string, type: 'task' | 'reminder' | 'habit') => {
+			const newState = {
+				taskIds:
+					type === 'task' ? linkedEntitiesIds.taskIds.filter((id) => id !== entityId) : linkedEntitiesIds.taskIds,
+				reminderIds:
+					type === 'reminder'
+						? linkedEntitiesIds.reminderIds.filter((id) => id !== entityId)
+						: linkedEntitiesIds.reminderIds,
+				habitIds:
+					type === 'habit' ? linkedEntitiesIds.habitIds.filter((id) => id !== entityId) : linkedEntitiesIds.habitIds
+			};
+			form.setValue(GoalFormFieldName.LinkedEntities, newState);
+		};
+
 		return (
 			<Sidebar
 				confirmOverlayClose={form.formState.isDirty}
@@ -143,8 +158,9 @@ export const EditGoalFormSidebar = React.memo(
 				actionMenuContentRef={sidebarActionMenuRef}
 				onCloseActionMenu={handleActionMenuClose}
 				foreheadSlot={
-					<Typography className="text-color-gray-50" variant="caption-1">
-						Цель / Создана {dayjs(goal!.createdAt).format('DD MMM YYYY')}
+					<Typography className="flex items-center gap-2 text-color-gray-50" variant="caption-1">
+						{goal!.completedAt && <Icon name="check" className="w-[9px] text-gray-50" />}
+						<span>Цель / Создана {dayjs(goal!.createdAt).format('DD MMM YYYY')}</span>
 					</Typography>
 				}
 				actions={[
@@ -172,6 +188,7 @@ export const EditGoalFormSidebar = React.memo(
 							onDecomposeClick={() => setIsDecomposeOpen(true)}
 							linkedEntitiesPreviewImpl={
 								<DecomposePreviewImplementation
+									onDetachEntity={handleDetachEntity}
 									linkedEntities={linkedEntitiesIds}
 									onEditClick={() => setIsDecomposeOpen(true)}
 								/>

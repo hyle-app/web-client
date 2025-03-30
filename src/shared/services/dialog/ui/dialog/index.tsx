@@ -11,9 +11,9 @@ export const Dialog = ({
 }: Omit<DialogType, 'onClose' | 'onConfirm'> & { onClose: () => void; onConfirm: () => void }) => {
 	const actionsToRender = actions({ onClose, onConfirm });
 	return (
-		<article className="bg-color-bg-95 rounded-[16px] pt-12 pb-8 px-4 min-w-[min(96vw,480px)]">
+		<article className="min-w-[min(96vw,480px)] rounded-[16px] bg-color-bg-95 px-8 pb-8 pt-12">
 			{title && (
-				<Typography variant="heading-4" className="font-semibold text-center">
+				<Typography variant="heading-4" className="text-center font-semibold">
 					{title}
 				</Typography>
 			)}

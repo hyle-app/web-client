@@ -8,16 +8,16 @@ export function Checkbox({ className, ...attributes }: Props) {
 	return (
 		<label
 			className={cn(
-				'transition-colors border border-[1px] w-[18px] h-[18px] rounded-full flex items-center justify-center',
+				'flex h-[18px] w-[18px] cursor-pointer items-center justify-center rounded-full border border-[1px] transition-colors',
 				{
-					'bg-color-brand-primary-50 border-color-brand-primary-50': isChecked,
-					'bg-transparent border-color-gray-50': !isChecked
+					'border-color-brand-primary-50 bg-color-brand-primary-50': isChecked,
+					'border-color-gray-50 bg-transparent': !isChecked
 				},
 				className
 			)}
 		>
-			{isChecked && <Icon name="tick" className="text-white w-[8.8px] h-[6px]" />}
-			<input type="checkbox" onChange={attributes.onChange ?? noop} {...attributes} className="w-0 h-0 invisible" />
+			{isChecked && <Icon name="tick" className="h-[6px] w-[8.8px] text-white" />}
+			<input type="checkbox" onChange={attributes.onChange ?? noop} {...attributes} className="invisible h-0 w-0" />
 		</label>
 	);
 }

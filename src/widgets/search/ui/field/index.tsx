@@ -117,7 +117,7 @@ export const SearchField = ({ className, onClose, inputClassName, inputRef, ...a
 
 		if (isEmptyResults) {
 			return (
-				<Typography variant="paragraph" className="w-full pt-3 text-center">
+				<Typography variant="paragraph" className="w-full pt-3 text-center text-color-gray-80">
 					Ничего не найдено
 				</Typography>
 			);

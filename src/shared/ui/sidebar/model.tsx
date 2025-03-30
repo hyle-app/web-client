@@ -16,7 +16,7 @@ const {
 		<Button appearance="secondary" onClick={onClose}>
 			Отменить
 		</Button>,
-		<Button appearance="primary" className="bg-color-error" onClick={onConfirm}>
+		<Button appearance="primary" className="bg-color-brand-primary-50" onClick={onConfirm}>
 			Да, закрыть
 		</Button>
 	],

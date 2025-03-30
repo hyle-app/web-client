@@ -36,6 +36,16 @@ export const CreateGoalFormSidebar = React.memo(
 
 		useEventEffect(outputs.goalCreated, onClose);
 
+		const handleDetachEntity = (entityId: string, type: 'task' | 'reminder' | 'habit') => {
+			const newState = {
+				taskIds: type === 'task' ? linkedEntities.taskIds.filter((id) => id !== entityId) : linkedEntities.taskIds,
+				reminderIds:
+					type === 'reminder' ? linkedEntities.reminderIds.filter((id) => id !== entityId) : linkedEntities.reminderIds,
+				habitIds: type === 'habit' ? linkedEntities.habitIds.filter((id) => id !== entityId) : linkedEntities.habitIds
+			};
+			form.setValue(GoalFormFieldName.LinkedEntities, newState);
+		};
+
 		React.useEffect(() => {
 			if (!isOpen) return;
 
@@ -58,6 +68,7 @@ export const CreateGoalFormSidebar = React.memo(
 							onDecomposeClick={() => setIsDecomposeOpen(true)}
 							linkedEntitiesPreviewImpl={
 								<DecomposePreviewImplementation
+									onDetachEntity={handleDetachEntity}
 									linkedEntities={linkedEntities}
 									onEditClick={() => setIsDecomposeOpen(true)}
 								/>

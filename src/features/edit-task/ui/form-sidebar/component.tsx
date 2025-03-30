@@ -15,6 +15,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import { Props } from './types';
+import { Icon } from '&shared/ui/icon';
 
 const MIN_DATE = new Date(timeService.lib.getStartOfTheDay(timeService.lib.getCurrentTimestamp()));
 
@@ -82,8 +83,10 @@ export const EditTaskFormSidebar = React.memo(({ isOpen, onClose, taskId }: Prop
 			actionMenuContentRef={sidebarActionMenuRef}
 			onCloseActionMenu={handleActionMenuClose}
 			foreheadSlot={
-				<Typography className="text-color-gray-50" variant="caption-1">
-					Задача / Создана {dayjs(task.createdAt!).format('DD MMM YYYY')}
+				<Typography className="flex items-center gap-2 text-color-gray-50" variant="caption-1">
+					{task.completedAt && <Icon name="check" className="w-[9px] text-gray-50" />}
+					<span>Задача / Создана </span>
+					<span>{dayjs(task.createdAt!).format('DD MMM YYYY')}</span>
 				</Typography>
 			}
 			actions={[

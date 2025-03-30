@@ -17,6 +17,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { getDefaultFormValues, getFormValidator, inputs, outputs } from '../../model';
 import { Props } from './types';
+import { Icon } from '&shared/ui/icon';
 
 export function EditHabitFormSidebar({
 	isOpen,
@@ -115,8 +116,9 @@ export function EditHabitFormSidebar({
 			onClose={handleClose}
 			actionMenuContentRef={sidebarActionMenuRef}
 			foreheadSlot={
-				<Typography className="text-color-gray-50" variant="caption-1">
-					Привычка / Создана {dayjs(habit!.createdAt).format('DD MMM YYYY')}
+				<Typography className="flex items-center gap-2 text-color-gray-50" variant="caption-1">
+					{habit!.completedAt && <Icon name="check" className="w-[9px] text-gray-50" />}
+					<span>Привычка / Создана {dayjs(habit!.createdAt).format('DD MMM YYYY')}</span>
 				</Typography>
 			}
 			actions={[

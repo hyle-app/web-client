@@ -5,4 +5,5 @@ export type Props = {
 	linkedEntities: LinkedEntities;
 	onEditClick(): void;
 	interactive?: boolean;
+	onDetachEntity(entityId: string, type: 'task' | 'reminder' | 'habit'): void;
 };
