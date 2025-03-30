@@ -1,9 +1,9 @@
 import { cn } from '&shared/utils';
-import React from 'react';
+import React, { useId } from 'react';
 import { Props } from './types';
 
 function InputWithRef(
-	{ leftSlot, className, label, labelClassName, inputClassName, ...props }: Props,
+	{ leftSlot, className, label, labelClassName, inputClassName, suggestions, ...props }: Props,
 	ref: React.Ref<HTMLInputElement>
 ) {
 	const [isFocused, setIsFocused] = React.useState(false);
@@ -24,6 +24,7 @@ function InputWithRef(
 	);
 
 	const isLabelMinified = isFocused || (props.value && props.value?.toString().length > 0);
+	const id = useId();
 
 	return (
 		<label className={cn('relative block hover:cursor-pointer', className)}>
@@ -48,7 +49,17 @@ function InputWithRef(
 				onBlur={handleBlur}
 				onFocus={handleFocus}
 				className={cn('w-full rounded-[16px] border-color-gray-10 bg-color-bg-100 px-6 py-2 pt-6', inputClassName)}
+				list={suggestions && suggestions.length > 0 ? `suggestions-${id}` : undefined}
 			/>
+			{suggestions && suggestions.length > 0 && (
+				<datalist id={id}>
+					{suggestions.map((suggestion) => (
+						<option key={suggestion.value} value={suggestion.value}>
+							{suggestion.label}
+						</option>
+					))}
+				</datalist>
+			)}
 		</label>
 	);
 }

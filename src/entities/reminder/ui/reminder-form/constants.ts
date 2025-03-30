@@ -8,7 +8,7 @@ export function getReminderTimeOptions(): React.ComponentProps<typeof SeamlessSe
 
 	return hours.flatMap((hour) =>
 		minutes.map((minute) => ({
-			value: String(hour * timeService.lib.HOUR + minute * timeService.lib.MINUTE),
+			value: `${hour}:${minute.toString().padStart(2, '0')}`,
 			label: `${hour}:${minute.toString().padStart(2, '0')}`,
 			key: String(hour * timeService.lib.HOUR + minute * timeService.lib.MINUTE)
 		}))

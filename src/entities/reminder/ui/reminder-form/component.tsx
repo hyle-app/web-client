@@ -37,6 +37,31 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 		[goalsToLinkTo]
 	);
 
+	const getFormattedTime = React.useCallback(() => {
+		if (!targetTimeField.value) return '';
+
+		const hours = Math.floor(targetTimeField.value / timeService.lib.HOUR);
+		const minutes = ((targetTimeField.value - hours * timeService.lib.HOUR) / timeService.lib.MINUTE) % 60;
+
+		return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+	}, [targetTimeField.value]);
+	const [formattedTime, setFormattedTime] = React.useState<string>(getFormattedTime());
+
+	const handleTimeChange = React.useCallback(
+		(value?: string) => {
+			setFormattedTime(value || '');
+			if (!value) {
+				targetTimeField.onChange(null);
+				return;
+			}
+
+			const [hours = 0, minutes = 0] = value.split(':').map((part) => parseInt(part));
+
+			targetTimeField.onChange(hours * timeService.lib.HOUR + minutes * timeService.lib.MINUTE);
+		},
+		[targetTimeField.onChange]
+	);
+
 	return (
 		<div className="">
 			<FormSection>
@@ -76,15 +101,17 @@ export function ReminderForm({ goalsToLinkTo, withCalendarShortcuts }: Props) {
 				/>
 			</FormSection>
 			<FormSection>
-				<SeamlessSelect
-					options={TIME_OPTIONS}
-					value={targetTimeField.value ? targetTimeField.value.toString() : undefined}
-					onChange={(value?: string) => targetTimeField.onChange(value ? parseInt(value) : null)}
+				<SeamlessInput
+					value={formattedTime}
+					onChange={handleTimeChange}
+					mask="__:__"
+					maskReplacment={{ _: /\d/ }}
 					label="Время напоминания"
 					className="text-color-text-and-icon-80"
 					leftSlot={<SeamlessSelect.Icon name="watch" />}
 					inputClassName="max-w-[194px]"
 					error={plainErrors[targetTimeField.name]}
+					suggestions={TIME_OPTIONS}
 				/>
 			</FormSection>
 			<FormSection>

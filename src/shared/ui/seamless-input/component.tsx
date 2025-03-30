@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import { cn } from '&shared/utils';
 import { Icon } from '&shared/ui/icon';
 
 import { Props } from './types';
 import { ErrorMessage } from '../error-message';
+import { useMask } from '@react-input/mask';
 
 export function SeamlessInput(props: Props<string>): React.ReactNode;
 export function SeamlessInput(props: Props<number>): React.ReactNode;
@@ -21,10 +22,18 @@ export function SeamlessInput<Value extends number | string = string>({
 	inputClassName,
 	labelClassName,
 	error,
+	suggestions,
+	mask,
+	maskReplacment,
 	...attributes
 }: Props<Value>): React.ReactNode {
 	const [isFocused, setIsFocused] = React.useState(false);
-	const inputRef = React.useRef<typeof multiline extends true ? HTMLTextAreaElement : HTMLInputElement>(null);
+	const inputRef = React.useRef<typeof multiline extends true ? HTMLTextAreaElement : HTMLInputElement>();
+	const id = useId();
+	const maskInputRef = useMask({
+		mask,
+		replacement: maskReplacment ?? { _: /\d/ }
+	});
 
 	const handleChange = React.useCallback(
 		(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -116,12 +125,18 @@ export function SeamlessInput<Value extends number | string = string>({
 				</p>
 				<InputElement
 					{...attributes}
-					ref={inputRef}
+					ref={(node) => {
+						inputRef.current = node!;
+						if (mask) {
+							maskInputRef.current = node!;
+						}
+					}}
 					value={value}
 					defaultValue={defaultValue}
 					onChange={handleChange}
 					onBlur={handleBlur}
 					onFocus={handleFocus}
+					list={suggestions && suggestions.length > 0 ? `suggestions-${id}` : undefined}
 					className={cn(
 						'no-scrollbar h-6 max-h-64 w-full resize-none border-b border-b-transparent bg-transparent opacity-100 outline-none transition-colors-and-opacity focus:border-b-color-brand-primary-50',
 						{
@@ -130,6 +145,15 @@ export function SeamlessInput<Value extends number | string = string>({
 						inputClassName
 					)}
 				/>
+				{suggestions && suggestions.length > 0 && (
+					<datalist id={`suggestions-${id}`}>
+						{suggestions.map((suggestion) => (
+							<option key={suggestion.value} value={suggestion.value}>
+								{suggestion.label}
+							</option>
+						))}
+					</datalist>
+				)}
 				{error && <ErrorMessage className="absolute -bottom-1 translate-y-full">{error}</ErrorMessage>}
 			</div>
 		</label>

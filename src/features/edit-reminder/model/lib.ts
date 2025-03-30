@@ -9,7 +9,8 @@ export function getDefaultFormValues(reminder: Reminder): ReminderFormValues {
 		[ReminderFormFieldName.Title]: reminder.title,
 		[ReminderFormFieldName.Description]: reminder.description,
 		[ReminderFormFieldName.TargetDate]: targetDate,
-		[ReminderFormFieldName.TargetTime]: reminder.targetDateTime - targetDate,
+		[ReminderFormFieldName.TargetTime]:
+			(reminder.targetDateTime % timeService.lib.DAY) - new Date().getTimezoneOffset() * timeService.lib.MINUTE,
 		[ReminderFormFieldName.RepeatRule]: reminder.rule,
 		[ReminderFormFieldName.LinkedGoalId]: reminder.linkedGoalId ?? null
 	};
@@ -29,7 +30,7 @@ export function getFormValidatorScheme(reminder: Reminder, realTimestamp: number
 				})
 				.int()
 				.min(0, 'Введи время')
-				.max(timeService.lib.HOUR * 24 - 1, 'Введи время'),
+				.max(timeService.lib.HOUR * 24 - 1 + timeService.lib.MINUTE * 59, 'Введи время'),
 			[ReminderFormFieldName.RepeatRule]: z.nativeEnum(ReminderRepeatRule, {
 				invalid_type_error: 'Выбери правило повторения'
 			}),
@@ -42,7 +43,7 @@ export function getFormValidatorScheme(reminder: Reminder, realTimestamp: number
 			) {
 				const startOfTargetDate = timeService.lib.getStartOfTheDay(values[ReminderFormFieldName.TargetDate]);
 
-				if (startOfTargetDate < realTimestamp) {
+				if (startOfTargetDate < minDateStart) {
 					ctx.addIssue({
 						path: [ReminderFormFieldName.TargetDate],
 						message: 'Дата напоминания не может быть раньше сегодняшнего дня',

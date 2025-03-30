@@ -1,4 +1,9 @@
+type Suggestion = {
+	value: string;
+	label: string;
+};
 export type Props<Value extends string | number = string> = {
+	suggestions?: Suggestion[];
 	label?: string;
 	value: Value;
 	defaultValue?: Value;
@@ -7,6 +12,8 @@ export type Props<Value extends string | number = string> = {
 	inputClassName?: string;
 	labelClassName?: string;
 	error?: string | null;
+	mask?: string;
+	maskReplacment?: Record<string, RegExp>;
 
 	/**
 	 * Marker if left slot should be hidden when input has content
