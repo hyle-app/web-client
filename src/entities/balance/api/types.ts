@@ -3,3 +3,7 @@ export type FetchBalanceParams = {
 };
 
 export type BalanceDTO = Record<string, number>;
+
+export type FetchBalanceCategoriesParams = {
+	customerId: string;
+};

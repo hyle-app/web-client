@@ -1,5 +1,5 @@
 export type Variant = 'button' | 'text' | 'icon' | 'narrow-button';
-export type Appearance = 'primary' | 'secondary' | 'ghost' | 'error';
+export type Appearance = 'primary' | 'secondary' | 'ghost' | 'error' | 'primary-outline';
 
 export type CommonProps = {
 	variant?: Variant;

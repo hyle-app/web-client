@@ -1,34 +1,98 @@
 import { balanceEntity } from '&entities/balance';
 import { goalEntity } from '&entities/goal';
+import { editBalanceFeature, EditBalanceSidebar } from '&features/edit-balance';
+import { resetBalanceFeature } from '&features/reset-balance';
 import { BalanceCategory } from '&shared/constants';
 import { BarChart } from '&shared/ui/bar-chart/component';
 import { Button } from '&shared/ui/button';
-import { Icon } from '&shared/ui/icon';
+import { Popover } from '&shared/ui/popover';
 import { RadarChart } from '&shared/ui/radar-chart/component';
 import { useUnit } from 'effector-react';
+import React from 'react';
 
 export function BalancePage() {
-	const { balance } = useUnit({
-		balance: balanceEntity.outputs.$normalizedBalance
+	const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+	const { balance, resetBalanceEvent, editBalanceCategoriesEvent, isModalOpen, closeModalEvent } = useUnit({
+		balance: balanceEntity.outputs.$normalizedBalance,
+		resetBalanceEvent: resetBalanceFeature.inputs.resetBalance,
+		editBalanceCategoriesEvent: editBalanceFeature.inputs.openSidebar,
+		closeModalEvent: editBalanceFeature.inputs.closeSidebar,
+		isModalOpen: editBalanceFeature.outputs.$isModalOpen
 	});
+
+	const handleReset = () => {
+		resetBalanceEvent();
+		setIsPopoverOpen(false);
+	};
+
+	const handleEdit = () => {
+		editBalanceCategoriesEvent();
+		setIsPopoverOpen(false);
+	};
 
 	return (
 		<div className="flex h-full w-full grow flex-col px-8">
-			<div className="mb-3 flex justify-end gap-4">
-				<Button appearance="ghost" className="min-w-[227px]">
-					Обнулить
+			<Popover
+				isOpen={isPopoverOpen}
+				onClose={() => setIsPopoverOpen(false)}
+				className="mb-3 ml-auto w-fit"
+				content={
+					<div className="flex w-64 flex-col [&>*]:flex [&>*]:items-center [&>*]:gap-3 [&>*]:px-4 [&>*]:py-2">
+						<button onClick={handleReset}>
+							<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M8.82536 4.31454L2.80002 10.3399L2.40602 11.6839L3.72269 11.3032L9.76802 5.25787L8.82536 4.31454ZM9.85336 3.28654L10.796 4.22921L11.6747 3.35054C11.7372 3.28803 11.7723 3.20326 11.7723 3.11487C11.7723 3.02649 11.7372 2.94172 11.6747 2.87921L11.2027 2.40787C11.1402 2.34538 11.0554 2.31028 10.967 2.31028C10.8786 2.31028 10.7939 2.34538 10.7314 2.40787L9.85402 3.28654H9.85336ZM12.146 1.46521L12.6174 1.93654C12.9298 2.24909 13.1053 2.67293 13.1053 3.11487C13.1053 3.55681 12.9298 3.98066 12.6174 4.29321L4.42269 12.4885L1.60936 13.3019C1.49468 13.3349 1.37323 13.3366 1.25769 13.3067C1.14215 13.2768 1.03675 13.2165 0.952497 13.1319C0.868244 13.0474 0.808225 12.9418 0.778708 12.8262C0.74919 12.7105 0.751256 12.5891 0.78469 12.4745L1.61669 9.63787L9.79002 1.46454C10.1026 1.15209 10.5264 0.976562 10.9684 0.976562C11.4103 0.976562 11.8341 1.15209 12.1467 1.46454L12.146 1.46521Z"
+									fill="#081944"
+								/>
+							</svg>
+							Обнулить баланс
+						</button>
+						<button onClick={handleEdit}>
+							<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M13.5647 5.16065L14.1294 4.31665C14.1779 4.24475 14.2402 4.18318 14.3127 4.13552C14.3852 4.08787 14.4664 4.05506 14.5516 4.039C14.6369 4.02294 14.7245 4.02395 14.8094 4.04197C14.8942 4.05999 14.9747 4.09467 15.046 4.14398C15.35 4.35065 15.4327 4.76398 15.2307 5.06598L13.7667 7.25398C13.7182 7.32589 13.6558 7.38745 13.5834 7.43511C13.5109 7.48277 13.4296 7.51558 13.3444 7.53164C13.2591 7.5477 13.1715 7.54668 13.0867 7.52866C13.0018 7.51064 12.9214 7.47597 12.85 7.42665L10.6467 5.92932C10.5008 5.83101 10.3995 5.67911 10.365 5.50661C10.3304 5.33411 10.3653 5.15493 10.462 5.00798C10.5105 4.93603 10.5728 4.8744 10.6452 4.82668C10.7177 4.77896 10.7989 4.74608 10.8842 4.72996C10.9694 4.71384 11.057 4.71479 11.1419 4.73276C11.2268 4.75073 11.3073 4.78536 11.3787 4.83465L12.2747 5.44465C11.6187 3.25798 9.61335 1.66732 7.24202 1.66732C4.33735 1.66732 1.98202 4.05532 1.98202 7.00065C1.98202 9.94598 4.33735 12.334 7.24202 12.334C7.60535 12.334 7.90002 12.6327 7.90002 13.0007C7.90002 13.3687 7.60535 13.6673 7.24202 13.6673C3.61069 13.6673 0.666687 10.6827 0.666687 7.00065C0.666687 3.31865 3.61069 0.333984 7.24202 0.333984C10.2447 0.333984 12.7767 2.37398 13.5647 5.16065Z"
+									fill="#081944"
+								/>
+							</svg>
+							Редактировать баланс
+						</button>
+						<a className="text-center" href="https://quiz.hyle.app/start">
+							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M6 2.66732V2.00065C6 1.82384 6.07024 1.65427 6.19526 1.52925C6.32029 1.40422 6.48986 1.33398 6.66667 1.33398H9.33333C9.51014 1.33398 9.67971 1.40422 9.80474 1.52925C9.92976 1.65427 10 1.82384 10 2.00065V2.66732H12.6667C13.0203 2.66732 13.3594 2.80779 13.6095 3.05784C13.8595 3.30789 14 3.64703 14 4.00065V4.66732C14 5.02094 13.8595 5.36008 13.6095 5.61013C13.3594 5.86018 13.0203 6.00065 12.6667 6.00065H12.578L12.1247 12.8007C12.0908 13.3068 11.8659 13.7813 11.4955 14.1278C11.125 14.4744 10.6366 14.6673 10.1293 14.6673H5.884C5.37712 14.6673 4.88914 14.4748 4.51874 14.1288C4.14834 13.7828 3.92313 13.309 3.88867 12.8033L3.42467 6.00065H3.33333C2.97971 6.00065 2.64057 5.86018 2.39052 5.61013C2.14048 5.36008 2 5.02094 2 4.66732V4.00065C2 3.64703 2.14048 3.30789 2.39052 3.05784C2.64057 2.80779 2.97971 2.66732 3.33333 2.66732H6ZM12.6667 4.00065H3.33333V4.66732H12.6667V4.00065ZM4.76067 6.00065L5.21867 12.7127C5.23016 12.8813 5.30526 13.0392 5.42877 13.1546C5.55229 13.2699 5.715 13.334 5.884 13.334H10.1293C10.2985 13.334 10.4614 13.2697 10.585 13.1541C10.7085 13.0384 10.7835 12.8802 10.7947 12.7113L11.2413 6.00065H4.76133H4.76067ZM6.66667 6.66732C6.84348 6.66732 7.01305 6.73756 7.13807 6.86258C7.2631 6.9876 7.33333 7.15717 7.33333 7.33398V12.0007C7.33333 12.1775 7.2631 12.347 7.13807 12.4721C7.01305 12.5971 6.84348 12.6673 6.66667 12.6673C6.48986 12.6673 6.32029 12.5971 6.19526 12.4721C6.07024 12.347 6 12.1775 6 12.0007V7.33398C6 7.15717 6.07024 6.9876 6.19526 6.86258C6.32029 6.73756 6.48986 6.66732 6.66667 6.66732ZM9.33333 6.66732C9.51014 6.66732 9.67971 6.73756 9.80474 6.86258C9.92976 6.9876 10 7.15717 10 7.33398V12.0007C10 12.1775 9.92976 12.347 9.80474 12.4721C9.67971 12.5971 9.51014 12.6673 9.33333 12.6673C9.15652 12.6673 8.98695 12.5971 8.86193 12.4721C8.7369 12.347 8.66667 12.1775 8.66667 12.0007V7.33398C8.66667 7.15717 8.7369 6.9876 8.86193 6.86258C8.98695 6.73756 9.15652 6.66732 9.33333 6.66732V6.66732Z"
+									fill="#081944"
+								/>
+							</svg>
+							Пройти квиз
+						</a>
+					</div>
+				}
+			>
+				<Button
+					appearance="ghost"
+					className="flex h-14 w-14 items-center justify-center"
+					onClick={() => setIsPopoverOpen(true)}
+				>
+					<svg
+						width="16"
+						height="4"
+						viewBox="0 0 16 4"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						className="shrink-0"
+					>
+						<path
+							d="M8 4C8.53043 4 9.03914 3.78929 9.41421 3.41421C9.78929 3.03914 10 2.53043 10 2C10 1.46957 9.78929 0.96086 9.41421 0.585787C9.03914 0.210714 8.53043 0 8 0C7.46957 0 6.96086 0.210714 6.58579 0.585787C6.21071 0.96086 6 1.46957 6 2C6 2.53043 6.21071 3.03914 6.58579 3.41421C6.96086 3.78929 7.46957 4 8 4ZM2 4C2.53043 4 3.03914 3.78929 3.41421 3.41421C3.78929 3.03914 4 2.53043 4 2C4 1.46957 3.78929 0.96086 3.41421 0.585787C3.03914 0.210714 2.53043 0 2 0C1.46957 0 0.960859 0.210714 0.585786 0.585787C0.210714 0.96086 0 1.46957 0 2C0 2.53043 0.210714 3.03914 0.585786 3.41421C0.960859 3.78929 1.46957 4 2 4ZM14 4C14.5304 4 15.0391 3.78929 15.4142 3.41421C15.7893 3.03914 16 2.53043 16 2C16 1.46957 15.7893 0.96086 15.4142 0.585787C15.0391 0.210714 14.5304 0 14 0C13.4696 0 12.9609 0.210714 12.5858 0.585787C12.2107 0.96086 12 1.46957 12 2C12 2.53043 12.2107 3.03914 12.5858 3.41421C12.9609 3.78929 13.4696 4 14 4Z"
+							fill="#081944"
+						/>
+					</svg>
 				</Button>
-				<Button appearance="primary" className="min-w-[227px]">
-					Рассчитать баланс
-				</Button>
-				<button>
-					<Icon name="help" className="h-5 w-5 text-color-gray-50" />
-				</button>
-			</div>
+			</Popover>
 			<div className="grid grow grid-cols-2 content-center items-stretch">
 				<RadarChart<BalanceCategory> getLabel={goalEntity.lib.getCategoryLabel} data={balance} />
 				<BarChart<BalanceCategory> getLabel={goalEntity.lib.getCategoryLabel} data={balance} />
 			</div>
+			<EditBalanceSidebar isOpen={isModalOpen} onClose={closeModalEvent} />
 		</div>
 	);
 }

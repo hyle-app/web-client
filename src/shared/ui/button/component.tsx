@@ -11,8 +11,10 @@ export function Button(props: Props) {
 		APPEARANCE_CLASSNAMES.common,
 		{ 'flex items-center gap-2': iconSlot },
 		{ 'boder-color-gray-30 bg-color-gray-30': disabled },
+		'text-center',
 		className
 	);
+
 	if (tag === 'a') {
 		const { variant = 'button', appearance, iconSlot, className, children, tag, ...attributes } = props;
 		return (

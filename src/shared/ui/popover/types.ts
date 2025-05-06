@@ -3,6 +3,7 @@ export type Props = {
 	content: React.ReactNode;
 	isOpen: boolean;
 	onClose(): void;
+	className?: string;
 	contentClassName?: string;
 	portalContainerRef?: React.RefObject<HTMLElement>;
 	autoFocusContent?: boolean;

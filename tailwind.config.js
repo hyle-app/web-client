@@ -58,6 +58,7 @@ export default {
 
 				'color-brand-primary-50': 'var(--color-brand-primary-50)',
 				'color-brand-primary-70': 'var(--color-brand-primary-70)',
+				'color-brand-primary-80': 'var(--color-brand-primary-80)',
 				'color-brand-secondary-80': 'var(--color-brand-secondary-80)',
 
 				'color-text-and-icon-80': 'var(--color-text-and-icon-80)',

@@ -12,6 +12,7 @@
 	--color-bg-100: #ffffff;
 	--color-brand-primary-50: #3f69ff;
 	--color-brand-primary-70: #7098fd;
+	--color-brand-primary-80: #dfe5fd;
 	--color-brand-secondary-80: #632bd4;
 	--color-text-and-icon-80: #081944;
 	--color-text-and-icon-70: #0b215b;
@@ -75,6 +76,7 @@
 	--color-brand-primary-50: #557afa;
 	/*dark */
 	--color-brand-primary-70: #99aef8;
+	--color-brand-primary-80: #dfe5fd;
 	--color-brand-secondary-90: #b7a5ff;
 	/*dark */
 	--color-brand-secondary-80: #9d6ffa;

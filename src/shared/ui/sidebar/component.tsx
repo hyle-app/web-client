@@ -23,7 +23,8 @@ export function Sidebar({
 	confirmOverlayClose,
 	actions,
 	actionMenuContentRef,
-	foreheadSlot
+	foreheadSlot,
+	className
 }: React.PropsWithChildren<Props>) {
 	const [isActionsMenuOpen, setIsActionMenuOpen] = React.useState(false);
 	const [isSidebarVisible, setIsSidebarVisible] = React.useState(false);
@@ -92,6 +93,7 @@ export function Sidebar({
 			<div
 				className={cn(
 					'absolute bottom-0 right-0 top-0 z-20 w-[590px] max-w-full bg-color-bg-95 transition-transform duration-300',
+					className,
 					{
 						'translate-x-full': !isSidebarVisible,
 						'translate-x-0': isSidebarVisible
@@ -123,7 +125,7 @@ export function Sidebar({
 						</div>
 					</div>
 				)}
-				<div className="flex h-full flex-col overflow-y-auto">{children}</div>
+				<div className="no-scrollbar flex h-full flex-col overflow-y-auto">{children}</div>
 			</div>
 		</div>
 	);

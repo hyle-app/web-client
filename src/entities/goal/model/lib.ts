@@ -10,7 +10,16 @@ export function getCategoryLabel(category: BalanceCategory): string {
 		[BalanceCategory.Career]: 'Карьера',
 		[BalanceCategory.Health]: 'Здоровье',
 		[BalanceCategory.Finance]: 'Финансы',
-		[BalanceCategory.Friends]: 'Друзья'
+		[BalanceCategory.Friends]: 'Друзья',
+		[BalanceCategory.PersonalGrowth]: 'Личностный рост',
+		[BalanceCategory.Spirituality]: 'Духовность',
+		[BalanceCategory.Rest]: 'Отдых',
+		[BalanceCategory.Creation]: 'Творчество',
+		[BalanceCategory.Education]: 'Образование',
+		[BalanceCategory.SelfDevelopment]: 'Саморазвитие',
+		[BalanceCategory.Relationships]: 'Отношения',
+		[BalanceCategory.Ecology]: 'Экология',
+		[BalanceCategory.Sport]: 'Спорт'
 	}[category];
 }
 

@@ -9,7 +9,8 @@ export const Popover = ({
 	onClose,
 	contentClassName,
 	portalContainerRef,
-	autoFocusContent = true
+	autoFocusContent = true,
+	className
 }: Props) => {
 	const handleFocusOutside = (event: CustomEvent<{ originalEvent: FocusEvent | PointerEvent }>) => {
 		if (!portalContainerRef?.current) {
@@ -24,7 +25,7 @@ export const Popover = ({
 	return (
 		<PopoverPrimitives.Root open={isOpen}>
 			<PopoverPrimitives.Trigger asChild>
-				<div>{children}</div>
+				<div className={className}>{children}</div>
 			</PopoverPrimitives.Trigger>
 			<PopoverPrimitives.Portal container={portalContainerRef?.current}>
 				<PopoverPrimitives.Content

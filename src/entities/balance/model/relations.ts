@@ -8,11 +8,16 @@ sample({
 	source: { user: authService.outputs.$user },
 	filter: authService.outputs.$isLoggedIn,
 	fn: ({ user }) => ({ customerId: user!.uid }),
-	target: internals.fetchBalanceFx
+	target: [internals.fetchBalanceFx, internals.fetchBalanceCategoriesFx]
 });
 
 sample({
 	clock: internals.fetchBalanceFx.doneData,
 	fn: (balanceDto) => mapDtoToBalance(balanceDto),
+	target: outputs.$balance
+});
+
+sample({
+	clock: inputs.setBalance,
 	target: outputs.$balance
 });
